@@ -18,12 +18,12 @@ int main(int argc, char *argv[])
         }    
 
         string directoryName = "Results_v1";
-        string dataType = "data";
+        string dataType = "MC";
         string fitVariable = "mmg_s";
         string eta = "Barrel"; 
         string r9 = "all";
         string fitFunction = "voigtian";
-        int lowFitRange = 70;
+        int lowFitRange = 60;
 	int highFitRange = 100;
 
 	if( argc > 1 ) directoryName = argv[1];
@@ -87,12 +87,12 @@ int main(int argc, char *argv[])
 			fitParameters.push_back(temp_number);
 		}	
 
-		pvalue_tab[i-lowFitRange] = fitParameters[fitParameters[1] * 2 + 4];
+		pvalue_tab[i-lowFitRange] = fitParameters[fitParameters[2] * 2 + 5]; 
 		average_pvalue += pvalue_tab[i-lowFitRange];
 
-		meanTab[i-lowFitRange] = fitParameters[2];
-		mean_errorTab[i-lowFitRange] = fitParameters[3];
-		mean_errorVec.push_back(fitParameters[3]);	
+		meanTab[i-lowFitRange] = fitParameters[3];
+		mean_errorTab[i-lowFitRange] = fitParameters[4];
+		mean_errorVec.push_back(fitParameters[4]);	
 	
 		fitParameters.erase(fitParameters.begin(),fitParameters.end());
 	
@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 	average_pvalue = average_pvalue / fit_number;
 	//average_mean_error = average_mean_error / fit_number;
 		
-	min_error = median_mean_error * 10.0;
+	min_error = median_mean_error * 1.5;
 
 	cout<< "median_mean_error = "<<median_mean_error<<endl;
 	cout<< "min_error = "<<min_error<<endl;
@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
 	{
 		//if(i == 100 || i == 89 || i = 79 || i = 69) min_error = average_mean_error;
 
-		if(pvalue_tab[i-lowFitRange] > 0.01)
+		if(pvalue_tab[i-lowFitRange] > 0.001)
 		{
 			if(i >= 90 && mean_errorTab[i-lowFitRange] < min_error && mean_errorTab[i-lowFitRange] > (median_mean_error * 0.1))
 			{
@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
 	{
 		for(int i = highFitRange; i >= lowFitRange; i--)
         	{
-			if(pvalue_tab[i-lowFitRange] > 0.001)
+			if(pvalue_tab[i-lowFitRange] > 0.0001)
 	                {
 		               	if(i >= 90 && mean_errorTab[i-lowFitRange] < min_error && mean_errorTab[i-lowFitRange] > (median_mean_error * 0.1)) 
 	                        {
@@ -214,6 +214,12 @@ int main(int argc, char *argv[])
 
 	cout<<endl<<"Best fit range = "<<best_fit<<" %"<<endl;
 	cout<<endl<<"mean_errorTab[best_fit] = "<<mean_errorTab[best_fit-lowFitRange]<<", pvalue_tab[best_fit] = "<<pvalue_tab[best_fit-lowFitRange]<<endl;
+	//FIXME v (Results_v6)
+	//if(eta == "Barrel" && r9 == "low" && dataType == "MC" && fitVariable == "mmg_s" && fitFunction == "voigtian") best_fit = 78;
+	//if(eta == "Barrel" && r9 == "all" && dataType == "MC" && fitVariable == "mmg_s" && fitFunction == "voigtian") best_fit = 76;
+
+	cout<<endl<<"Best fit range = "<<best_fit<<" %"<<endl;
+        cout<<endl<<"mean_errorTab[best_fit] = "<<mean_errorTab[best_fit-lowFitRange]<<", pvalue_tab[best_fit] = "<<pvalue_tab[best_fit-lowFitRange]<<endl;	
 
 	///// Fit range systematics /////
 
@@ -263,10 +269,9 @@ int main(int argc, char *argv[])
 
 	system(Form("cp -r %s/%s/%dPercents/%s_%s_%sR9_%s/ %s/%s/Selected_Fits/%s_%s_%sR9_%s/",directoryName.c_str(),dataType.c_str(),best_fit,fitVariable.c_str(),eta.c_str(),r9.c_str(),fitFunction.c_str(),directoryName.c_str(),dataType.c_str(),fitVariable.c_str(),eta.c_str(),r9.c_str(),fitFunction.c_str()));
 
-
 	ofstream summaryFile(Form("%s/%s/Selected_Fits/Summary_%s.txt",directoryName.c_str(),dataType.c_str(),fitVariable.c_str()), ios::app);
 
-        summaryFile << fitVariable << " " << dataType << " >> " << r9 << " r9 " << eta << ", " << fitFunction <<" : mu = " << 100 * meanTab[best_fit-lowFitRange] << " +- " << 100 * mean_errorTab[best_fit-lowFitRange] << " (stat) +- " << 100 * systematics << " (range) %" << ", fit range = "<< best_fit <<"%, p-value = " << pvalue_tab[best_fit-lowFitRange] <<endl;
+        summaryFile << fitVariable << " " << dataType << " >> " << r9 << " r9 " << eta << ", " << fitFunction <<" : mu = " << 100 * meanTab[best_fit-lowFitRange] << " +- " << 100 * mean_errorTab[best_fit-lowFitRange] << " (stat) +- " << 100 * systematics << " (range) %" << ", fit range = "<< best_fit <<"%, p-value = " << pvalue_tab[best_fit-lowFitRange] << ", scale factor = " << 1.0 / ( meanTab[best_fit-lowFitRange] + 1 ) << endl;
 
         summaryFile.close();
 	

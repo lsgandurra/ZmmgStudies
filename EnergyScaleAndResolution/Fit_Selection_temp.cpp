@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 	double ** median_mean_error_Tab = new double*[nbFits];
 	double *  median_mean_error = new double[nbFits];
 	double temp_var = 0;
-	int best_fit = 0;
+	int * best_fit = new double[nbFits];
 	double *min_error = new double[nbFits];
 	
 	int fit_number = (highFitRange - lowFitRange + 1) * nbFits;	
@@ -136,178 +136,213 @@ int main(int argc, char *argv[])
 		//cout<< "lowFitRange = "<<lowFitRange<<", highFitRange = "<<highFitRange<<endl;
 	}
 
-
-////// Modify after this line to take into account multiple fits /////
 	
 	///// Fit range selection /////
-	
-	for(int i = highFitRange; i >= lowFitRange; i--)
-	{
-		//if(i == 100 || i == 89 || i = 79 || i = 69) min_error = average_mean_error;
 
-		if(pvalue_tab[i-lowFitRange] > 0.001)
+	for(int j = 0; j < nbFits; j++)
+	{
+	
+		for(int i = highFitRange; i >= lowFitRange; i--)
 		{
-			if(i >= 90 && mean_errorTab[i-lowFitRange] < min_error && mean_errorTab[i-lowFitRange] > (median_mean_error * 0.1))
+			//if(i == 100 || i == 89 || i = 79 || i = 69) min_error[j] = average_mean_error;
+	
+			if(pvalue_tab[ (i-lowFitRange) * nbFits + j ] > 0.001)
 			{
-				min_error = mean_errorTab[i-lowFitRange];
-                                best_fit = i;
+				if(i >= 90 && mean_errorTab[ (i-lowFitRange) * nbFits + j ] < min_error[j] && mean_errorTab[ (i-lowFitRange) * nbFits + j ] > (median_mean_error[j] * 0.1))
+				{
+					min_error[j] = mean_errorTab[ (i-lowFitRange) * nbFits + j ];
+	                                best_fit[j] = i;
+				}
+				if(i >= 80 && i < 90 && best_fit[j] == 0 && mean_errorTab[ (i-lowFitRange) * nbFits + j ] < min_error[j] && mean_errorTab[ (i-lowFitRange) * nbFits + j ] > (median_mean_error[j] * 0.1))
+				{
+	                                min_error[j] = mean_errorTab[ (i-lowFitRange) * nbFits + j ];
+	                                best_fit[j] = i;
+	                        }
+				if(i >= 70 && i < 80 && best_fit[j] == 0 && mean_errorTab[ (i-lowFitRange) * nbFits + j ] < min_error[j] && mean_errorTab[ (i-lowFitRange) * nbFits + j ] > (median_mean_error[j] * 0.1))
+	                        {
+	                                min_error[j] = mean_errorTab[ (i-lowFitRange) * nbFits + j ];
+	                                best_fit[j] = i;
+	                        }
+				if(i >= 60 && i < 70 && best_fit[j] == 0 && mean_errorTab[ (i-lowFitRange) * nbFits + j ] < min_error[j] && mean_errorTab[ (i-lowFitRange) * nbFits + j ] > (median_mean_error[j] * 0.1))
+	                        {
+	                                min_error[j] = mean_errorTab[ (i-lowFitRange) * nbFits + j ];
+	                                best_fit[j] = i;
+	                        }
 			}
-			if(i >= 80 && i < 90 && best_fit == 0 && mean_errorTab[i-lowFitRange] < min_error && mean_errorTab[i-lowFitRange] > (median_mean_error * 0.1))
-			{
-                                min_error = mean_errorTab[i-lowFitRange];
-                                best_fit = i;
-                        }
-			if(i >= 70 && i < 80 && best_fit == 0 && mean_errorTab[i-lowFitRange] < min_error && mean_errorTab[i-lowFitRange] > (median_mean_error * 0.1))
-                        {
-                                min_error = mean_errorTab[i-lowFitRange];
-                                best_fit = i;
-                        }
-			if(i >= 60 && i < 70 && best_fit == 0 && mean_errorTab[i-lowFitRange] < min_error && mean_errorTab[i-lowFitRange] > (median_mean_error * 0.1))
-                        {
-                                min_error = mean_errorTab[i-lowFitRange];
-                                best_fit = i;
-                        }
 		}
-	}
-	if(best_fit == 0) 
-	{
-		for(int i = highFitRange; i >= lowFitRange; i--)
-        	{
-			if(pvalue_tab[i-lowFitRange] > 0.0001)
+		if(best_fit[j] == 0) 
+		{
+			for(int i = highFitRange; i >= lowFitRange; i--)
+	        	{
+				if(pvalue_tab[ (i-lowFitRange) * nbFits + j ] > 0.0001)
+		                {
+			               	if(i >= 90 && mean_errorTab[ (i-lowFitRange) * nbFits + j ] < min_error[j] && mean_errorTab[ (i-lowFitRange) * nbFits + j ] > (median_mean_error[j] * 0.1)) 
+		                        {
+		                                min_error[j] = mean_errorTab[ (i-lowFitRange) * nbFits + j ];
+		                                best_fit[j] = i;
+		                        }
+		                        if(i >= 80 && i < 90 && best_fit[j] == 0 && mean_errorTab[ (i-lowFitRange) * nbFits + j ] < min_error[j] && mean_errorTab[ (i-lowFitRange) * nbFits + j ] > (median_mean_error[j] * 0.1))
+		                        {
+		                                min_error[j] = mean_errorTab[ (i-lowFitRange) * nbFits + j ];
+		                                best_fit[j] = i;
+		                        }
+		                        if(i >= 70 && i < 80 && best_fit[j] == 0 && mean_errorTab[ (i-lowFitRange) * nbFits + j ] < min_error[j] && mean_errorTab[ (i-lowFitRange) * nbFits + j ] > (median_mean_error[j] * 0.1))
+		                        {
+		                                min_error[j] = mean_errorTab[ (i-lowFitRange) * nbFits + j ];
+		                                best_fit[j] = i;
+		                        }
+		                        if(i >= 60 && i < 70 && best_fit[j] == 0 && mean_errorTab[ (i-lowFitRange) * nbFits + j ] < min_error[j] && mean_errorTab[ (i-lowFitRange) * nbFits + j ] > (median_mean_error[j] * 0.1))
+		                        {
+		                                min_error[j] = mean_errorTab[ (i-lowFitRange) * nbFits + j ];
+		                                best_fit[j] = i;
+		                        } 
+				}
+		
+			}
+		}
+	
+		if(best_fit[j] == 0) 
+		{
+		
+			for(int i = highFitRange; i >= lowFitRange; i--)
 	                {
-		               	if(i >= 90 && mean_errorTab[i-lowFitRange] < min_error && mean_errorTab[i-lowFitRange] > (median_mean_error * 0.1)) 
+	                        if(pvalue_tab[ (i-lowFitRange) * nbFits + j ] > average_pvalue[j])
 	                        {
-	                                min_error = mean_errorTab[i-lowFitRange];
-	                                best_fit = i;
-	                        }
-	                        if(i >= 80 && i < 90 && best_fit == 0 && mean_errorTab[i-lowFitRange] < min_error && mean_errorTab[i-lowFitRange] > (median_mean_error * 0.1))
-	                        {
-	                                min_error = mean_errorTab[i-lowFitRange];
-	                                best_fit = i;
-	                        }
-	                        if(i >= 70 && i < 80 && best_fit == 0 && mean_errorTab[i-lowFitRange] < min_error && mean_errorTab[i-lowFitRange] > (median_mean_error * 0.1))
-	                        {
-	                                min_error = mean_errorTab[i-lowFitRange];
-	                                best_fit = i;
-	                        }
-	                        if(i >= 60 && i < 70 && best_fit == 0 && mean_errorTab[i-lowFitRange] < min_error && mean_errorTab[i-lowFitRange] > (median_mean_error * 0.1))
-	                        {
-	                                min_error = mean_errorTab[i-lowFitRange];
-	                                best_fit = i;
-	                        } 
-			}
-	
+		                        if(i >= 90 && mean_errorTab[ (i-lowFitRange) * nbFits + j ] < min_error[j] && mean_errorTab[ (i-lowFitRange) * nbFits + j ] > (median_mean_error[j] * 0.1)) 
+		                        {
+		                                min_error[j] = mean_errorTab[ (i-lowFitRange) * nbFits + j ];
+		                                best_fit[j] = i;
+		                        }
+		                        if(i >= 80 && i < 90 && best_fit[j] == 0 && mean_errorTab[ (i-lowFitRange) * nbFits + j ] < min_error[j] && mean_errorTab[ (i-lowFitRange) * nbFits + j ] > (median_mean_error[j] * 0.1))
+		                        {
+		                                min_error[j] = mean_errorTab[ (i-lowFitRange) * nbFits + j ];
+		                                best_fit[j] = i;
+		                        }
+		                        if(i >= 70 && i < 80 && best_fit[j] == 0 && mean_errorTab[ (i-lowFitRange) * nbFits + j ] < min_error[j] && mean_errorTab[ (i-lowFitRange) * nbFits + j ] > (median_mean_error[j] * 0.1))
+		                        {
+		                                min_error[j] = mean_errorTab[ (i-lowFitRange) * nbFits + j ];
+		                                best_fit[j] = i;
+		                        }
+		                        if(i >= 60 && i < 70 && best_fit[j] == 0 && mean_errorTab[ (i-lowFitRange) * nbFits + j ] < min_error[j] && mean_errorTab[ (i-lowFitRange) * nbFits + j ] > (median_mean_error[j] * 0.1))
+		                        {
+		                                min_error[j] = mean_errorTab[ (i-lowFitRange) * nbFits + j ];
+		                                best_fit[j] = i;
+		                        }
+				}
+	     
+	                }	
 		}
-	}
-
-	if(best_fit == 0) 
-	{
 	
-		for(int i = highFitRange; i >= lowFitRange; i--)
-                {
-                        if(pvalue_tab[i-lowFitRange] > average_pvalue)
-                        {
-	                        if(i >= 90 && mean_errorTab[i-lowFitRange] < min_error && mean_errorTab[i-lowFitRange] > (median_mean_error * 0.1)) 
-	                        {
-	                                min_error = mean_errorTab[i-lowFitRange];
-	                                best_fit = i;
-	                        }
-	                        if(i >= 80 && i < 90 && best_fit == 0 && mean_errorTab[i-lowFitRange] < min_error && mean_errorTab[i-lowFitRange] > (median_mean_error * 0.1))
-	                        {
-	                                min_error = mean_errorTab[i-lowFitRange];
-	                                best_fit = i;
-	                        }
-	                        if(i >= 70 && i < 80 && best_fit == 0 && mean_errorTab[i-lowFitRange] < min_error && mean_errorTab[i-lowFitRange] > (median_mean_error * 0.1))
-	                        {
-	                                min_error = mean_errorTab[i-lowFitRange];
-	                                best_fit = i;
-	                        }
-	                        if(i >= 60 && i < 70 && best_fit == 0 && mean_errorTab[i-lowFitRange] < min_error && mean_errorTab[i-lowFitRange] > (median_mean_error * 0.1))
-	                        {
-	                                min_error = mean_errorTab[i-lowFitRange];
-	                                best_fit = i;
-	                        }
-			}
-     
-                }	
-	}
+		if(best_fit[j] == 0)
+	        {
+			cout<<endl<<"Unable to find a good fit"<<endl;
+	                best_fit[j] = 200;
+		}
 
-	if(best_fit == 0)
-        {
-		cout<<endl<<"Unable to find a good fit"<<endl;
-                best_fit = 200;
-	}
+	}	
 
-
+/*
 	cout<<endl<<"Best fit range = "<<best_fit<<" %"<<endl;
-	cout<<endl<<"mean_errorTab[best_fit] = "<<mean_errorTab[best_fit-lowFitRange]<<", pvalue_tab[best_fit] = "<<pvalue_tab[best_fit-lowFitRange]<<endl;
+	cout<<endl<<"mean_errorTab[best_fit] = "<<mean_errorTab[ (best_fit-lowFitRange) * nbFits + j ]<<", pvalue_tab[best_fit] = "<<pvalue_tab[ (best_fit-lowFitRange) * nbFits + j ]<<endl;
 	//FIXME v (Results_v6)
 	//if(eta == "Barrel" && r9 == "low" && dataType == "MC" && fitVariable == "mmg_s" && fitFunction == "voigtian") best_fit = 78;
 	//if(eta == "Barrel" && r9 == "all" && dataType == "MC" && fitVariable == "mmg_s" && fitFunction == "voigtian") best_fit = 76;
 
 	cout<<endl<<"Best fit range = "<<best_fit<<" %"<<endl;
-        cout<<endl<<"mean_errorTab[best_fit] = "<<mean_errorTab[best_fit-lowFitRange]<<", pvalue_tab[best_fit] = "<<pvalue_tab[best_fit-lowFitRange]<<endl;	
-
+        cout<<endl<<"mean_errorTab[best_fit] = "<<mean_errorTab[ (best_fit-lowFitRange) * nbFits + j ]<<", pvalue_tab[best_fit] = "<<pvalue_tab[ (best_fit-lowFitRange) * nbFits + j ]<<endl;	
+*/
 	///// Fit range systematics /////
 
-	double systematics = 0;
+	double * systematics = new double[nbFits];
+	for(int j = 0; j < nbFits; j++)
+        {
+		systematics[j] = 0;
+	}
 	double temp_error = 0;
+	int lowBoundary = 0;
+	int highBoundary = 0;
 
 	//int lowBoundary = ((best_fit - 10) > lowFitRange) ? best_fit - 10 : lowFitRange;
 	//int highBoundary = ((best_fit + 10) < highFitRange) ? best_fit + 10 : highFitRange;
 
-	int lowBoundary = best_fit - 10;
-	int highBoundary = best_fit + 10;
-	if(lowBoundary < lowFitRange)
-	{
-		lowBoundary = lowFitRange;
-		highBoundary = lowFitRange + 20;
-	}
-	if(highBoundary > highFitRange)
-        {   
-                highBoundary = highFitRange;
-                lowBoundary = highFitRange - 20;
-        }	
+	for(int j = 0; j < nbFits; j++)
+        {
 
-	for(int i = lowBoundary; i <= highBoundary; i++)
-	{
-		if(mean_errorTab[i-lowFitRange] > fabs(10 * mean_errorTab[best_fit-lowFitRange]) || pvalue_tab[i-lowFitRange] < 0.000001)
+		lowBoundary = best_fit - 10;
+		highBoundary = best_fit + 10;
+		if(lowBoundary < lowFitRange)
 		{
-			continue;
-		}	
-		
-		if(meanTab[i-lowFitRange] < meanTab[best_fit-lowFitRange])
-		{
-			temp_error = fabs(meanTab[best_fit-lowFitRange] - meanTab[i-lowFitRange]);
+			lowBoundary = lowFitRange;
+			highBoundary = lowFitRange + 20;
 		}
-		else
-		{
-			temp_error = fabs(meanTab[i-lowFitRange] - meanTab[best_fit-lowFitRange]);	
-		}
-		if(temp_error > systematics) systematics = temp_error;
-		//cout<<endl<<"temp_error = "<<temp_error;
-	}
-
-	cout<<endl<<"mean = "<<meanTab[best_fit-lowFitRange]<<" +- "<<mean_errorTab[best_fit-lowFitRange]<<" (stat) +- "<<systematics<<" (range) %"<<endl;
-
-	system(Form("mkdir -p %s/%s/Selected_Fits/",directoryName.c_str(),dataType.c_str()));
-
-	//system(Form("source create_directory.sh %sSelected_Fits/",directoryName.c_str()));
-
-	system(Form("cp -r %s/%s/%dPercents/%s_%s_%sR9_%s/ %s/%s/Selected_Fits/%s_%s_%sR9_%s/",directoryName.c_str(),dataType.c_str(),best_fit,fitVariable.c_str(),eta.c_str(),r9.c_str(),fitFunction.c_str(),directoryName.c_str(),dataType.c_str(),fitVariable.c_str(),eta.c_str(),r9.c_str(),fitFunction.c_str()));
-
-	ofstream summaryFile(Form("%s/%s/Selected_Fits/Summary_%s.txt",directoryName.c_str(),dataType.c_str(),fitVariable.c_str()), ios::app);
-
-        summaryFile << fitVariable << " " << dataType << " >> " << r9 << " r9 " << eta << ", " << fitFunction <<" : mu = " << 100 * meanTab[best_fit-lowFitRange] << " +- " << 100 * mean_errorTab[best_fit-lowFitRange] << " (stat) +- " << 100 * systematics << " (range) %" << ", fit range = "<< best_fit <<"%, p-value = " << pvalue_tab[best_fit-lowFitRange] << ", scale factor = " << 1.0 / ( meanTab[best_fit-lowFitRange] + 1 ) << endl;
-
-        summaryFile.close();
+		if(highBoundary > highFitRange)
+	        {   
+	                highBoundary = highFitRange;
+	                lowBoundary = highFitRange - 20;
+	        }	
 	
+		for(int i = lowBoundary; i <= highBoundary; i++)
+		{
+			if(mean_errorTab[ (i-lowFitRange) * nbFits + j ] > fabs(10 * mean_errorTab[ (best_fit-lowFitRange) * nbFits + j ]) || pvalue_tab[ (i-lowFitRange) * nbFits + j ] < 0.000001)
+			{
+				continue;
+			}	
+			
+			if(meanTab[ (i-lowFitRange) * nbFits + j ] < meanTab[ (best_fit-lowFitRange) * nbFits + j ])
+			{
+				temp_error = fabs(meanTab[ (best_fit-lowFitRange) * nbFits + j ] - meanTab[ (i-lowFitRange) * nbFits + j ]);
+			}
+			else
+			{
+				temp_error = fabs(meanTab[ (i-lowFitRange) * nbFits + j ] - meanTab[ (best_fit-lowFitRange) * nbFits + j ]);	
+			}
+			if(temp_error > systematics[j]) systematics[j] = temp_error;
+			//cout<<endl<<"temp_error = "<<temp_error;
+		}
+	
+		cout<<endl<<"mean = "<<meanTab[ (best_fit-lowFitRange) * nbFits + j ]<<" +- "<<mean_errorTab[ (best_fit-lowFitRange) * nbFits + j ]<<" (stat) +- "<<systematics[j]<<" (range) %"<<endl;
+	
+		system(Form("mkdir -p %s/%s/Selected_Fits/",directoryName.c_str(),dataType.c_str()));
+		system(Form("mkdir -p %s/%s/Selected_Fits/Bin_%d/",directoryName.c_str(),dataType.c_str(),j));
+	
+		//system(Form("source create_directory.sh %sSelected_Fits/",directoryName.c_str()));
+
+
+		// v Modify the line below to copy correctly the multiples fits
+	
+		system(Form("cp -r %s/%s/%dPercents/%s_%s_%sR9_%s/ %s/%s/Selected_Fits/%s_%s_%sR9_%s/Bin_%d/",directoryName.c_str(),dataType.c_str(),best_fit,fitVariable.c_str(),eta.c_str(),r9.c_str(),fitFunction.c_str(),directoryName.c_str(),dataType.c_str(),fitVariable.c_str(),eta.c_str(),r9.c_str(),fitFunction.c_str(),j));
+	
+		ofstream summaryFile(Form("%s/%s/Selected_Fits/Summary_%s.txt",directoryName.c_str(),dataType.c_str(),fitVariable.c_str()), ios::app);
+	
+	        summaryFile << fitVariable << " " << dataType << " >> " << r9 << " r9 " << eta << ", " << fitFunction << ", bin " << j <<" : mu = " << 100 * meanTab[ (best_fit-lowFitRange) * nbFits + j ] << " +- " << 100 * mean_errorTab[ (best_fit-lowFitRange) * nbFits + j ] << " (stat) +- " << 100 * systematics[j] << " (range) %" << ", fit range = "<< best_fit[j] <<"%, p-value = " << pvalue_tab[ (best_fit-lowFitRange) * nbFits + j ] << ", scale factor = " << 1.0 / ( meanTab[ (best_fit-lowFitRange) * nbFits + j ] + 1 ) << endl;
+	
+	        summaryFile.close();
+		
+	}
+
+	delete [] systematics;
+	systematics = 0;
+	delete [] average_pvalue;
+	average_pvalue = 0;
+	delete [] median_mean_error; 
+	median_mean_error = 0;
+	delete [] best_fit;
+	best_fit = 0;
+	delete [] min_error;
+	min_error = 0;
 	delete [] meanTab;
 	meanTab = 0;
 	delete [] mean_errorTab;
 	mean_errorTab = 0;
 	delete [] pvalue_tab;
-	pvalue_tab = 0;
+        pvalue_tab = 0;
+	for(int j = 0; j < nbFits; j++)
+        {
+		delete [] median_mean_error_Tab[j];
+		median_mean_error_Tab[j] = 0;
+	}
+	delete [] median_mean_error_Tab;
+        median_mean_error_Tab = 0;
 
 	return 0;
 }
