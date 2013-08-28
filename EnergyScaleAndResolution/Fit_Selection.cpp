@@ -69,6 +69,10 @@ int main(int argc, char *argv[])
 	double *  median_mean_error = new double[nbFits];
 	double temp_var = 0;
 	int * best_fit = new int[nbFits];
+	for(int j = 0; j < nbFits; j++)
+	{
+		best_fit[j] = 0;
+	}
 	double *min_error = new double[nbFits];
 	
 	int fit_number = (highFitRange - lowFitRange + 1) * nbFits;	
@@ -134,6 +138,10 @@ int main(int argc, char *argv[])
 		median_mean_error[j] = median_mean_error_Tab[j][(highFitRange - lowFitRange) / 2];	
         	average_pvalue[j] = average_pvalue[j] / (highFitRange - lowFitRange + 1); 
 		min_error[j] = median_mean_error[j] * 1.5;
+
+		cout<<endl<<"median_mean_error[j] = "<<median_mean_error[j]<<endl;
+		cout<<endl<<"average_pvalue[j] = "<<average_pvalue[j]<<endl;
+		cout<<endl<<"min_error[j] = "<<min_error[j]<<endl;
 
 	}
 	
