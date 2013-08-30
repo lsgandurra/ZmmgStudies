@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	string dataType = "MC";
 	int surfaceBinning = 5;
 	int nbJobs = 200;
-	string option = "plot2D_fit";//"plot2D_pro" "plot3D_pro" "plot2D_fit" "plot3D_fit" "MmumuPro" "MmumuFit";
+	string option = "MmumuFit";//"plot2D_pro" "plot3D_pro" "plot2D_fit" "plot3D_fit" "MmumuPro" "MmumuFit";
 	string fitFunction = "voigtian";
 	string MmumuOption = "MmumuRECO"; // "MmumuRECO" "MmumuGEN" "MmumugammaRECO" "MmumugammaGEN"
 
@@ -297,7 +297,7 @@ int main(int argc, char *argv[])
 	int nbJobsReal = 0;
 	if(option == "plot2D_fit" || option == "plot3D_fit")
         {
-		if(MmumuOption == "MmumuRECO")
+		if(MmumuOption == "MmumuRECO" || MmumuOption == "MmumuGEN")
 		{
 			cut = "isMM_nonFSR == 1";
                         cut += " && ( hltnames == \"HLT_Mu17_TkMu8_v9\" || hltnames == \"HLT_Mu17_TkMu8_v10\" || hltnames == \"HLT_Mu17_TkMu8_v11\" || hltnames == \"HLT_Mu17_TkMu8_v12\" || hltnames == \"HLT_Mu17_TkMu8_v13\" || hltnames == \"HLT_Mu17_TkMu8_v14\" || hltnames == \"HLT_Mu17_TkMu8_v15\" || hltnames == \"HLT_Mu17_TkMu8_v16\" )";

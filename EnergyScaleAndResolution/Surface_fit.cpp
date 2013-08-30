@@ -212,6 +212,9 @@ int main(int argc, char *argv[])
 
 	int inTheLoop = 0;
 
+	TH1D *histo = NULL;
+	double xMaxHisto = 91;
+
 	for(int i = i_begin; i <= i_end; i++)
 	{
 		cout <<endl<< "i = "<<i;
@@ -252,12 +255,23 @@ int main(int argc, char *argv[])
 					{
 						cout<<endl<<"reducedChain->GetEntries() = "<<reducedChain->GetEntries()<<endl;
 						iterDo = 0;
+						histo = new TH1D("histo","histo", 80, 70.0, 110.0);
+						reducedChain->Draw(Form("%s>>histo",fitVariable.c_str()));
+						xMaxHisto = histo->GetXaxis()->GetBinCenter(histo->GetMaximumBin());
+						cout<<endl<<"xMaxHisto = "<<xMaxHisto<<endl;
 						do{
 							fitPercentageF = fitPercentage / 100.0;
 							//rangeEstimator(fitPercentageF, chain, cut, rangeMin, rangeMax, fitVariable, variableF, fitParameters); 
 							//fitParameters.push_back(chain->GetEntries(cut));
 							fitParameters.push_back(reducedChain->GetEntries());
-							if(iterDo > 0 && rangeMin < 89.0 && rangeMax > 92.0)
+							if(iterDo == 0)
+							{
+								rangeMin = xMaxHisto - 6.0;
+								rangeMax = xMaxHisto + 6.0;
+
+							}
+							//if(iterDo > 0 && rangeMin < 89.0 && rangeMax > 92.0)
+							if(iterDo > 0 && rangeMin < (xMaxHisto - 1.5) && rangeMax > (xMaxHisto + 1.5))
 							{
 								rangeMin += 0.5; //FIXME
 		                                        	rangeMax -= 0.5; //FIXME
@@ -282,7 +296,7 @@ int main(int argc, char *argv[])
 			                        	b.addUniform(80,70.0,110.0);
 		
 							cout<<endl<<"coucou avant voigtian"<<endl;	
-							if(fitFunction == "voigtian") voigtian(dataset, dataset2, variable, fitFrame, b, rangeMin, rangeMax, fitParameters);
+							if(fitFunction == "voigtian") voigtian_surface(dataset, dataset2, variable, fitFrame, b, rangeMin, rangeMax, xMaxHisto, fitParameters);
 							cout<<endl<<"coucou apres voigtian"<<endl;
 							// --- Compute the chi2 and the associated p-value and save informations in fitParameters --- //
 							chiSquare(fitFrame,(char *)"mycurve",(char *)"myhist",fitParameters);
@@ -357,6 +371,8 @@ int main(int argc, char *argv[])
 	                                	mumuVector.push_back(91.1876);
 	                                	cout<<endl<<"else bizarre !!!!!"<<endl;
 	                        	}
+					histo->Delete();
+					histo = 0;
 	
 				}
 			}

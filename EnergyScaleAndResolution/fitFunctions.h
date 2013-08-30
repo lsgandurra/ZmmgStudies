@@ -87,6 +87,7 @@ using namespace RooFit;
 using namespace std;
 
 void voigtian(RooDataSet *dataset, RooDataSet *dataset2, RooRealVar &variable, RooPlot *fitFrame, RooBinning b, double rangeMin, double rangeMax, vector <double> &fitParameters);
+void voigtian_surface(RooDataSet *dataset, RooDataSet *dataset2, RooRealVar &variable, RooPlot *fitFrame, RooBinning b, double rangeMin, double rangeMax, double xMaxHisto, vector <double> &fitParameters);
 void cruijff(RooDataSet *dataset, RooDataSet *dataset2, RooRealVar &variable, RooPlot *fitFrame, RooBinning b, double rangeMin, double rangeMax, vector <double> &fitParameters);
 void voigtianXcb(RooDataSet *dataset, RooDataSet *dataset2, RooRealVar &variable, RooPlot *fitFrame, RooBinning b, double rangeMin, double rangeMax, vector <double> &fitParameters);
 void bwXcb(RooDataSet *dataset, RooDataSet *dataset2, RooRealVar &variable, RooPlot *fitFrame, RooBinning b, double rangeMin, double rangeMax, vector <double> &fitParameters);

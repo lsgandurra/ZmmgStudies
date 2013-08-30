@@ -32,15 +32,16 @@ void voigtian(RooDataSet *dataset, RooDataSet *dataset2, RooRealVar &variable, R
 
 }
 
-/* Test
-void voigtian(RooDataSet *dataset, RooDataSet *dataset2, RooRealVar &variable, RooPlot *fitFrame, RooBinning b, double rangeMin, double rangeMax, vector <double> &fitParameters)
+// Voigtian for the suface generation
+void voigtian_surface(RooDataSet *dataset, RooDataSet *dataset2, RooRealVar &variable, RooPlot *fitFrame, RooBinning b, double rangeMin, double rangeMax, double xMaxHisto, vector <double> &fitParameters)
 {
-	double median = (rangeMax + rangeMin) /2.0;
-	double sigH = (rangeMax-rangeMin) /2.0;
-        cout<<endl<<"median = "<<median;
+	double median = (rangeMax + rangeMin) /2.0; //FIXME
+	//double sigH = (rangeMax-rangeMin) /2.0; //FIXME
+        double sigH = (rangeMax-rangeMin);
+	cout<<endl<<"median = "<<median;
 	cout<<endl<<"sigH = "<<sigH;
 	//RooRealVar mean("mean","mean",0.0,-0.1,0.1); //FIXME
-        RooRealVar mean("mean","mean",median,rangeMin,rangeMax);
+        RooRealVar mean("mean","mean",xMaxHisto,rangeMin,rangeMax);
 	//RooRealVar sigma("sigma","sigma",0.5,0.0,1.0); //FIXME
         RooRealVar sigma("sigma","sigma",0.5,0.0,sigH);
 	//RooRealVar width("width","width",0.5,0.0,1.0); //FIXME
@@ -75,7 +76,7 @@ void voigtian(RooDataSet *dataset, RooDataSet *dataset2, RooRealVar &variable, R
 	
 
 }
-*/
+
 
 void cruijff(RooDataSet *dataset, RooDataSet *dataset2, RooRealVar &variable, RooPlot *fitFrame, RooBinning b, double rangeMin, double rangeMax, vector <double> &fitParameters)
 {
