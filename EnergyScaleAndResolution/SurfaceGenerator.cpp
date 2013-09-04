@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
         }	
 
 	string directoryName = "Surface_generation_v1";
-	string dataType = "MC";
+	string dataType = "data";
 	int surfaceBinning = 5;
 	int nbJobs = 200;
 	string option = "MmumuFit";//"plot2D_pro" "plot3D_pro" "plot2D_fit" "plot3D_fit" "MmumuPro" "MmumuFit";
@@ -112,8 +112,10 @@ int main(int argc, char *argv[])
         	}
 		if(MmumuOption == "MmumugammaRECO" || MmumuOption == "MmumugammaGEN")
                 {
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_1_injRe0_v6_partALL.root");
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_2_injRe0_v6_partALL.root");
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_1_injRe0_v7_partALL.root");
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_2_injRe0_v7_partALL.root");
+			//chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_1_injRe0_v6_partALL.root");
+			//chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_2_injRe0_v6_partALL.root");
 			//chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_TTJets_Summer12_S7_NewMuonID_NewSelection_3_injRe0_v6_partALL.root");
 			//chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_WJetsToLNu_Summer12_S10_NewMuonID_NewSelection_3_injRe0_v6_partALL.root");
 
@@ -146,11 +148,13 @@ int main(int argc, char *argv[])
 	int iterSub = 0;
 	string chainSub = "";
 
-	system(Form("rm binsToFit_%s*.txt",dataType.c_str())); //suppression of old bins to fit.
+	system(Form("rm binsToFit_%s_%s_%s*.txt",dataType.c_str(),fitFunction.c_str(),MmumuOption.c_str())); //suppression of old bins to fit.
 	if(option == "MmumuFit") 
 	{
-		system(Form("rm fileTosubmit_%s.sh",dataType.c_str())); //suppression of old submission file.
-		ofstream temp_file(Form("fileTosubmit_%s.sh",dataType.c_str()));
+		//system(Form("rm fileTosubmit_%s.sh",dataType.c_str())); //suppression of old submission file.
+		system(Form("rm fileTosubmit_%s_%s_%s.sh",dataType.c_str(),fitFunction.c_str(),MmumuOption.c_str()));
+		//ofstream temp_file(Form("fileTosubmit_%s.sh",dataType.c_str()));
+		ofstream temp_file(Form("fileTosubmit_%s_%s_%s.sh",dataType.c_str(),fitFunction.c_str(),MmumuOption.c_str()));
 		temp_file << "#! /usr/local/bin/bash -l" <<endl;
 		temp_file.close();
 	}
@@ -187,7 +191,8 @@ int main(int argc, char *argv[])
 				if(reducedChain->GetEntries(cut) > 10) 
 				{
 					nbFits++;
-					ofstream txtFile(Form("binsToFit_%s_%d.txt",dataType.c_str(),iterSub),ios::app);
+					//ofstream txtFile(Form("binsToFit_%s_%d.txt",dataType.c_str(),iterSub),ios::app);//FIXME
+					ofstream txtFile(Form("binsToFit_%s_%s_%s_%d.txt",dataType.c_str(),fitFunction.c_str(),MmumuOption.c_str(),iterSub),ios::app);
 					txtFile << i << " " << j <<endl;
 					txtFile.close();
 
@@ -201,9 +206,9 @@ int main(int argc, char *argv[])
 					directoryName = argv[1];	
 					cout<<endl<<"job n : "<<iterSub + 1;
 				
-					ofstream fileTosubmit(Form("fileTosubmit_%s.sh",dataType.c_str()),ios::app);
+					ofstream fileTosubmit(Form("fileTosubmit_%s_%s_%s.sh",dataType.c_str(),fitFunction.c_str(),MmumuOption.c_str()),ios::app);
 					
-					chainSub = Form("qsub batchJob_surface.sh %s %s %d %s %d %d %d %d %d %s binsToFit_%s_%d.txt",directoryName.c_str(),dataType.c_str(),surfaceBinning,fitFunction.c_str(), i_begin, i_end, j_begin, j_end, iterSub, MmumuOption.c_str(),dataType.c_str(),iterSub) ;			
+					chainSub = Form("qsub batchJob_surface.sh %s %s %d %s %d %d %d %d %d %s binsToFit_%s_%s_%s_%d.txt",directoryName.c_str(),dataType.c_str(),surfaceBinning,fitFunction.c_str(), i_begin, i_end, j_begin, j_end, iterSub, MmumuOption.c_str(),dataType.c_str(),fitFunction.c_str(),MmumuOption.c_str(),iterSub) ;			
 					fileTosubmit << chainSub << endl;	
 
 					//system(Form("qsub batchJob_surface.sh %s %s %d %s %d %d %d %d %d %s",directoryName.c_str(),dataType.c_str(),surfaceBinning,fitFunction.c_str(), i_begin, i_end, j_begin, j_end, iterSub, MmumuOption.c_str()));	

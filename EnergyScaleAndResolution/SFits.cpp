@@ -77,17 +77,39 @@ int main(int argc, char *argv[])
 
 	if(extraScale != "0" && extraScale != "Zee_Regression" && extraScale != "Zee_RecoEnergy") //Results_v6
         {
+		//Default SC corrections July 2013
 		if(dataType == "data")
 		{
-			if(eta == "Barrel" && r9 == "low") extraScale = "0.999909";
-			if(eta == "Barrel" && r9 == "high") extraScale = "0.988684";
-			if(eta == "Barrel" && r9 == "all") extraScale = "0.994057";
-			if(eta == "Endcaps" && r9 == "low") extraScale = "0.994712";
-                        if(eta == "Endcaps" && r9 == "high") extraScale = "0.978923";
-                        if(eta == "Endcaps" && r9 == "all") extraScale = "0.987336";
+			if(eta == "Barrel" && r9 == "low") extraScale = "0.99701";
+			if(eta == "Barrel" && r9 == "high") extraScale = "1.00061";
+			if(eta == "Barrel" && r9 == "all") extraScale = "0.99879";
+			if(eta == "Endcaps" && r9 == "low") extraScale = "0.978988";
+                        if(eta == "Endcaps" && r9 == "high") extraScale = "0.988718";
+                        if(eta == "Endcaps" && r9 == "all") extraScale = "0.983323";
 		}
 
 		if(dataType == "MC")
+                {
+                        if(eta == "Barrel" && r9 == "low") extraScale = "0.988308";
+                        if(eta == "Barrel" && r9 == "high") extraScale = "1.00048";
+                        if(eta == "Barrel" && r9 == "all") extraScale = "0.994533";
+                        if(eta == "Endcaps" && r9 == "low") extraScale = "0.960478";
+                        if(eta == "Endcaps" && r9 == "high") extraScale = "0.989177";
+                        if(eta == "Endcaps" && r9 == "all") extraScale = "0.97289";
+                }
+
+		/* Regression July 2013
+		if(dataType == "data")
+                {
+                        if(eta == "Barrel" && r9 == "low") extraScale = "0.999909";
+                        if(eta == "Barrel" && r9 == "high") extraScale = "0.988684";
+                        if(eta == "Barrel" && r9 == "all") extraScale = "0.994057";
+                        if(eta == "Endcaps" && r9 == "low") extraScale = "0.994712";
+                        if(eta == "Endcaps" && r9 == "high") extraScale = "0.978923";
+                        if(eta == "Endcaps" && r9 == "all") extraScale = "0.987336";
+                }
+
+                if(dataType == "MC")
                 {
                         if(eta == "Barrel" && r9 == "low") extraScale = "0.997083";
                         if(eta == "Barrel" && r9 == "high") extraScale = "0.99926";
@@ -95,7 +117,8 @@ int main(int argc, char *argv[])
                         if(eta == "Endcaps" && r9 == "low") extraScale = "0.989083";
                         if(eta == "Endcaps" && r9 == "high") extraScale = "0.995002";
                         if(eta == "Endcaps" && r9 == "all") extraScale = "0.991969";
-                }
+                }	
+		*/
 
 	}
 
@@ -111,6 +134,7 @@ int main(int argc, char *argv[])
 	if(fitVariable == "mmg_s") fitVariableName = "s";
 	if(fitVariable == "mmg_s_true") fitVariableName = "s_{TRUE}";		
 	if(fitVariable == "Mmumugamma") fitVariableName = "M_{#mu#mu#gamma} (GeV)";
+	if(fitVariable == "mmg_s_MZ_Surface") fitVariableName = "s_{Surface}";
 	string cutVariableName = "";
 	if(cutVariable == "Photon_Et") cutVariableName = "P_{T}^{#gamma} (GeV)";
 	if(cutVariable == "Photon_E") cutVariableName = "E^{#gamma} (GeV)";
@@ -139,7 +163,7 @@ int main(int argc, char *argv[])
 		xMinCutVariable = 0.0; 
 		xMaxCutVariable = 250.0;
 	}
-	if(fitVariable == "mmg_s") 
+	if(fitVariable == "mmg_s" || fitVariable == "mmg_s_MZ_Surface") 
 	{
 		xMinFitVariable = -0.5; 
 		xMaxFitVariable = 0.5;
@@ -177,13 +201,13 @@ int main(int argc, char *argv[])
         {
                 if(dataType == "data")
         	{
-                	chain->Add(Form("miniTree_Run2012A_13Jul2012_v1_NewMuonID_NewSelection_0_injRe%s_v6_RecoEnergy_partALL.root",injectedResolution.c_str()));
-                	chain->Add(Form("miniTree_Run2012A_recover_06Aug2012_v1_NewMuonID_NewSelection_0_injRe%s_v6_RecoEnergy_partALL.root",injectedResolution.c_str()));
-                	chain->Add(Form("miniTree_Run2012B_13Jul2012_v4_NewMuonID_NewSelection_0_injRe%s_v6_RecoEnergy_partALL.root",injectedResolution.c_str()));
-                	chain->Add(Form("miniTree_Run2012C-24Aug2012-v1_NewMuonID_NewSelection_0_injRe%s_v6_RecoEnergy_partALL.root",injectedResolution.c_str()));
-                	chain->Add(Form("miniTree_Run2012C-EcalRecover_11Dec2012-v1_NewMuonID_NewSelection_0_injRe%s_v6_RecoEnergy_partALL.root",injectedResolution.c_str()));      
-                	chain->Add(Form("miniTree_Run2012C_PromptReco_v2_NewMuonID_NewSelection_0_injRe%s_v6_RecoEnergy_partALL.root",injectedResolution.c_str()));
-                	chain->Add(Form("miniTree_Run2012D_PromptReco_v1_NewMuonID_NewSelection_0_injRe%s_v6_RecoEnergy_partALL.root",injectedResolution.c_str()));
+                	chain->Add(Form("miniTree_Run2012A_13Jul2012_v1_NewMuonID_NewSelection_0_injRe%s_v8_partALL.root",injectedResolution.c_str()));
+                	chain->Add(Form("miniTree_Run2012A_recover_06Aug2012_v1_NewMuonID_NewSelection_0_injRe%s_v8_partALL.root",injectedResolution.c_str()));
+                	chain->Add(Form("miniTree_Run2012B_13Jul2012_v4_NewMuonID_NewSelection_0_injRe%s_v8_partALL.root",injectedResolution.c_str()));
+                	chain->Add(Form("miniTree_Run2012C-24Aug2012-v1_NewMuonID_NewSelection_0_injRe%s_v8_partALL.root",injectedResolution.c_str()));
+                	chain->Add(Form("miniTree_Run2012C-EcalRecover_11Dec2012-v1_NewMuonID_NewSelection_0_injRe%s_v8_partALL.root",injectedResolution.c_str()));      
+                	chain->Add(Form("miniTree_Run2012C_PromptReco_v2_NewMuonID_NewSelection_0_injRe%s_v8_partALL.root",injectedResolution.c_str()));
+                	chain->Add(Form("miniTree_Run2012D_PromptReco_v1_NewMuonID_NewSelection_0_injRe%s_v8_partALL.root",injectedResolution.c_str()));
                 	//chain->Add(Form("miniTree_2011A_03Oct2011V1ReReco_toto_v2_NewSelection_0_v6_RecoEnergy_partALL.root"));
                 	//chain->Add(Form("miniTree_2011A_05Jul2011ReReco_toto_v2_NewSelection_0_v6_RecoEnergy_partALL.root"));
                 	//chain->Add(Form("miniTree_2011A_PromptSkimV5ReReco_toto_v2_NewSelection_0_v6_RecoEnergy_partALL.root"));
@@ -191,10 +215,10 @@ int main(int argc, char *argv[])
         	}
         	if(dataType == "MC")
         	{
-                	//chain->Add(Form("miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_1_injRe%s_v6_RecoEnergy_partALL.root",injectedResolution.c_str()));
-                	//chain->Add(Form("miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_2_injRe%s_v6_RecoEnergy_partALL.root",injectedResolution.c_str()));	
-			chain->Add(Form("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_1_injRe%s_v6_RecoEnergy_partALL.root",injectedResolution.c_str()));
-                        chain->Add(Form("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_2_injRe%s_v6_RecoEnergy_partALL.root",injectedResolution.c_str()));
+                	chain->Add(Form("miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_1_injRe%s_v8_partALL.root",injectedResolution.c_str()));
+                	chain->Add(Form("miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_2_injRe%s_v8_partALL.root",injectedResolution.c_str()));	
+			//chain->Add(Form("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_1_injRe%s_v6_RecoEnergy_partALL.root",injectedResolution.c_str()));
+                        //chain->Add(Form("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_2_injRe%s_v6_RecoEnergy_partALL.root",injectedResolution.c_str()));
 
 			//chain->Add(Form("miniTree_TTJets_Summer12_S7_NewMuonID_NewSelection_3_injRe%s_v6_RecoEnergy_partALL.root",injectedResolution.c_str()));
                 	//chain->Add(Form("miniTree_WJetsToLNu_Summer12_S10_NewMuonID_NewSelection_3_injRe%s_v6_RecoEnergy_partALL.root",injectedResolution.c_str()));
@@ -363,7 +387,7 @@ int main(int argc, char *argv[])
 	
 		// --- Binning of 0.02 between -17.0 and 17.0 (necessary for high fit ranges) --- //
 	        RooBinning b;
-		if(fitVariable == "mmg_s") 
+		if(fitVariable == "mmg_s" || fitVariable == "mmg_s_MZ_Surface") 
 		{	
 			b.setRange(-17.0,17.0);
 			b.addUniform(1700,-17.0,17.0);

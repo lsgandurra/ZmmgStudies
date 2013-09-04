@@ -130,8 +130,10 @@ int main(int argc, char *argv[])
 		}
                 if(MmumuOption == "MmumugammaRECO" || MmumuOption == "MmumugammaGEN")
                 {
-                        chain->Add("miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_1_injRe0_v6_partALL.root");
-                        chain->Add("miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_2_injRe0_v6_partALL.root");
+			chain->Add("miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_1_injRe0_v7_partALL.root");
+                        chain->Add("miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_2_injRe0_v7_partALL.root");
+                        //chain->Add("miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_1_injRe0_v6_partALL.root");
+                        //chain->Add("miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_2_injRe0_v6_partALL.root");
                         //chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_TTJets_Summer12_S7_NewMuonID_NewSelection_3_injRe0_v6_partALL.root");
                         //chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_WJetsToLNu_Summer12_S10_NewMuonID_NewSelection_3_injRe0_v6_partALL.root");
 
@@ -354,8 +356,9 @@ int main(int argc, char *argv[])
 		                			fitFrame->Delete();
 		                			fitFrame = 0;
 							
-							if(rangeMin == 89.0 && rangeMax == 92.0) break;
-		
+							//if(rangeMin == 89.0 && rangeMax == 92.0) break;
+							if(rangeMin == (xMaxHisto - 1.5) && rangeMax == (xMaxHisto + 1.5)) break;	
+	
 						}while(pValue < 0.1 || meanError > (mean / 2.0));
 		
 						//fileName = Form("fit_L_%d_%d_S_%d_%d",i * surfaceBinning,(i+1) * surfaceBinning,j * surfaceBinning,(j+1) * surfaceBinning);

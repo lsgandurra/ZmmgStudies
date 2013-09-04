@@ -92,7 +92,7 @@ cp ${SPSDIR}/Energy_scale_extraction/Surface_fit.exe ${TMPDIR}/
 cp ${SPSDIR}/Energy_scale_extraction/*.txt ${TMPDIR}/
 cp /afs/in2p3.fr/home/s/sgandurr/loadRoot.sh ${TMPDIR}/ 
 cp /sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons*partALL.root ${TMPDIR}/
-
+cp /sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_*_injRe0_v7_partALL.root ${TMPDIR}/
 
 echo "LOAD GOOD ROOT VERSION"
 source loadRoot.sh
