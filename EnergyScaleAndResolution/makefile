@@ -11,7 +11,7 @@ CC = g++
 CFLAGS = `root-config --cflags --libs` -L $ROOTSYS/lib -lRooFit -lHtml -lMinuit -lRooFitCore -W 
   
 # all
-all: SFits.o fitFunctions.o functions.o RooCruijff.o Fit_Selection.o PvaluesPlotter.o Data_MC_Pt_Comparison.o Pvalues_vs_percent.o Mean_vs_percent.o Data_MC_r9_Comparison.o Data_MC_Mmumugamma_Comparison.o Data_MC_Var_Comparison.o GlobalPvalue.o fitFunctionSystematics.o SameStatBins.o ProfilePlotter.o Mean_vs_injectedResolution.o Data_MC_Var_Comparison_temp.o smearingPlotter.o muonsSystematics.o ProfilePlotter2.o Data_MC_PU_Comparison.o SurfaceGenerator.o Surface_fit.o ThreeBodyVsTwoBody.o CheckAllFits.o
+all: SFits.o fitFunctions.o functions.o RooCruijff.o Fit_Selection.o PvaluesPlotter.o Data_MC_Pt_Comparison.o Pvalues_vs_percent.o Mean_vs_percent.o Data_MC_r9_Comparison.o Data_MC_Mmumugamma_Comparison.o Data_MC_Var_Comparison.o GlobalPvalue.o fitFunctionSystematics.o SameStatBins.o ProfilePlotter.o Mean_vs_injectedResolution.o Data_MC_Var_Comparison_temp.o smearingPlotter.o muonsSystematics.o ProfilePlotter2.o Data_MC_PU_Comparison.o SurfaceGenerator.o Surface_fit.o ThreeBodyVsTwoBody.o CheckAllFits.o SFitvsVar.o
 	$(CC) SFits.o fitFunctions.o functions.o RooCruijff.o -o SFits.exe $(CFLAGS)
 	$(CC) Fit_Selection.o functions.o -o Fit_Selection.exe $(CFLAGS)
 	$(CC) PvaluesPlotter.o functions.o -o PvaluesPlotter.exe $(CFLAGS)
@@ -35,6 +35,7 @@ all: SFits.o fitFunctions.o functions.o RooCruijff.o Fit_Selection.o PvaluesPlot
 	$(CC) Surface_fit.o fitFunctions.o functions.o RooCruijff.o -o Surface_fit.exe $(CFLAGS) 
 	$(CC) ThreeBodyVsTwoBody.o functions.o -o ThreeBodyVsTwoBody.exe $(CFLAGS)
 	$(CC) CheckAllFits.o functions.o -o CheckAllFits.exe $(CFLAGS) 
+	$(CC) SFitvsVar.o functions.o -o SFitvsVar.exe $(CFLAGS)
 
 SFits.o: SFits.cpp fitFunctions.h functions.h RooCruijff.hh
 	$(CC) -c SFits.cpp -o SFits.o $(CFLAGS)
@@ -113,6 +114,9 @@ ThreeBodyVsTwoBody.o : ThreeBodyVsTwoBody.cpp functions.h
 
 CheckAllFits.o : CheckAllFits.cpp functions.h
 	$(CC) -c CheckAllFits.cpp -o CheckAllFits.o $(CFLAGS)
+
+SFitvsVar.o : SFitvsVar.cpp functions.h
+	$(CC) -c SFitvsVar.cpp -o SFitvsVar.o $(CFLAGS)
 
 # clean
 clean:

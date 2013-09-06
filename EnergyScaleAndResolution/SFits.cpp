@@ -661,8 +661,8 @@ int main(int argc, char *argv[])
 	for(int i = 0; i < nBins; i++)
 	{	
 		x[i] = fitParameters[(2*fitParameters[2]+8)*i + 2*fitParameters[2]+7];
-		xl[i] = lowCutVariable[i];
-		xr[i] = highCutVariable[i];
+		xl[i] = x[i] - lowCutVariable[i];
+		xr[i] = highCutVariable[i] - x[i];
 		y[i] = 100 * fitParameters[(2*fitParameters[2]+8)*i + 3];
 		yl[i] = 100 * fitParameters[(2*fitParameters[2]+8)*i + 4];
 		yr[i] =	100 * fitParameters[(2*fitParameters[2]+8)*i + 4];
