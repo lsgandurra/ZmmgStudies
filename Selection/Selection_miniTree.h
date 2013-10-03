@@ -431,7 +431,8 @@ double photonManualCorrectionFactor(TRootPhoton *myphoton, string correctionSet,
 
 	vector<double> param_Ceta;
 	parameters_Ceta(param_Ceta, correctionSet);
-	double f_eta = fEta(param_Ceta, myphoton->superCluster()->Eta());
+	double f_eta = 0; 
+        if(correctionSet != "MITregression") fEta(param_Ceta, myphoton->superCluster()->Eta());
 
 	if( correctionSet == "ETHZ" )
 	{
@@ -1400,7 +1401,7 @@ int FillMMG(TRootPhoton* myphoton, TRootMuon* mymuon1, TRootMuon* mymuon2, TLore
     mumuSC.Clear();
     mumu5x5.Clear();
     mumuSC_raw.Clear();
-    PhotonEScale->Clear();
+    //PhotonEScale->Clear(); //FIXME
     PhotonSC->Clear();
     Photon5x5->Clear();
     PhotonSC_raw->Clear();

@@ -61,12 +61,11 @@ do
 				echo "sample = $sample, pileup_set = ${pileup_set}, lumi_set = ${lumi_set}, isZgamma = ${isZgamma}, inj_resolution = ${inj_resolution}"
 				
 
-				##qsub batchJob.sh ${sample} ${sample}_NewSelection_${isZgamma}_injRe${inj_resolution}_v7 ${isZgamma} ${lumi_set} ${pileup_set} ${lowMuMuCut} ${highMuMuCut} ${scCorrection} 1.0 3 0.0 ${inj_resolution} ${itoy} -l os=sl5 
-				hadd miniTree_${sample}_NewSelection_${isZgamma}_injRe${inj_resolution}_v7_partALL.root miniTree_${sample}_NewSelection_${isZgamma}_injRe${inj_resolution}_v7_part[0-9]*root
-                        	##echo "miniTree_${sample}_${Zgamma2}_${SetOfCorrections2}_Triangle_v1_part[0-9].root"
-				##mv miniTree_${sample}_NewSelection_${isZgamma}_injRe${inj_resolution}_v7_part[0-9]*root stored_miniTree/
-                        	##mv ${sample}_NewSelection_${isZgamma}_injRe${inj_resolution}_v7_part[0-9]*err stored_errput/
-                        	##mv ${sample}_NewSelection_${isZgamma}_injRe${inj_resolution}_v7_part[0-9]*out stored_output/
+				qsub batchJob.sh ${sample} ${sample}_${isZgamma}_injRe${inj_resolution}_v1 ${isZgamma} ${lumi_set} ${pileup_set} ${lowMuMuCut} ${highMuMuCut} ${scCorrection} 1.0 3 0.0 ${inj_resolution} ${itoy} -l os=sl5 
+				##hadd miniTree_${sample}_${isZgamma}_injRe${inj_resolution}_v1_partALL.root miniTree_${sample}_${isZgamma}_injRe${inj_resolution}_v1_part[0-9]*root
+				##mv miniTree_${sample}_${isZgamma}_injRe${inj_resolution}_v1_part[0-9]*root stored_miniTree/
+                        	##mv ${sample}_${isZgamma}_injRe${inj_resolution}_v1_part[0-9]*err stored_errput/
+                        	##mv ${sample}_${isZgamma}_injRe${inj_resolution}_v1_part[0-9]*out stored_output/
 		done
 
 done

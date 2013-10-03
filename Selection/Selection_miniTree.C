@@ -1573,7 +1573,7 @@ int main(int argc, char *argv[])
 	
 	for(unsigned int ievt=NbEventsBegin; ievt<NbEventsEnd; ievt++)
 	{
-		if(ievt == 54399 && lumi_set == "2012D" && ijob == 9) continue;
+		//if(ievt == 54399 && lumi_set == "2012D" && ijob == 9) continue;
 		//if(ievt == 31087) continue;
 		if(verbosity>4) cout << "analysing event ievt= " << ievt << endl;
 		nBeforeAllCuts++;
