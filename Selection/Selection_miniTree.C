@@ -1528,7 +1528,7 @@ int main(int argc, char *argv[])
 	double maxPtHat = 1000000;
 	int verbosity = 10;
 	int Nb_events_outside_powheg_cuts = 0;
-	int TOTALnbMuonsAfterID[12] = {0};
+	int TOTALnbMuonsAfterID[5] = {0};
 	int TOTALnbEventsAfterMuonID[12] = {0};
 	int TOTALnbDimuonsAfterID[3] = {0};
 	int TOTALnbEventsAfterDimuonID[3] = {0};
@@ -2056,7 +2056,7 @@ int main(int argc, char *argv[])
                 muonIdentified_corrected_Pz.clear();
 		vector<double> muonIdentified_corrected_E;
                 muonIdentified_corrected_E.clear();	
-		int nbMuonsAfterID[12] = {0};
+		int nbMuonsAfterID[5] = {0};
 		
 		if(verbosity>0) cerr << "\t\tThere is " << NbMuons << " muons in the muon collection" << endl;
 
@@ -2067,7 +2067,7 @@ int main(int argc, char *argv[])
 			TRootMuon *mymuon;
 			mymuon = (TRootMuon*) muons->At(imuon);
 	
-			 // 2010 muon ID
+			/* // 2010 muon ID
 
 			if(! (mymuon->isGlobalMuon()) )
 			{
@@ -2078,23 +2078,19 @@ int main(int argc, char *argv[])
 			nbMuonsAfterID[1]++;
 			TOTALnbMuonsAfterID[1]++;
 
-			//if(! (mymuon->normalizedGlobalChi2()<10.0) )
-			if(! (mymuon->normalizedChi2GlobalTrack()<10.0) )
+			if(! (mymuon->normalizedGlobalChi2()<10.0) )
 			{// chi2/ndof of the global muon fit < 10
 				muonIsNotCommissioned.push_back(1);
-				//if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because chi2/ndof of the global muon fit < 10 (" << mymuon->normalizedGlobalChi2() << ")" << endl;
-				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because chi2/ndof of the global muon fit < 10 (" << mymuon->normalizedChi2GlobalTrack() << ")" << endl;	
+				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because chi2/ndof of the global muon fit < 10 (" << mymuon->normalizedGlobalChi2() << ")" << endl;
 				continue;
 			}
 			nbMuonsAfterID[2]++;
 			TOTALnbMuonsAfterID[2]++;
 
-			//if(! (mymuon->numberOfValidGlobalHits()>0) )
-			if(! (mymuon->numberOfValidMuonHitsInGlobalTrack()>0) )
+			if(! (mymuon->numberOfValidGlobalHits()>0) )
 			{// number of valid muon hits matched to the global fit
 				muonIsNotCommissioned.push_back(1);
-				//if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because number of valid muon hits matched to the global fit too low (" << mymuon->numberOfValidGlobalHits() << ")" << endl;
-				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because number of valid muon hits matched to the global fit too low (" << mymuon->numberOfValidMuonHitsInGlobalTrack() << ")" << endl;
+				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because number of valid muon hits matched to the global fit too low (" << mymuon->numberOfValidGlobalHits() << ")" << endl;
 				continue;
 			}
 			nbMuonsAfterID[3]++;
@@ -2118,8 +2114,7 @@ int main(int argc, char *argv[])
 			nbMuonsAfterID[5]++;
 			TOTALnbMuonsAfterID[5]++;
 
-			//if(! (mymuon->numberOfValidTrackerHits()>10) )
-			if(! (mymuon->numberOfValidTrackerHitsInInnerTrack()>10) )
+			if(! (mymuon->numberOfValidTrackerHits()>10) )
 			{// number of tracker (pixels + strips) hits
 				muonIsNotCommissioned.push_back(1);
 				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because number of tracker (pixels + strips) hits" << endl;
@@ -2128,8 +2123,7 @@ int main(int argc, char *argv[])
 			nbMuonsAfterID[6]++;
 			TOTALnbMuonsAfterID[6]++;
 
-			//if(! (mymuon->numberOfValidPixelHits()>0) )
-			if(! (mymuon->numberOfValidPixelHitsInInnerTrack()>0) )
+			if(! (mymuon->numberOfValidPixelHits()>0) )
 			{// number of pixel hits
 				muonIsNotCommissioned.push_back(1);
 				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because number of pixel hits" << endl;
@@ -2138,8 +2132,7 @@ int main(int argc, char *argv[])
 			nbMuonsAfterID[7]++;
 			TOTALnbMuonsAfterID[7]++;
 
-			//if(! (fabs(mymuon->GlobaldB())<0.2) )
-			if(! (fabs(mymuon->bestTrackDxy())<0.2) )
+			if(! (fabs(mymuon->GlobaldB())<0.2) )
 			{// inner track transverse impact parameter w.r.t the beam spot |d_xy|
 				muonIsNotCommissioned.push_back(1);
 				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because inner track transverse impact parameter w.r.t the beam spot |d_xy|" << endl;
@@ -2158,9 +2151,9 @@ int main(int argc, char *argv[])
 
 			nbMuonsAfterID[9]++;
 			TOTALnbMuonsAfterID[9]++;
+			*/
 			
 			
-		/*	
 			// 2012 Tight muon ID
 			if(! (mymuon->isTightMuonPerso() == 1))
 			{
@@ -2171,7 +2164,7 @@ int main(int argc, char *argv[])
 			nbMuonsAfterID[1]++;
                         TOTALnbMuonsAfterID[1]++;	
 
-		*/
+
 			TLorentzVector correctedMuon(mymuon->Px(), mymuon->Py(), mymuon->Pz(), mymuon->E());
 			float qter = 1.0;
 			double corrected_Pt = mymuon->Pt();
@@ -2455,10 +2448,9 @@ int main(int argc, char *argv[])
 
 			*/
 
-			/*
-			// 2012 muon ID cut 
-			if(! ( (mymuon->pfIsoChargedHadronPt04() / correctedMuon.Pt()) < 0.2 ) )
-			//if(! (mymuon->isoR03_sumPt()<3.0) )
+			// 2012 muon ID cut FIXME !!!!!
+			//if(! ( (mymuon->pfIsoChargedHadronPt04() / correctedMuon.Pt()) < 0.2 ) )
+			if(! (mymuon->isoR03_sumPt()<3.0) )
 			//if(! ( (mymuon->pfIsoChargedHadronPt04() / correctedMuon.Pt()) < 1000000  ) )
 			{	
 				muonIsNotCommissioned.push_back(1);
@@ -2467,7 +2459,6 @@ int main(int argc, char *argv[])
 			}
 			nbMuonsAfterID[2]++;
                         TOTALnbMuonsAfterID[2]++;
-			*/
 
 		 	if(! (correctedMuon.Pt() > 10.5) )
 			{// transverse momentum
@@ -2476,8 +2467,8 @@ int main(int argc, char *argv[])
 				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because transverse momentum" << endl;
 				continue;
 			}
-			nbMuonsAfterID[10]++;
-			TOTALnbMuonsAfterID[10]++;
+			nbMuonsAfterID[3]++;
+			TOTALnbMuonsAfterID[3]++;
 
 			if(! (fabs(mymuon->Eta())<2.4) )
 			{// |eta_muon|< 2.1
@@ -2485,8 +2476,8 @@ int main(int argc, char *argv[])
 				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because high eta (" << mymuon->Eta() << ")" << endl;
 				continue;
 			}
-			nbMuonsAfterID[11]++;
-			TOTALnbMuonsAfterID[11]++;
+			nbMuonsAfterID[4]++;
+			TOTALnbMuonsAfterID[4]++;
 
 			//if(! (mymuon->) ){// 
 			//muonIsNotCommissioned.push_back(1);
@@ -2510,7 +2501,7 @@ int main(int argc, char *argv[])
 		unsigned int NbMuonsIdentified = muonIdentified.size();
 		
 		// Increasing counter
-		for(int i = 0; i < 12 ; i++)
+		for(int i = 0; i < 5 ; i++)
 		{
 			if(nbMuonsAfterID[i] >= 2)
 			{ 
@@ -2518,7 +2509,7 @@ int main(int argc, char *argv[])
 			}
 		}
 
-		if(! (nbMuonsAfterID[11] >=2) )// Not enough dimuon candidates, skip the event
+		if(! (nbMuonsAfterID[4] >=2) )// Not enough dimuon candidates, skip the event
 		{
 				continue;
 		}
@@ -2533,7 +2524,7 @@ int main(int argc, char *argv[])
 
 		// Making dimuon pairs holder
 		int numberOfDimuons[3] = {0};
-		numberOfDimuons[0] = factorial(nbMuonsAfterID[11] -1);
+		numberOfDimuons[0] = factorial(nbMuonsAfterID[4] -1);
 
 		if(! (numberOfDimuons[0] >= 1) )// Not enough dimuon candidates, skip the event. This cut is redundant with the previous one, should do nothing
 		{
@@ -2560,9 +2551,9 @@ int main(int argc, char *argv[])
 		if(verbosity>2) cout << "Filling pair object for dimuon pairs composed of ID'ed muons" << endl;
 		// Filling pair object for dimuon pairs composed of ID'ed muons
 		int i_dimuons_ = 0;
-		for(int muon_i = 0; muon_i < nbMuonsAfterID[11] ; muon_i++)
+		for(int muon_i = 0; muon_i < nbMuonsAfterID[4] ; muon_i++)
 		{
-			for(int muon_j = muon_i +1; muon_j < nbMuonsAfterID[11]; muon_j++)
+			for(int muon_j = muon_i +1; muon_j < nbMuonsAfterID[4]; muon_j++)
 			{
 				IDofMuons[0][i_dimuons_] = make_pair(muonIdentified[muon_i], muonIdentified[muon_j]);
 				PtofMuons[0][i_dimuons_] = make_pair(muonIdentified_corrected_Pt[muon_i], muonIdentified_corrected_Pt[muon_j]);
