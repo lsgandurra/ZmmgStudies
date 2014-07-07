@@ -1,3 +1,4 @@
+//To redo Normal --> go to Muon_miniTree_test_03_04_14.C !!!
 #include "Muons_miniTree_test.h"
 
 
@@ -5,14 +6,14 @@
 	// Event information
 	// ____________________________________________
 	ULong64_t iEvent, iEventID, iLumiID, iRunID;
-	Int_t isMM, isMM_nonFSR;
+	Int_t isMM, isMM_nonFSR, isGoodHLT;
 	
 	Int_t isNotCommissionned;
 
 	Int_t Muon_eventPassHLT_Mu11;
 	Int_t nVertices;
 	Int_t nGenVertices;
-	Float_t weight_pileUp, weight_Xsection;
+	Float_t weight_pileUp, weight_Xsection, weight_hlt_scaleFactors, weight_tightMuId_scaleFactors, weight_pu_hlt;
 
 	Float_t rho;
 	Float_t pu_TrueNumInteractions;
@@ -71,6 +72,15 @@
 	Float_t MuonS_MC_E, MuonS_MC_Px, MuonS_MC_Py, MuonS_MC_Pz, MuonS_MC_Phi, MuonS_MC_Eta, MuonS_MC_Pt;
 	Float_t Mmumu_Muons_MC;	
 
+	// ---------------------
+	// Resolution variables 
+	// ---------------------
+	
+	Float_t cosThetaMuMubar;
+	Float_t MuonM_P, MuonP_P;
+	Float_t sqrtMpPp, sqrtMpPpCos;		
+
+
 int main(int argc, char *argv[])
 {
 
@@ -104,7 +114,7 @@ int main(int argc, char *argv[])
 	// ******************************************
 	// Optional argument : ntotjob
 	// ******************************************
-	int ntotjob = -1;
+	int ntotjob = 9999;
 	if( argc > 3 )
 	{
 		std::stringstream ss ( argv[3] );
@@ -124,7 +134,7 @@ int main(int argc, char *argv[])
 	// ******************************************
 	// Optional argument : isZgammaMC (1: FSR -- 2: nonFSR -- 3: MC info)
 	// ******************************************
-	int isZgammaMC = 0;
+	int isZgammaMC = 1;
 	if( argc > 5 )
 	{
 		std::stringstream ss ( argv[5] );
@@ -134,7 +144,7 @@ int main(int argc, char *argv[])
 	// ******************************************
 	// Optional argument : lumi set used
 	// ******************************************
-	string lumi_set = "";
+	string lumi_set = "2012_22Jan";
 	double integratedLuminosity = 1.0;
 	int runopt = 0;
 	if( argc > 6 )
@@ -155,12 +165,21 @@ int main(int argc, char *argv[])
 		if( lumi_set == "2012" ) { integratedLuminosity = 808.472 + 82.136 + 4429.0 + 495.003 + 134.242 + 6397.0 + 7274.0; runopt = 0; }
 		if( lumi_set == "2012ABC" ) { integratedLuminosity = 808.472 + 82.136 + 4429.0 + 495.003 + 134.242 + 6397.0; runopt = 0; } 
                 if( lumi_set == "2012D" ) { integratedLuminosity = 7274.0; runopt = 1; }	
+		
+		if( lumi_set == "2012A_22Jan" ) { integratedLuminosity = 889.362;}
+                if( lumi_set == "2012B_22Jan" ) { integratedLuminosity = 4429.0;}
+                if( lumi_set == "2012C_22Jan" ) { integratedLuminosity = 7114;}
+                if( lumi_set == "2012D_22Jan" ) { integratedLuminosity = 7241;} //3 crashed jobs without the skim, total 7318
+                if( lumi_set == "2012_22Jan" ) { integratedLuminosity = 889.362 + 4429.0 + 7114 + 7241;} // total 889.362 + 4429.0 + 7114 + 7318     
+                if( lumi_set == "2011_12Oct" ) { integratedLuminosity = 2333 + 2766;}
+                if( lumi_set == "2011_12OctA" ) { integratedLuminosity = 2333; runopt = 0;}  
+                if( lumi_set == "2011_12OctB" ) { integratedLuminosity = 2766; runopt = 1;}
 	}
 
 	// ******************************************
 	// Optional argument : pile-up scenario used
 	// ******************************************
-	string pu_set = "";
+	string pu_set = "PU_S10";
 	if( argc > 7 )
 	{
 		pu_set = argv[7];
@@ -169,7 +188,7 @@ int main(int argc, char *argv[])
 	// ******************************************
 	// Optional argument : low_m_mumu
 	// ******************************************
-	double low_m_mumu = 40.0;
+	double low_m_mumu = 35.0;
 	if( argc > 8 )
 	{
 		std::stringstream ss ( argv[8] );
@@ -179,7 +198,7 @@ int main(int argc, char *argv[])
 	// ******************************************
 	// Optional argument : high_m_mumu
 	// ******************************************
-	double high_m_mumu = 80.0;
+	double high_m_mumu = 9999.0;
 	if( argc > 9 )
 	{
 		std::stringstream ss ( argv[9] );
@@ -221,7 +240,7 @@ int main(int argc, char *argv[])
 	// ******************************************
 	// Optional argument : applyMuonScaleCorrection : 0)nothing 1) MuScleFit 2)SIDRA 3)Rochester (21 & 31 also available)
 	// ******************************************
-	int applyMuonScaleCorrection = 0;
+	int applyMuonScaleCorrection = 3;
 	if( argc > 12 )
 	{
 		std::stringstream ss ( argv[12] );
@@ -275,6 +294,12 @@ int main(int argc, char *argv[])
 	delete seedTree;
 	seedTree = 0;
 	cout << "Sanity check: after seed[1]= " << seeed << endl;
+
+	// ******************************************
+	// Argument to select analysis 2011 or 2012 (in CMSSW 53X), default 2012 !
+	// ******************************************
+	string analysisVersion = "2012";
+        if( argc > 16 ) analysisVersion = argv[16];
 	
 
 		// TODO
@@ -283,7 +308,9 @@ int main(int argc, char *argv[])
 
 //	TProof * p = TProof::Open("ccaplmaster.in2p3.fr");
 	gSystem->Load("libToto.so");
-	gROOT->ProcessLine(".L rochcor2012v2v2.h+");
+	gROOT->ProcessLine(".L rochcor2012jan22.h+");
+	gROOT->ProcessLine(".L rochcor_wasym_v4.h+");
+//	gROOT->ProcessLine(".L rochcor2012v2v2.h+");
 //	gSystem->Load("libFWCoreFWLite.so");
 //	gSystem->Load("libDataFormatsFWLite.so");
 //	AutoLibraryLoader::enable();
@@ -356,8 +383,8 @@ int main(int argc, char *argv[])
 	if( ntotjob == 9999)
 	{
 		cout<<"Coucou"<<endl;
-		inputEventTree->Add("test_DYtoMuMu2.root");
-		inputRunTree->Add("test_DYtoMuMu2.root");
+		inputEventTree->Add("totouples_DyToMuMu_noskim_sample.root");
+		inputRunTree->Add("totouples_DyToMuMu_noskim_sample.root");
 	
 	} 
 	else 
@@ -410,7 +437,7 @@ int main(int argc, char *argv[])
 	// INSERTFILES
 
 	TFile* OutputRootFile = new TFile(Form("miniTree_%s_part%i.root", sample.c_str(), ijob), "RECREATE");
-	TFile* OutputFriendFile = new TFile(Form("miniFriend_%s_part%i.root", sample.c_str(), ijob), "RECREATE");
+	//TFile* OutputFriendFile = new TFile(Form("miniFriend_%s_part%i.root", sample.c_str(), ijob), "RECREATE");
 
 	OutputRootFile->cd();
 	
@@ -592,22 +619,26 @@ int main(int argc, char *argv[])
 	// ____________________________________________
 	// Event information
 	// ____________________________________________
-	
+/*	
 	miniTree->Branch("iEvent", &iEvent, "iEvent/l");
 	miniTree->Branch("iEventID", &iEventID, "iEventID/l");
 	miniTree->Branch("iLumiID", &iLumiID, "iLumiID/l");
 	miniTree->Branch("iRunID", &iRunID, "iRunID/l");
-
+*/
 	vector<string> hltnames; //event->hltAcceptNames();
-        miniTree->Branch ("hltnames", "vector<string>", &hltnames);
+        //miniTree->Branch ("hltnames", "vector<string>", &hltnames);
+	miniTree->Branch("isGoodHLT", &isGoodHLT, "isGoodHLT/I");
 
-	miniTree->Branch("isMM", &isMM, "isMM/I");
+//	miniTree->Branch("isMM", &isMM, "isMM/I");
 	miniTree->Branch("isMM_nonFSR", &isMM_nonFSR, "isMM_nonFSR/I");
 
-	miniTree->Branch("nVertices", &nVertices, "nVertices/I");
+/*	miniTree->Branch("nVertices", &nVertices, "nVertices/I");
 	miniTree->Branch("nGenVertices", &nGenVertices, "nGenVertices/I");
-	miniTree->Branch("weight_pileUp", &weight_pileUp, "weight_pileUp/F");
+*/	miniTree->Branch("weight_pileUp", &weight_pileUp, "weight_pileUp/F");
 	miniTree->Branch("weight_Xsection", &weight_Xsection, "weight_Xsection/F");
+/*	miniTree->Branch("weight_hlt_scaleFactors", &weight_hlt_scaleFactors, "weight_hlt_scaleFactors/F");
+        miniTree->Branch("weight_tightMuId_scaleFactors", &weight_tightMuId_scaleFactors, "weight_tightMuId_scaleFactors/F");
+        miniTree->Branch("weight_pu_hlt", &weight_pu_hlt, "weight_pu_hlt/F");
 
 	miniTree->Branch("rho", &rho, "rho/F");
 	miniTree->Branch("pu_TrueNumInteractions", &pu_TrueNumInteractions, "pu_TrueNumInteractions/F");
@@ -638,12 +669,12 @@ int main(int argc, char *argv[])
 	miniTree->Branch("MuonP_Pt", &MuonP_Pt, "MuonP_Pt/F");
 	miniTree->Branch("MuonF_Pt", &MuonF_Pt, "MuonF_Pt/F");
 	miniTree->Branch("MuonN_Pt", &MuonN_Pt, "MuonN_Pt/F");
-	miniTree->Branch("MuonL_Pt", &MuonL_Pt, "MuonL_Pt/F");
-	miniTree->Branch("MuonS_Pt", &MuonS_Pt, "MuonS_Pt/F");
+*/	//miniTree->Branch("MuonL_Pt", &MuonL_Pt, "MuonL_Pt/F");
+	//miniTree->Branch("MuonS_Pt", &MuonS_Pt, "MuonS_Pt/F");
 
 	miniTree->Branch("MuonM_Eta", &MuonM_Eta, "MuonM_Eta/F");
 	miniTree->Branch("MuonP_Eta", &MuonP_Eta, "MuonP_Eta/F");
-	miniTree->Branch("MuonF_Eta", &MuonF_Eta, "MuonF_Eta/F");
+/*	miniTree->Branch("MuonF_Eta", &MuonF_Eta, "MuonF_Eta/F");
 	miniTree->Branch("MuonN_Eta", &MuonN_Eta, "MuonN_Eta/F");
 	miniTree->Branch("MuonL_Eta", &MuonL_Eta, "MuonL_Eta/F");
 	miniTree->Branch("MuonS_Eta", &MuonS_Eta, "MuonS_Eta/F");
@@ -776,8 +807,8 @@ int main(int argc, char *argv[])
         // mumu information
         // ____________________________________________
 
-        miniTree->Branch("Mmumu", &Mmumu, "Mmumu/F");
-        miniTree->Branch("Ptmumu", &Ptmumu, "Ptmumu/F");
+  */      miniTree->Branch("Mmumu", &Mmumu, "Mmumu/F");
+    /*    miniTree->Branch("Ptmumu", &Ptmumu, "Ptmumu/F");
 
 
 	// ____________________________________________
@@ -826,9 +857,18 @@ int main(int argc, char *argv[])
 	miniTree->Branch("MuonS_MC_Phi", &MuonS_MC_Phi, "MuonS_MC_Phi/F");
 	miniTree->Branch("MuonS_MC_Eta", &MuonS_MC_Eta, "MuonS_MC_Eta/F");
 	miniTree->Branch("MuonS_MC_Pt", &MuonS_MC_Pt, "MuonS_MC_Pt/F");
-	miniTree->Branch("Mmumu_Muons_MC", &Mmumu_Muons_MC, "Mmumu_Muons_MC/F");
-
+*/	miniTree->Branch("Mmumu_Muons_MC", &Mmumu_Muons_MC, "Mmumu_Muons_MC/F");
 	
+	// --------------------
+	// Resolution variables
+	// --------------------
+
+//	miniTree->Branch("cosThetaMuMubar", &cosThetaMuMubar, "cosThetaMuMubar/F");
+	miniTree->Branch("MuonM_P", &MuonM_P, "MuonM_P/F");
+	miniTree->Branch("MuonP_P", &MuonP_P, "MuonP_P/F");
+//	miniTree->Branch("sqrtMpPp", &sqrtMpPp, "sqrtMpPp/F");
+	miniTree->Branch("sqrtMpPpCos", &sqrtMpPpCos, "sqrtMpPpCos/F");
+
 	// SETUP PARAMETERS	
 	unsigned int NbEvents = (int)inputEventTree->GetEntries();
 	bool powheg = true;
@@ -854,11 +894,41 @@ int main(int argc, char *argv[])
 	double InitialNumberWJetsToLNu = 57709905.0;
 	double InitialNumberQCDMu = 8797418.0; //FIXME
 
+	if(analysisVersion == "2011") //FIMXE !!
+        {
+                XSectionDYToMuMu = 1665,835; //ok
+                XSectionTTJets = 165; //ok
+                XSectionWJetsToLNu = 31314; //ok
+
+                InitialNumberDYToMuMu = 23760702.0; //29743564.0; //ok, crashed jobs
+                InitialNumberTTJets = 33476020.0; //ok
+                InitialNumberWJetsToLNu = 81064825.0; //ok
+        }
+
+        if(analysisVersion == "2012")
+        {
+                XSectionDYToMuMu = 1914.894; //ok
+                XSectionTTJets = 245.8; //ok
+                XSectionWJetsToLNu = 37509.25; //ok
+
+                InitialNumberDYToMuMu = 48851166.0; //ok
+                InitialNumberTTJets = 6923652.0; //ok
+                //InitialNumberWJetsToLNu = 57709905.0; //ok //no skim with crashed jobs 57109905
+        	InitialNumberWJetsToLNu = 57109905;
+	}
+
+		
+
+
+
 	double minPtHat = -100;
 	double maxPtHat = 1000000;
 	int verbosity = 0;
 	int Nb_events_outside_powheg_cuts = 0;
-	int TOTALnbMuonsAfterID[5] = {0};
+	int nbMuonsIDs = 5;
+        if(analysisVersion == "2011") nbMuonsIDs = 12;
+        if(analysisVersion == "2012") nbMuonsIDs = 5;
+	int TOTALnbMuonsAfterID[12] = {0};
 	int TOTALnbEventsAfterMuonID[12] = {0};
 	int TOTALnbDimuonsAfterID[3] = {0};
 	int TOTALnbEventsAfterDimuonID[3] = {0};
@@ -912,6 +982,22 @@ int main(int argc, char *argv[])
 		inputEventTree->GetEvent(ievt);
 	
 		hltnames = event->hltAcceptNames();
+	
+		isGoodHLT = 0;
+		//cout << endl << "coucou before isGoodHLT" << endl;
+		//cout << endl << " hltnames.size() = " <<  hltnames.size() << endl;
+		for(int h = 0; h < hltnames.size(); h++)
+		{
+			//cout << endl << "hltnames[h] = " <<hltnames[h] << endl;	
+			if(hltnames[h].find("HLT_Mu17_Mu8") != std::string::npos) 
+			//if(hltnames[h] == "HLT_Mu17_Mu8_v17")
+			{
+				isGoodHLT = 1;
+				break;
+			}
+		
+		}
+		//cout << endl << "coucou after isGoodHLT" << endl;
 
 /*
 		tempNumber = 0;
@@ -932,11 +1018,12 @@ int main(int argc, char *argv[])
 		iLumiID = event->luminosityBlock();
 		iRunID = event->runId();
 		nVertices = vertices->GetEntries();
-		nGenVertices = vertices->GetEntries();
-		if( (isZgammaMC == 1) || (isZgammaMC == 2) )
-		{
-			nGenVertices = event->pu_TrueNumInteractions();
-		}
+                nGenVertices = vertices->GetEntries();
+                if( (isZgammaMC == 1) || (isZgammaMC == 2) || (isZgammaMC == 3))
+                {
+                        nGenVertices = event->pu_TrueNumInteractions();
+                }
+
 
 		rho = event->rho();
 /*
@@ -961,29 +1048,29 @@ int main(int argc, char *argv[])
 		collisionTime = event->collisionTime();
 
 
-		weight_Xsection = weight_pileUp = 1.0;
+		weight_Xsection = weight_pileUp = weight_hlt_scaleFactors = weight_tightMuId_scaleFactors = weight_pu_hlt = 1.0;
 
 		string sample_in(sample_char);
 		
 		if( sample_in.find("DYToMuMu") != string::npos )
 		{
 			weight_Xsection = (double)(	(double)((double)(XSectionDYToMuMu) / (double)(InitialNumberDYToMuMu)) * (double)integratedLuminosity);
-			weight_pileUp = weight_DYToMuMu(nGenVertices+1, lumi_set, pu_set);
+			weight_pileUp = weight_DYToMuMu(nGenVertices, lumi_set, pu_set);
 		} 
 		else if( sample_in.find("QCD") != string::npos )
 		{
 			weight_Xsection = (double)(	(double)((double)(XSectionQCDMu) / (double)(InitialNumberQCDMu)) * (double)integratedLuminosity);
-			weight_pileUp = weight_QCDMu(nGenVertices+1);
+			weight_pileUp = weight_QCDMu(nGenVertices);
 		} 
 		else if( sample_in.find("TTJets") != string::npos )
 		{
 			weight_Xsection = (double)(	(double)((double)(XSectionTTJets) / (double)(InitialNumberTTJets)) * (double)integratedLuminosity);
-			weight_pileUp = weight_TTJets(nGenVertices+1, lumi_set, pu_set);
+			weight_pileUp = weight_TTJets(nGenVertices, lumi_set, pu_set);
 		} 
 		else if( sample_in.find("WToMuNu") != string::npos	|| sample_in.find("WJetsToLNu") != string::npos)
 		{
 			weight_Xsection = (double)(	(double)((double)(XSectionWJetsToLNu) / (double)(InitialNumberWJetsToLNu)) * (double)integratedLuminosity);
-			weight_pileUp = weight_WJetsToLNu(nGenVertices+1, lumi_set, pu_set);
+			weight_pileUp = weight_WJetsToLNu(nGenVertices, lumi_set, pu_set);
 		}
 
 
@@ -1034,6 +1121,11 @@ int main(int argc, char *argv[])
 		MuonS_MC_E = MuonS_MC_Px = MuonS_MC_Py = MuonS_MC_Pz = MuonS_MC_Phi = MuonS_MC_Eta = MuonS_MC_Pt = -99.0;
 		Mmumu_Muons_MC = -99.0;
 
+		// --------------------
+		// Resolution Variables
+		// --------------------
+		
+		cosThetaMuMubar = MuonM_P = MuonP_P = sqrtMpPp = sqrtMpPpCos = -99.0;
 
 		// ____________________________________________
 		// END OF INITIALIZATION
@@ -1093,109 +1185,132 @@ int main(int argc, char *argv[])
 		{
 			TRootMuon *mymuon;
 			mymuon = (TRootMuon*) muons->At(imuon);
+
+			if(analysisVersion == "2011")
+                        {
 	
-			/* // 2010 muon ID
-
-			if(! (mymuon->isGlobalMuon()) )
-			{
-				muonIsNotCommissioned.push_back(1);
-				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because not global muon" << endl;
-				continue;
+				// 2010 muon ID
+	
+				if(! (mymuon->isGlobalMuon()) )
+				{
+					muonIsNotCommissioned.push_back(1);
+					if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because not global muon" << endl;
+					continue;
+				}
+				nbMuonsAfterID[1]++;
+				TOTALnbMuonsAfterID[1]++;
+	
+				//if(! (mymuon->normalizedGlobalChi2()<10.0) )
+				if(! (mymuon->normalizedChi2GlobalTrack()<10.0) )
+				{// chi2/ndof of the global muon fit < 10
+					muonIsNotCommissioned.push_back(1);
+					if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because chi2/ndof of the global muon fit < 10 (" << mymuon->normalizedChi2GlobalTrack() << ")" << endl;
+					continue;
+				}
+				nbMuonsAfterID[2]++;
+				TOTALnbMuonsAfterID[2]++;
+	
+				//if(! (mymuon->numberOfValidGlobalHits()>0) )
+				if(! (mymuon->numberOfValidMuonHitsInGlobalTrack()>0) )
+				{// number of valid muon hits matched to the global fit
+					muonIsNotCommissioned.push_back(1);
+					if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because number of valid muon hits matched to the global fit too low (" << mymuon->numberOfValidMuonHitsInGlobalTrack() << ")" << endl;
+					continue;
+				}
+				nbMuonsAfterID[3]++;
+				TOTALnbMuonsAfterID[3]++;
+	
+				if(! (mymuon->isTrackerMuon()) )
+				{// The muon must be identified as Tracker Muon.
+					muonIsNotCommissioned.push_back(1);
+					if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because not tracker muon" << endl;
+					continue;
+				}
+				nbMuonsAfterID[4]++;
+				TOTALnbMuonsAfterID[4]++;
+	
+				if(! (mymuon->numberOfMatches()>1) )
+				{// number of muon stations with matched segments (global track: out-in fit)
+					muonIsNotCommissioned.push_back(1);
+					if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because number of muon stations with matched segments (global track: out-in fit) too low" << endl;
+					continue;
+				}
+				nbMuonsAfterID[5]++;
+				TOTALnbMuonsAfterID[5]++;
+	
+				//if(! (mymuon->numberOfValidTrackerHits()>10) )
+				if(! (mymuon->numberOfValidTrackerHitsInInnerTrack()>10) )
+				{// number of tracker (pixels + strips) hits
+					muonIsNotCommissioned.push_back(1);
+					if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because number of tracker (pixels + strips) hits" << endl;
+					continue;
+				}
+				nbMuonsAfterID[6]++;
+				TOTALnbMuonsAfterID[6]++;
+	
+				//if(! (mymuon->numberOfValidPixelHits()>0) )
+				if(! (mymuon->numberOfValidPixelHitsInInnerTrack()>0) )
+				{// number of pixel hits
+					muonIsNotCommissioned.push_back(1);
+					if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because number of pixel hits" << endl;
+					continue;
+				}
+				nbMuonsAfterID[7]++;
+				TOTALnbMuonsAfterID[7]++;
+	
+				//if(! (fabs(mymuon->GlobaldB())<0.2) )
+				if(! (fabs(mymuon->bestTrackDxy())<0.2) )
+				{// inner track transverse impact parameter w.r.t the beam spot |d_xy|
+					muonIsNotCommissioned.push_back(1);
+					if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because inner track transverse impact parameter w.r.t the beam spot |d_xy|" << endl;
+					continue;
+				}
+				nbMuonsAfterID[8]++;
+				TOTALnbMuonsAfterID[8]++;
+	
+	
+				if(! (mymuon->isoR03_sumPt()<3.0) )
+				{// sum of pT of tracks with pT >1.5 within a cone of DR < 0.3 around the muon direction, vetoing a cone of 0.015 around that direction
+					muonIsNotCommissioned.push_back(1);
+					if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because sum of pT of tracks with pT >1.5 within a cone of DR < 0.3 around the muon direction, vetoing a cone of 0.015 around that direction" << endl;
+					continue;
+				}
+	
+				nbMuonsAfterID[9]++;
+				TOTALnbMuonsAfterID[9]++;
+				
 			}
-			nbMuonsAfterID[1]++;
-			TOTALnbMuonsAfterID[1]++;
-
-			if(! (mymuon->normalizedGlobalChi2()<10.0) )
-			{// chi2/ndof of the global muon fit < 10
-				muonIsNotCommissioned.push_back(1);
-				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because chi2/ndof of the global muon fit < 10 (" << mymuon->normalizedGlobalChi2() << ")" << endl;
-				continue;
-			}
-			nbMuonsAfterID[2]++;
-			TOTALnbMuonsAfterID[2]++;
-
-			if(! (mymuon->numberOfValidGlobalHits()>0) )
-			{// number of valid muon hits matched to the global fit
-				muonIsNotCommissioned.push_back(1);
-				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because number of valid muon hits matched to the global fit too low (" << mymuon->numberOfValidGlobalHits() << ")" << endl;
-				continue;
-			}
-			nbMuonsAfterID[3]++;
-			TOTALnbMuonsAfterID[3]++;
-
-			if(! (mymuon->isTrackerMuon()) )
-			{// The muon must be identified as Tracker Muon.
-				muonIsNotCommissioned.push_back(1);
-				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because not tracker muon" << endl;
-				continue;
-			}
-			nbMuonsAfterID[4]++;
-			TOTALnbMuonsAfterID[4]++;
-
-			if(! (mymuon->numberOfMatches()>1) )
-			{// number of muon stations with matched segments (global track: out-in fit)
-				muonIsNotCommissioned.push_back(1);
-				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because number of muon stations with matched segments (global track: out-in fit) too low" << endl;
-				continue;
-			}
-			nbMuonsAfterID[5]++;
-			TOTALnbMuonsAfterID[5]++;
-
-			if(! (mymuon->numberOfValidTrackerHits()>10) )
-			{// number of tracker (pixels + strips) hits
-				muonIsNotCommissioned.push_back(1);
-				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because number of tracker (pixels + strips) hits" << endl;
-				continue;
-			}
-			nbMuonsAfterID[6]++;
-			TOTALnbMuonsAfterID[6]++;
-
-			if(! (mymuon->numberOfValidPixelHits()>0) )
-			{// number of pixel hits
-				muonIsNotCommissioned.push_back(1);
-				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because number of pixel hits" << endl;
-				continue;
-			}
-			nbMuonsAfterID[7]++;
-			TOTALnbMuonsAfterID[7]++;
-
-			if(! (fabs(mymuon->GlobaldB())<0.2) )
-			{// inner track transverse impact parameter w.r.t the beam spot |d_xy|
-				muonIsNotCommissioned.push_back(1);
-				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because inner track transverse impact parameter w.r.t the beam spot |d_xy|" << endl;
-				continue;
-			}
-			nbMuonsAfterID[8]++;
-			TOTALnbMuonsAfterID[8]++;
-
-
-			if(! (mymuon->isoR03_sumPt()<3.0) )
-			{// sum of pT of tracks with pT >1.5 within a cone of DR < 0.3 around the muon direction, vetoing a cone of 0.015 around that direction
-				muonIsNotCommissioned.push_back(1);
-				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because sum of pT of tracks with pT >1.5 within a cone of DR < 0.3 around the muon direction, vetoing a cone of 0.015 around that direction" << endl;
-				continue;
-			}
-
-			nbMuonsAfterID[9]++;
-			TOTALnbMuonsAfterID[9]++;
-			*/
 			
-			
-			// 2012 Tight muon ID
-			if(! (mymuon->isTightMuonPerso() == 1))
-			{
-				muonIsNotCommissioned.push_back(1);
-				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because isTightMuonPerso() != 1" << endl;
-				continue;
-			}	
-			nbMuonsAfterID[1]++;
-                        TOTALnbMuonsAfterID[1]++;	
-
+		
+			if(analysisVersion == "2012")
+                        {	
+				// 2012 Tight muon ID
+				if(! (mymuon->isTightMuonPerso() == 1))
+				{
+					muonIsNotCommissioned.push_back(1);
+					if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because isTightMuonPerso() != 1" << endl;
+					continue;
+				}	
+				nbMuonsAfterID[1]++;
+                        	TOTALnbMuonsAfterID[1]++;	
+			}
 
 			TLorentzVector correctedMuon(mymuon->Px(), mymuon->Py(), mymuon->Pz(), mymuon->E());
 			float qter = 1.0;
 			double corrected_Pt = mymuon->Pt();
-			rochcor2012 *rmcor = new rochcor2012(seeed);
+			rochcor2012 *rmcor = 0;
+                        rochcor * rmcor2011 = 0;
+                        if(itoy != 0)
+                        {
+                                rmcor = new rochcor2012(seeed);
+                                rmcor2011 = new rochcor(seeed);
+                        }
+                        else
+                        {
+                                rmcor = new rochcor2012();
+                                rmcor2011 = new rochcor();
+                        }
+
 			if( applyMuonScaleCorrection > 0 )
 			{
 		 		if( applyMuonScaleCorrection == 2 )
@@ -1216,182 +1331,40 @@ int main(int argc, char *argv[])
 					corrected_Pt = applyMuScleFit(mymuon->Pt(), mymuon->charge(), mymuon->Eta(), mymuon->Phi());
 					corrected_Pt = applySidra(corrected_Pt, mymuon->charge(), mymuon->Eta(), mymuon->Phi(), generator);
 				}
-				if( applyMuonScaleCorrection == 3 )
-				{ // Apply Rochester corrections
-					TLorentzVector muonRochester(mymuon->Px(), mymuon->Py(), mymuon->Pz(), mymuon->E());
-					TLorentzVector muonRochesterDummy(mymuon->Px(), mymuon->Py(), mymuon->Pz(), mymuon->E());
-					// moption = 1	: recommended by the authors (better match in Z mass profile vs. eta/phi between the reconstructed and generated Z mass)
-					// sysdev = 0 : no systematics yet
-		
-					if( isZgammaMC > 0 ) // If sample is MC
-					{
-						if( (lumi_set == "2011A") || (lumi_set == "2011A_rereco") ) runopt = 0;
-						if( (lumi_set == "2011B") || (lumi_set == "2011B_rereco") ) runopt = 1;
-						if( lumi_set == "2011A" ) integratedLuminosity = 706.370 + 385.819 + 1099;
-						if( lumi_set == "2011A_rereco" ) integratedLuminosity = 2.221*1000.0;
-						if( lumi_set == "2011B" ) integratedLuminosity = 2741;
-						//if( lumi_set == "2011" ) integratedLuminosity = 215.552 + 951.716 + 389.876 + 706.719 + 2.714*1000.0;
-						if( lumi_set == "2011" ) integratedLuminosity = 706.370 + 385.819 + 2741 + 1099;
-						if( lumi_set == "2011_rereco" ) integratedLuminosity = 2.221*1000.0 +	2.714*1000.0;
-						if( lumi_set == "2012" ) integratedLuminosity = 808.472 + 82.136 + 4429.0 + 495.003 + 134.242 + 6397.0 + 7274.0;
-	
-						// event where to switch from Run2011A to Run2011B correction
-						// We run over ntot=  DYToMuMu events
-						// We run on average on avEventsPerJob= (ntot) / (ntotjob)= events per job
-						// RunA represents Astat= (2.221) / (2.221 + 2.714) = 45.01 % of the total stat
-						// RunB represents Bstat= (2.714) / (2.221 + 2.714) = 54.99 % of the total stat
-						// The last event of 'RunA' is lastA= Astat*ntot
-						// Which should happen in job ijobLastA= (int)(lastA)/(int)(avEventsPerJob)
-						// and will be the event iEventLastA= (int)(lastA)%(int)(avEventsPerJob)
-						// ***********************************
-						// temp version
-						// ***********************************
-						if( (lumi_set == "2011" ) && (sample_in.find("DYToMuMu") != string::npos))
-						{
-							int ntot= 9198125;
-							double avEventsPerJob= (double)(ntot)/(double)(ntotjob);
-							double Astat= (double)(706.370 + 385.819 + 1099) / (double)(706.370 + 385.819 + 2741 + 1099);
-							double Bstat= (double)(2741) / (double)(706.370 + 385.819 + 2741 + 1099);
-							double lastA= Astat*ntot;
-							int ijobLastA= (int)(lastA)/(int)(avEventsPerJob);
-							int iEventLastA= (int)(lastA)%(int)(avEventsPerJob);
-							if( ijob == (ijobLastA -1) )
-							{
-								if( ievt >= iEventLastA )
-								{
-									runopt = 1;
-								} 
-								else runopt = 0;
-							} 
-							else if( ijob >= ijobLastA ) runopt = 1;
-						}
-						if( (lumi_set == "2012" ) && (sample_in.find("DYToMuMu") != string::npos))
-                                                {
-                                                        int ntot= 3568581;
-                                                        double avEventsPerJob= (double)(ntot)/(double)(ntotjob);
-                                                        double ABCstat= (double)(808.472 + 82.136 + 4429.0 + 495.003 + 134.242 + 6397.0) / (double)(808.472 + 82.136 + 4429.0 + 495.003 + 134.242 + 6397.0 + 7274.0);
-                                                        double Dstat= (double)(7274.0) / (double)(808.472 + 82.136 + 4429.0 + 495.003 + 134.242 + 6397.0 + 7274.0);
-                                                        double lastABC= ABCstat*ntot;
-                                                        int ijobLastABC= (int)(lastABC)/(int)(avEventsPerJob);
-                                                        int iEventLastABC= (int)(lastABC)%(int)(avEventsPerJob);
-                                                        if( ijob == (ijobLastABC -1) )
-                                                        {
-                                                                if( ievt >= iEventLastABC )
-                                                                {
-                                                                        runopt = 1;
-                                                                }
-                                                                else runopt = 0;
-                                                        }
-                                                        else if( ijob >= ijobLastABC ) runopt = 1;
-                                                }
+				if( applyMuonScaleCorrection == 3 && analysisVersion == "2011")
+                                {// Apply Rochester corrections 2011 v4.1 CMSSW44X
+                                        TLorentzVector muonRochester(mymuon->Px(), mymuon->Py(), mymuon->Pz(), mymuon->E());
+                                        TLorentzVector muonRochesterDummy(mymuon->Px(), mymuon->Py(), mymuon->Pz(), mymuon->E());
 
-						if( (lumi_set == "2011" ) && (sample_in.find("TTJets") != string::npos))
-	                                        {
-	                                                int ntot= 131388;
-	                                                double avEventsPerJob= (double)(ntot)/(double)(ntotjob);
-	                                                double Astat= (double)(706.370 + 385.819 + 1099) / (double)(706.370 + 385.819 + 2741 + 1099);
-	                                                double Bstat= (double)(2741) / (double)(706.370 + 385.819 + 2741 + 1099);
-	                                                double lastA= Astat*ntot;
-	                                                int ijobLastA= (int)(lastA)/(int)(avEventsPerJob);
-	                                                int iEventLastA= (int)(lastA)%(int)(avEventsPerJob);
-	                                                if( ijob == (ijobLastA -1) )
-	                                                {
-	                                                        if( ievt >= iEventLastA )
-	                                                        {
-	                                                                runopt = 1; 
-	                                                        } 
-								else runopt = 0; 
-	                                                } 
-							else if( ijob >= ijobLastA ) runopt = 1; 
-	                                        }
-						if( (lumi_set == "2012" ) && (sample_in.find("TTJets") != string::npos))
-                                                {
-                                                        int ntot= 110095;
-                                                        double avEventsPerJob= (double)(ntot)/(double)(ntotjob);
-                                                        double ABCstat= (double)(808.472 + 82.136 + 4429.0 + 495.003 + 134.242 + 6397.0) / (double)(808.472 + 82.136 + 4429.0 + 495.003 + 134.242 + 6397.0 + 7274.0);
-                                                        double Dstat= (double)(7274.0) / (double)(808.472 + 82.136 + 4429.0 + 495.003 + 134.242 + 6397.0 + 7274.0);
-                                                        double lastABC= ABCstat*ntot;
-                                                        int ijobLastABC= (int)(lastABC)/(int)(avEventsPerJob);
-                                                        int iEventLastABC= (int)(lastABC)%(int)(avEventsPerJob);
-                                                        if( ijob == (ijobLastABC -1) )
-                                                        {
-                                                                if( ievt >= iEventLastABC )
-                                                                {
-                                                                        runopt = 1;
-                                                                }
-                                                                else runopt = 0;
-                                                        }
-                                                        else if( ijob >= ijobLastABC ) runopt = 1;
-                                                }
-	
-						if( (lumi_set == "2011" ) && (sample_in.find("WJetsToLNu") != string::npos))
-	                                        {
-	                                                int ntot= 14821;
-	                                                double avEventsPerJob= (double)(ntot)/(double)(ntotjob);
-	                                                double Astat= (double)(706.370 + 385.819 + 1099) / (double)(706.370 + 385.819 + 2741 + 1099);
-	                                                double Bstat= (double)(2741) / (double)(706.370 + 385.819 + 2741 + 1099);
-	                                                double lastA= Astat*ntot;
-	                                                int ijobLastA= (int)(lastA)/(int)(avEventsPerJob);
-	                                                int iEventLastA= (int)(lastA)%(int)(avEventsPerJob);
-	                                                if( ijob == (ijobLastA -1) )
-	                                                {
-	                                                        if( ievt >= iEventLastA )
-	                                                        {
-	                                                                runopt = 1;
-	                                                        } else runopt = 0;
-	                                                } else if( ijob >= ijobLastA ) runopt = 1;
-	                                        }
-						 if( (lumi_set == "2012" ) && (sample_in.find("WJetsToLNu") != string::npos))
-                                                {
-                                                        int ntot= 3353;
-                                                        double avEventsPerJob= (double)(ntot)/(double)(ntotjob);
-                                                        double ABCstat= (double)(808.472 + 82.136 + 4429.0 + 495.003 + 134.242 + 6397.0) / (double)(808.472 + 82.136 + 4429.0 + 495.003 + 134.242 + 6397.0 + 7274.0);
-                                                        double Dstat= (double)(7274.0) / (double)(808.472 + 82.136 + 4429.0 + 495.003 + 134.242 + 6397.0 + 7274.0);
-                                                        double lastABC= ABCstat*ntot;
-                                                        int ijobLastABC= (int)(lastABC)/(int)(avEventsPerJob);
-                                                        int iEventLastABC= (int)(lastABC)%(int)(avEventsPerJob);
-                                                        if( ijob == (ijobLastABC -1) )
-                                                        {
-                                                                if( ievt >= iEventLastABC )
-                                                                {
-                                                                        runopt = 1;
-                                                                }
-                                                                else runopt = 0;
-                                                        }
-                                                        else if( ijob >= ijobLastABC ) runopt = 1;
-                                                }
+                                        if( isZgammaMC > 0 ) // If sample is MC
+                                        {
+                                                rmcor2011->momcor_mc(muonRochester, mymuon->charge(), 0);
+                                        }
+                                        else
+                                        {
+                                                rmcor2011->momcor_data(muonRochester, mymuon->charge(), 0, runopt);
+                                        }
+                                        corrected_Pt = muonRochester.Pt();
+                                        correctedMuon = muonRochester;
 
-						if( (lumi_set == "2011_rereco" ) )
-						{
-							int ntot= 8950877;
-							double avEventsPerJob= (double)(ntot)/(double)(ntotjob);
-							double Astat= (double)(2.221) / (double)(2.221 + 2.714);
-							double Bstat= (double)(2.714) / (double)(2.221 + 2.714);
-							double lastA= Astat*ntot;
-							int ijobLastA= (int)(lastA)/(int)(avEventsPerJob);
-							int iEventLastA= (int)(lastA)%(int)(avEventsPerJob);
-							if( ijob == (ijobLastA -1) )
-							{
-								if( ievt >= iEventLastA )
-								{
-									runopt = 1;
-								} else runopt = 0;
-							} else if( ijob >= ijobLastA ) runopt = 1;
-						}
-						if( verbosity > 4) cerr << "### ievt= " << ievt << "\tijob= " << ijob << "\trunopt= " << runopt << endl;
-						rmcor->momcor_mc(muonRochester, mymuon->charge(), runopt, qter);
-						//if( mymuon->charge() < 0 ) rmcor->momcor_mc(muonRochester, muonRochesterDummy, 1, sysdev);
-						//else rmcor->momcor_mc(muonRochesterDummy, muonRochester, 1, sysdev);
-					} 
-					else 
-					{
-						rmcor->momcor_data(muonRochester, mymuon->charge(), runopt, qter);
-						//if( mymuon->charge() < 0 ) rmcor->momcor_data(muonRochester, muonRochesterDummy, 1, runopt, qter);
-						//else rmcor->momcor_data(muonRochesterDummy, muonRochester, 1, runopt, qter);
-					}
-					corrected_Pt = muonRochester.Pt();
-					correctedMuon = muonRochester;
-				}
+                                }
+				if( applyMuonScaleCorrection == 3 && analysisVersion == "2012")
+                                { // Apply Rochester corrections 2012 Jan22 Rereco
+                                        TLorentzVector muonRochester(mymuon->Px(), mymuon->Py(), mymuon->Pz(), mymuon->E());
+                                        TLorentzVector muonRochesterDummy(mymuon->Px(), mymuon->Py(), mymuon->Pz(), mymuon->E());
+
+                                        runopt = 0;
+                                        if( isZgammaMC > 0 ) // If sample is MC
+                                        {
+                                                rmcor->momcor_mc(muonRochester, mymuon->charge(), runopt, qter);
+                                        }
+                                        else
+                                        {
+                                                rmcor->momcor_data(muonRochester, mymuon->charge(), runopt, qter);
+                                        }
+                                        corrected_Pt = muonRochester.Pt();
+                                        correctedMuon = muonRochester;
+                                }
 				if( applyMuonScaleCorrection == 31 )
 				{ // Apply Rochester corrections on top of MuscleFit
 					corrected_Pt = applyMuScleFit(mymuon->Pt(), mymuon->charge(), mymuon->Eta(), mymuon->Phi());
@@ -1467,34 +1440,61 @@ int main(int argc, char *argv[])
 
 			*/
 
-			// 2012 muon ID cut
-			if(! ( (mymuon->pfIsoChargedHadronPt04() / correctedMuon.Pt()) < 0.2 ) )
-			{	
-				muonIsNotCommissioned.push_back(1);
-				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because pfIsoChargedHadronPt04 / Pt > 0.2" << endl;
-				continue;
-			}
-			nbMuonsAfterID[2]++;
-                        TOTALnbMuonsAfterID[2]++;
+			if(analysisVersion == "2011")
+                        {
+                                if(! (correctedMuon.Pt() > 10.5) )
+                                {// transverse momentum
+                                        muonIsNotCommissioned.push_back(1);
+                                        if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because transverse momentum" << endl;
+                                        continue;
+                                }
+                                nbMuonsAfterID[10]++;
+                                TOTALnbMuonsAfterID[10]++;
 
-		 	if(! (correctedMuon.Pt() > 10.0) )
-			{// transverse momentum
-				//if(! (mymuon->Pt() > 10.0) ){// transverse momentum
-				muonIsNotCommissioned.push_back(1);
-				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because transverse momentum" << endl;
-				continue;
-			}
-			nbMuonsAfterID[3]++;
-			TOTALnbMuonsAfterID[3]++;
+                                if(! (fabs(mymuon->Eta())<2.4) )
+                                {
+                                        muonIsNotCommissioned.push_back(1);
+                                        if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because high eta (" << mymuon->Eta() << ")" << endl;
+                                        continue;
+                                }
+                                nbMuonsAfterID[11]++;
+                                TOTALnbMuonsAfterID[11]++;
 
-			if(! (fabs(mymuon->Eta())<2.4) )
-			{// |eta_muon|< 2.1
-				muonIsNotCommissioned.push_back(1);
-				if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because high eta (" << mymuon->Eta() << ")" << endl;
-				continue;
+                        }
+
+			if(analysisVersion == "2012")
+			{
+
+				// 2012 muon ID cut
+				if(! ( (mymuon->pfIsoChargedHadronPt04() / correctedMuon.Pt()) < 0.2 ) )
+				{	
+					muonIsNotCommissioned.push_back(1);
+					if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because pfIsoChargedHadronPt04 / Pt > 0.2" << endl;
+					continue;
+				}
+				nbMuonsAfterID[2]++;
+	                        TOTALnbMuonsAfterID[2]++;
+	
+			 	if(! (correctedMuon.Pt() > 10.0) )
+				{// transverse momentum
+					//if(! (mymuon->Pt() > 10.0) ){// transverse momentum
+					muonIsNotCommissioned.push_back(1);
+					if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because transverse momentum" << endl;
+					continue;
+				}
+				nbMuonsAfterID[3]++;
+				TOTALnbMuonsAfterID[3]++;
+	
+				if(! (fabs(mymuon->Eta())<2.4) )
+				{// |eta_muon|< 2.1
+					muonIsNotCommissioned.push_back(1);
+					if(verbosity>0) cerr << "\t\t\tmuon " << imuon << " rejected because high eta (" << mymuon->Eta() << ")" << endl;
+					continue;
+				}
+				nbMuonsAfterID[4]++;
+				TOTALnbMuonsAfterID[4]++;
+	
 			}
-			nbMuonsAfterID[4]++;
-			TOTALnbMuonsAfterID[4]++;
 
 			//if(! (mymuon->) ){// 
 			//muonIsNotCommissioned.push_back(1);
@@ -1509,22 +1509,25 @@ int main(int argc, char *argv[])
 			muonIdentified_corrected_E.push_back(correctedMuon.E());
 			muonIdentified.push_back(imuon);
 			//mymuon->Clear();
-		
+	
 			delete rmcor;
-			rmcor = 0;
+                        rmcor = 0;
+                        delete rmcor2011;
+                        rmcor2011 = 0;
+	
 		}
 		unsigned int NbMuonsIdentified = muonIdentified.size();
 		
 		// Increasing counter
-		for(int i = 0; i < 5 ; i++)
+		for(int i = 0; i < nbMuonsIDs ; i++)
 		{
-			if(nbMuonsAfterID[i] >= 2)
+			if(nbMuonsAfterID[i] >= 1)
 			{ 
 				TOTALnbEventsAfterMuonID[i]++;
 			}
 		}
 
-		if(! (nbMuonsAfterID[4] >=2) )// Not enough dimuon candidates, skip the event
+		if(! (nbMuonsAfterID[nbMuonsIDs -1] >=2) )// Not enough dimuon candidates, skip the event
 		{
 				continue;
 		}
@@ -1539,7 +1542,7 @@ int main(int argc, char *argv[])
 
 		// Making dimuon pairs holder
 		int numberOfDimuons[3] = {0};
-		numberOfDimuons[0] = factorial(nbMuonsAfterID[4] -1);
+		numberOfDimuons[0] = factorial(nbMuonsAfterID[nbMuonsIDs - 1] -1);
 
 		if(! (numberOfDimuons[0] >= 1) )// Not enough dimuon candidates, skip the event. This cut is redundant with the previous one, should do nothing
 		{
@@ -1566,9 +1569,9 @@ int main(int argc, char *argv[])
 		if(verbosity>2) cout << "Filling pair object for dimuon pairs composed of ID'ed muons" << endl;
 		// Filling pair object for dimuon pairs composed of ID'ed muons
 		int i_dimuons_ = 0;
-		for(int muon_i = 0; muon_i < nbMuonsAfterID[4] ; muon_i++)
+		for(int muon_i = 0; muon_i < nbMuonsAfterID[nbMuonsIDs - 1] ; muon_i++)
 		{
-			for(int muon_j = muon_i +1; muon_j < nbMuonsAfterID[4]; muon_j++)
+			for(int muon_j = muon_i +1; muon_j < nbMuonsAfterID[nbMuonsIDs - 1]; muon_j++)
 			{
 				IDofMuons[0][i_dimuons_] = make_pair(muonIdentified[muon_i], muonIdentified[muon_j]);
 				PtofMuons[0][i_dimuons_] = make_pair(muonIdentified_corrected_Pt[muon_i], muonIdentified_corrected_Pt[muon_j]);
@@ -1646,9 +1649,11 @@ int main(int argc, char *argv[])
 			}
 			//Muon1->Clear();
 			//Muon2->Clear();
-			delete correctedMuon1;
+			//delete correctedMuon1;
+			correctedMuon1->Delete();
 			correctedMuon1 = 0;
-			delete correctedMuon2;
+			//delete correctedMuon2;
+			correctedMuon2->Delete();
 			correctedMuon2 = 0;	
 			//correctedMuon1->Delete();
 			//correctedMuon2->Delete();
@@ -1712,31 +1717,48 @@ int main(int argc, char *argv[])
 
 				double far_muonPt = (deltaRphomu1 > deltaRphomu2) ? correctedMuon1->Pt() : correctedMuon2->Pt();
 
-				if( min_DeltaR <= 0.8 || myphoton->Pt() > 10)
+				if( min_DeltaR <= 0.8)
 				{
 					fsr = 1;
 					break;
 				}
+				/*if( myphoton->Pt() > 10) //FIXME ?
+                                {
+                                        fsr = 2;
+					break; 
+                                }
+				*/	
 		
 
                         }
 
-			if(fsr == 0) 
+			if(fsr == 0 && isGoodHLT == 1) 
 			{
 				isMM_nonFSR = 1;
 				FillMM(mymuon1, mymuon2, correctedMuon1, correctedMuon2, doMC, doR9Rescaling, mcParticles);
 				miniTree->Fill();
 			}
-			else
+			/*else if (fsr == 1)
 			{
 				isMM_nonFSR = 0;
                                 FillMM(mymuon1, mymuon2, correctedMuon1, correctedMuon2, doMC, doR9Rescaling, mcParticles);
                                 miniTree->Fill();
 			}
+			else
+			{
+				isMM_nonFSR = -1;
+                                FillMM(mymuon1, mymuon2, correctedMuon1, correctedMuon2, doMC, doR9Rescaling, mcParticles);
+                                miniTree->Fill();
+                        }
+			*/
 			//mumu.Clear();
 			//mymuon1->Clear();
 			//mymuon2->Clear();
-		
+	
+			delete correctedMuon1;
+                        correctedMuon1 = 0;
+                        delete correctedMuon2;
+                        correctedMuon2 = 0;	
 		}
 
 
@@ -1751,7 +1773,7 @@ int main(int argc, char *argv[])
 
 
 	cout << "Nb_events_outside_powheg_cuts= " << Nb_events_outside_powheg_cuts << endl << endl;
-	for(int i = 0; i < 5 ; i++)
+	for(int i = 0; i < nbMuonsIDs ; i++)
 	{
 		cout << "TOTALnbMuonsAfterID["<<i<<"]=\t" << TOTALnbMuonsAfterID[i] << "\t\t" << "TOTALnbEventsAfterMuonID["<<i<<"]=\t" << TOTALnbEventsAfterMuonID[i] << endl;
 	}

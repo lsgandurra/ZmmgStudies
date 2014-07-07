@@ -24,7 +24,8 @@ int main(int argc, char *argv[])
         string dataType = "data";
         string fitVariable = "mmg_s";
         string eta = "Barrel"; 
-        string r9 = "low";
+        string r9 = "high";
+	int bin = 3;
         string trueModel = "voigtian";
 	string testModel = "cruijff"; 
 
@@ -33,11 +34,16 @@ int main(int argc, char *argv[])
         if( argc > 3 ) fitVariable = argv[3];
         if( argc > 4 ) eta = argv[4];
         if( argc > 5 ) r9 = argv[5];
-	if( argc > 6 ) trueModel = argv[6];
-	if( argc > 7 ) testModel = argv[7];
+	if( argc > 6 ) 
+        {
+                std::stringstream ss ( argv[6] );
+                ss >> bin;
+        }	
+	if( argc > 7 ) trueModel = argv[7];
+	if( argc > 8 ) testModel = argv[8];
 
 
-	string directoryNameOpen = directoryName + Form("/%s/Selected_Fits/%s_%s_%sR9_%s/",dataType.c_str(),fitVariable.c_str(),eta.c_str(),r9.c_str(),trueModel.c_str());
+	string directoryNameOpen = directoryName + Form("/%s/Selected_Fits/Bin_%d/%s_%s_%sR9_%s/",dataType.c_str(),bin,fitVariable.c_str(),eta.c_str(),r9.c_str(),trueModel.c_str());
 	string fileName = "fitsInformationsRaw.txt";
 
 	cout<<endl<<"directoryNameOpen = "<<directoryNameOpen<<endl;
@@ -102,14 +108,14 @@ int main(int argc, char *argv[])
         	cout << "ERROR: Impossible to open the file." << endl;
         }
 
-	for(int j = 0; j < nbRows; j++)
+	for(int j = 0; j < nbRows; j++) 
         {
         	fitParametersFile >> temp_number;
                 fitParameters.push_back(temp_number);
         }
 
 	directoryName += Form("/%s/Selected_Fits/FitFunctionSystematics/",dataType.c_str()); //FIXME
-	fileName = Form("%s_%s_%sR9_%s",fitVariable.c_str(),eta.c_str(),r9.c_str(),trueModel.c_str());
+	fileName = Form("%s_%s_%sR9_%s_Bin%d",fitVariable.c_str(),eta.c_str(),r9.c_str(),trueModel.c_str(),bin);
 
 	RooRealVar variable(fitVariable.c_str(), fitVariableName.c_str(), xMinFitVariable, xMaxFitVariable);
 	RooAbsData * absData = 0;
@@ -122,12 +128,13 @@ int main(int argc, char *argv[])
         setTDRStyle();
 	TCanvas * c1 = new TCanvas("c1", "c1",0,0,600,600);
 	TLatex latexLabel;
-	for(int i = 0; i < nbFits; i++)
-	{
-		fileName += Form("_%d",i);
+	//for(int i = 0; i < nbFits; i++)
+	//{
+		//fileName += Form("_%d",i);
 		if(trueModel == "voigtian" && testModel == "cruijff")
 		{
-			temp_iter = i * ( 2 + 6 + fitParameters[2] * 2 ) + 3;	
+			//temp_iter = i * ( 2 + 6 + fitParameters[2] * 2 ) + 3;//FIXME !!
+			temp_iter = bin * ( 2 + 6 + fitParameters[2] * 2 ) + 3;	
 			reducedFitParameters.push_back(fitParameters[temp_iter - 2]); //entries	
 			reducedFitParameters.push_back(fitParameters[temp_iter]); //mean
 			reducedFitParameters.push_back(fitParameters[temp_iter + 2]); //sigma
@@ -240,7 +247,7 @@ int main(int argc, char *argv[])
 
         		ofstream summaryFile(Form("%sSummary_fitFunctionSystematics.txt",directoryName.c_str()), ios::app);
 
-        		summaryFile << fitVariable << " " << dataType << " >> " << r9 << " r9 " << eta << ", trueModel = " << trueModel <<", testModel = " << testModel << ", systematics : " << fitFunctionSystematics * 100 << " %" << endl;;
+        		summaryFile << fitVariable << " " << dataType << " >> " << "Bin" << bin << ", " << r9 << " r9 " << eta << ", trueModel = " << trueModel <<", testModel = " << testModel << ", systematics : " << fitFunctionSystematics * 100 << " %" << endl;;
 
         		summaryFile.close();
 
@@ -248,7 +255,7 @@ int main(int argc, char *argv[])
 		}
 		c1->Clear();
 		reducedFitParameters.erase(reducedFitParameters.begin(),reducedFitParameters.end());
-	}
+	//}
 
 
 	return 0;

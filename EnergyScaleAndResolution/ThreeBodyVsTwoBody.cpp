@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
         if(r9 == "high") directoryName += "highR9/";
         if(r9 == "all") directoryName += "AllR9/";
 
-	TString cut = Form("%s > %s",cutVariable.c_str(), cutVariableValue.c_str());
+	TString cut = Form("%s > %s && isAfterFSRCut1",cutVariable.c_str(), cutVariableValue.c_str());
 
 	if(r9 == "low" && eta == "Barrel") cut += " && Photon_isEB == 1 && Photon_r9 < 0.94";
         if(r9 == "high" && eta == "Barrel") cut += " && Photon_isEB == 1 && Photon_r9 > 0.94";
@@ -83,19 +83,30 @@ int main(int argc, char *argv[])
 	TChain * dYToMuMuNonFSRChain = new TChain("miniTree");
 	TChain * ttJetsChain = new TChain("miniTree");
 	TChain * wJetsChain = new TChain("miniTree");
+/*
+	dataChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_Run2012A_22Jan2013_v1_November2013_0_injRe0_v1_partALL.root");
+        dataChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_parked_Run2012B_22Jan2013_v1_November2013_0_injRe0_v1_partALL.root");
+        dataChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_parked_Run2012C_22Jan2013_v1_November2013_0_injRe0_v1_partALL.root");
+        dataChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_parked_Run2012D_22Jan2013_v1_November2013_0_injRe0_v1_partALL.root");
 
-	dataChain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_Run2012A_13Jul2012_v1_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-        dataChain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_Run2012A_recover_06Aug2012_v1_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-        dataChain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_Run2012B_13Jul2012_v4_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-        dataChain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_Run2012C-24Aug2012-v1_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-        dataChain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_Run2012C-EcalRecover_11Dec2012-v1_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-        dataChain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_Run2012C_PromptReco_v2_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-        dataChain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_Run2012D_PromptReco_v1_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
+	dYToMuMuFSRChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_DYToMuMu_Summer12_November2013_1_injRe0_v4_partALL.root");
+	dYToMuMuNonFSRChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_DYToMuMu_Summer12_November2013_2_injRe0_v4_partALL.root");
+	ttJetsChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_TTJets_FullLeptMGDecays_Summer12_November2013_v2_3_injRe0_v4_partALL.root");
+	ttJetsChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_TTJets_SemiLeptMGDecays_Summer12_November2013_3_injRe0_v4_partALL.root");
+	ttJetsChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_TTJets_HadronicMGDecays_Summer12_November2013_v2_temp218_3_injRe0_v4_partALL.root");
+	wJetsChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_WJetsToLNu_Summer12_S10_November2013_3_injRe0_v4_partALL.root");	
+	*/
 
-	dYToMuMuFSRChain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_1_injRe0_v6_partALL.root");
-	dYToMuMuNonFSRChain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_2_injRe0_v6_partALL.root");
-	ttJetsChain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_TTJets_Summer12_S7_NewMuonID_NewSelection_3_injRe0_v6_partALL.root");
-	wJetsChain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_WJetsToLNu_Summer12_S10_NewMuonID_NewSelection_3_injRe0_v6_partALL.root");	
+	dataChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_Run2012A_22Jan2013_v1_November2013_0_thesis_v1_partALL.root");
+        dataChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_parked_Run2012B_22Jan2013_v1_November2013_0_thesis_v1_partALL.root");
+        dataChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_parked_Run2012C_22Jan2013_v1_November2013_0_thesis_v1_partALL.root");
+        dataChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_parked_Run2012D_22Jan2013_v1_November2013_0_thesis_v1_partALL.root");
+
+        dYToMuMuFSRChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouple_DYToMuMu_Summer12_S10_reg5_1_thesis_v1_partALL.root");
+        dYToMuMuNonFSRChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouple_DYToMuMu_Summer12_S10_reg5_2_thesis_v1_partALL.root");
+        ttJetsChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouple_TTJets_Summer12_S10_reg5_3_thesis_v1_partALL.root");
+        wJetsChain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_WJetsToLNu_Summer12_S10_November2013_3_thesis_v1_partALL.root");
+
 
 	
 	TCanvas *c1 = new TCanvas("c1", "c1",0,0,600,600);
@@ -103,6 +114,8 @@ int main(int argc, char *argv[])
 	//TH2D *data = new TH2D("data","data", nBinsX, xMin, xMax,nBinsY,yMin,yMax);	
 	TH2D *dYToMuMuFSR = new TH2D("dYToMuMuFSR","dYToMuMuFSR", nBinsX, xMin, xMax,nBinsY,yMin,yMax);
 	TH2D *dYToMuMuNonFSR = new TH2D("dYToMuMuNonFSR","dYToMuMuNonFSR", nBinsX, xMin, xMax,nBinsY,yMin,yMax);
+	TH2D *ttJets = new TH2D("ttJets","ttJets", nBinsX, xMin, xMax,nBinsY,yMin,yMax);
+	TH2D *wJets = new TH2D("wJets","wJets", nBinsX, xMin, xMax,nBinsY,yMin,yMax);
 
 	/*TH1D *dYToMuMuFSR = new TH1D("dYToMuMuFSR","dYToMuMuFSR", nBins, xMin, xMax);
 	TH1D *dYToMuMuNonFSR = new TH1D("dYToMuMuNonFSR","dYToMuMuNonFSR", nBins, xMin, xMax);
@@ -113,12 +126,15 @@ int main(int argc, char *argv[])
 	//dataChain->Draw("Mmumugamma:Mmumu>>data",cut);
 	dYToMuMuFSRChain->Draw("Mmumugamma:Mmumu>>dYToMuMuFSR",cut);
 	dYToMuMuNonFSRChain->Draw("Mmumugamma:Mmumu>>dYToMuMuNonFSR",cut);	
+	ttJetsChain->Draw("Mmumugamma:Mmumu>>ttJets",cut);
+	wJetsChain->Draw("Mmumugamma:Mmumu>>wJets",cut);
 
 /*dYToMuMuFSRChain->Draw(Form("%s>>dYToMuMuFSR",xVariable.c_str()),cut);
 	dYToMuMuNonFSRChain->Draw(Form("%s>>dYToMuMuNonFSR",xVariable.c_str()),cut);
 	ttJetsChain->Draw(Form("%s>>ttJets",xVariable.c_str()),cut);
 	wJetsChain->Draw(Form("%s>>wJets",xVariable.c_str()),cut);	
 */
+
 	// --- 2012 Lumi --- //
         double lumidata = 808.472 + 82.136 + 4429.0 + 495.003 + 134.242 + 6397.0 + 7274.0;
         //double lumidata = 808.472 + 82.136 + 4429.0 + 495.003 + 134.242 + 6397.0;
@@ -200,7 +216,9 @@ int main(int argc, char *argv[])
 	//dYToMuMuFSR->GetYaxis()->SetTitle(Form("%s",yVariableName.c_str()));
 	dYToMuMuNonFSR->GetXaxis()->SetTitle("M_{#mu#mu}");
 	dYToMuMuNonFSR->GetYaxis()->SetTitle("M_{#mu#mu#gamma}");		
-	dYToMuMuNonFSR->GetYaxis()->SetTitleOffset(1.4);
+	//dYToMuMuNonFSR->GetYaxis()->SetTitleOffset(1.4);
+	dYToMuMuNonFSR->GetYaxis()->SetTitleOffset(1.55);
+        dYToMuMuNonFSR->GetXaxis()->SetTitleOffset(1.40);
 
 	/*
 	dYToMuMuFSR->GetXaxis()->SetLabelFont(42);
@@ -211,12 +229,23 @@ int main(int argc, char *argv[])
 	*/
 
 	
-	dYToMuMuNonFSR->Draw("");
-	dYToMuMuFSR->Draw("SAMES");
-	/*ttJets->Draw("SAMES");
-	wJets->Draw("SAMES");
-	data->Draw("E1SAMES");
-	*/
+	//dYToMuMuNonFSR->Draw("");
+	//ttJets->Draw("SAMES");
+	//wJets->Draw("SAMES");
+	//dYToMuMuFSR->Draw("SAMES");
+	
+	
+	ttJets->Draw("");
+        wJets->Draw("SAMES");
+	
+	ttJets->GetXaxis()->SetTitle("M_{#mu#mu}");
+        ttJets->GetYaxis()->SetTitle("M_{#mu#mu#gamma}");
+        //ttJets->GetYaxis()->SetTitleOffset(1.4);
+	ttJets->GetYaxis()->SetTitleOffset(1.55);
+        ttJets->GetXaxis()->SetTitleOffset(1.40);
+	
+	//data->Draw("E1SAMES");
+	
 
 	//dYToMuMuFSR->SetFillColor(2);
    	dYToMuMuFSR->SetFillColor(kGreen-7);
@@ -227,18 +256,20 @@ int main(int argc, char *argv[])
 	dYToMuMuNonFSR->SetMarkerColor(kAzure-5);
         //dYToMuMuNonFSR->SetFillStyle(3001);
 	//ttJets->SetFillColor(4);
-/*	ttJets->SetFillColor(kBlue-1);
+	ttJets->SetFillColor(kBlue-1);
+	ttJets->SetMarkerColor(kBlue-1);
         //ttJets->SetFillStyle(3001);
 	//wJets->SetFillColor(5);
 	wJets->SetFillColor(kCyan+2);
-        //wJets->SetFillStyle(3001);
-*/
+        wJets->SetMarkerColor(kCyan+2);
+	//wJets->SetFillStyle(3001);
+
 //	data->SetName("data");
 	dYToMuMuFSR->SetName("dYToMuMuFSR");
 	dYToMuMuNonFSR->SetName("dYToMuMuNonFSR");
-/*	ttJets->SetName("ttJets");
+	ttJets->SetName("ttJets");
 	wJets->SetName("wJets");
-*/
+
 	TLegend leg(xMinLeg,yMinLeg,xMaxLeg,yMaxLeg,"","brNDC");
 	leg.SetTextFont(42);
         leg.SetTextSize(legTextSize);
@@ -246,10 +277,10 @@ int main(int argc, char *argv[])
         leg.SetLineColor(kWhite);
         leg.SetShadowColor(kWhite);
         //leg.AddEntry(data->GetName(),"data","lep");
-        leg.AddEntry(dYToMuMuFSR->GetName(),"Z#mu#mu + #gamma FSR","f");
-        leg.AddEntry(dYToMuMuNonFSR->GetName(),"Z#mu#mu + #gamma ISR","f");
-        //leg.AddEntry(ttJets->GetName(),"t#bar{t} + jets","f");
-        //leg.AddEntry(wJets->GetName(),"W + jets","f");
+        //leg.AddEntry(dYToMuMuFSR->GetName(),"Z#mu#mu + #gamma FSR","f");
+        //leg.AddEntry(dYToMuMuNonFSR->GetName(),"Z#mu#mu + #gamma non FSR","f");
+        leg.AddEntry(ttJets->GetName(),"t#bar{t} + jets","f");
+        leg.AddEntry(wJets->GetName(),"W + jets","f");
 	leg.Draw();
 
 	TLatex latexLabel;
@@ -257,8 +288,9 @@ int main(int argc, char *argv[])
 	latexLabel.SetTextSize(0.028);
 	latexLabel.SetNDC();
 	//latexLabel.DrawLatex(0.25, 0.96, "CMS             2012               #sqrt{s} = 8 TeV               L = 19.6 fb^{-1}");
-	latexLabel.DrawLatex(0.25, 0.96, "CMS 2012                      #sqrt{s} = 8 TeV                        Simulation");	
-
+	//latexLabel.DrawLatex(0.25, 0.96, "CMS 2012                      #sqrt{s} = 8 TeV                        Simulation");	
+	//latexLabel.DrawLatex(0.25, 0.96, "CMS Preliminary 2012                #sqrt{s} = 8 TeV                Simulation");
+	latexLabel.DrawLatex(0.25, 0.96, "CMS Private 2012                 #sqrt{s} = 8 TeV                 Simulation");
 
 	plotsRecording(directoryName, fileName, c1);
 
@@ -271,11 +303,11 @@ int main(int argc, char *argv[])
         dYToMuMuFSR = 0;
 	dYToMuMuNonFSR->Delete();
         dYToMuMuNonFSR = 0;
-	/*ttJets->Delete();
+	ttJets->Delete();
         ttJets = 0;
 	wJets->Delete();
         wJets = 0;
-	*/dataChain->Delete();
+	dataChain->Delete();
 	dataChain = 0;
 	dYToMuMuFSRChain->Delete();
         dYToMuMuFSRChain = 0;

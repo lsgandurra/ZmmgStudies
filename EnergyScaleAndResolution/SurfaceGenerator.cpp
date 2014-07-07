@@ -20,12 +20,12 @@ int main(int argc, char *argv[])
         }	
 
 	string directoryName = "Surface_generation_v1";
-	string dataType = "data";
+	string dataType = "MC";
 	int surfaceBinning = 5;
 	int nbJobs = 200;
-	string option = "MmumuFit";//"plot2D_pro" "plot3D_pro" "plot2D_fit" "plot3D_fit" "MmumuPro" "MmumuFit";
+	string option = "plot2D_pro";//"plot2D_pro" "plot3D_pro" "plot2D_fit" "plot3D_fit" "MmumuPro" "MmumuFit";
 	string fitFunction = "voigtian";
-	string MmumuOption = "MmumuRECO"; // "MmumuRECO" "MmumuGEN" "MmumugammaRECO" "MmumugammaGEN"
+	string MmumuOption = "MmumugammaGEN"; // "MmumuRECO" "MmumuGEN" "MmumugammaRECO" "MmumugammaGEN"
 
 	if( argc > 1 ) directoryName = argv[1];
 	if( argc > 2 ) dataType = argv[2];
@@ -50,26 +50,26 @@ int main(int argc, char *argv[])
 	if(MmumuOption == "MmumuRECO") 
 	{
 		zAxisTitle = "M_{#mu#mu} (GeV)";
-		yAxisTitle = "P_{T_{#mu leading}}";
-        	xAxisTitle = "P_{T_{#mu trailing}}";
+		yAxisTitle = "P_{T}^{#mu leading}";
+        	xAxisTitle = "P_{T}^{#mu trailing}";
 	}
 	if(MmumuOption == "MmumuGEN")
         {
                 zAxisTitle = "M_{#mu#mu GEN} (GeV)";
-                yAxisTitle = "P_{T_{#mu leading} GEN}";
-                xAxisTitle = "P_{T_{#mu trailing} GEN}";
+                yAxisTitle = "P_{T}^{#mu leading GEN}";
+                xAxisTitle = "P_{T}^{#mu trailing GEN}";
         }
 	if(MmumuOption == "MmumugammaRECO")
         {
                 zAxisTitle = "M_{#mu#mu#gamma} (GeV)";
-                yAxisTitle = "P_{T_{#mu(+#gamma) leading}}";
-                xAxisTitle = "P_{T_{#mu(+#gamma) trailing}}";
+                yAxisTitle = "P_{T}^{#mu(+#gamma) leading}";
+                xAxisTitle = "P_{T}^{#mu(+#gamma) trailing}";
         }
         if(MmumuOption == "MmumugammaGEN")
         {
                 zAxisTitle = "M_{#mu#mu#gamma GEN} (GeV)";
-                yAxisTitle = "P_{T_{#mu(+#gamma) leading} GEN}";
-                xAxisTitle = "P_{T_{#mu(+#gamma) trailing} GEN}";
+                yAxisTitle = "P_{T}^{#mu(+#gamma) leading GEN}";
+                xAxisTitle = "P_{T}^{#mu(+#gamma) trailing GEN}";
         }
 	
 
@@ -80,23 +80,19 @@ int main(int argc, char *argv[])
         {
 		if(MmumuOption == "MmumuRECO")
 		{
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_Run2012A_13Jul2012_v1_NewMuonID_NewSelection_v1_partALL.root");
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_Run2012A_recover_06Aug2012_v1_NewMuonID_NewSelection_v1_partALL.root");
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_Run2012B_13Jul2012_v4_NewMuonID_NewSelection_v1_partALL.root");
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_Run2012C-24Aug2012-v1_NewMuonID_NewSelection_v1_partALL.root");
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_Run2012C-EcalRecover_11Dec2012-v1_NewMuonID_NewSelection_v1_partALL.root");
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_Run2012C_PromptReco_v2_NewMuonID_NewSelection_v1_partALL.root");
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_Run2012D_PromptReco_v1_NewMuonID_NewSelection_v1_partALL.root");		
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_muons_totouples_Run2012A_22Jan2013_v1_noSkim_v1_March_v2_reduced_partALL.root");
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_muons_totouples_parked_Run2012B_22Jan2013_v1_noSkim_v1_part1_March_v2_reduced_partALL.root");
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_muons_totouples_parked_Run2012B_22Jan2013_v1_noSkim_v1_part2_March_v2_reduced_partALL.root");
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_muons_totouples_parked_Run2012C_22Jan2013_v1_noSkim_v1_part1_March_v2_reduced_partALL.root");
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_muons_totouples_parked_Run2012C_22Jan2013_v1_noSkim_v1_part2_March_v2_reduced_partALL.root");
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_muons_totouples_parked_Run2012C_22Jan2013_v1_noSkim_v1_part3_March_v2_reduced_partALL.root");
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_muons_totouples_parked_Run2012D_22Jan2013_v1_noSkim_v1_part1_March_v2_reduced_partALL.root");
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_muons_totouples_parked_Run2012D_22Jan2013_v1_noSkim_v1_part2_March_v2_reduced_partALL.root");
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_muons_totouples_parked_Run2012D_22Jan2013_v1_noSkim_v1_part3_March_v2_reduced_partALL.root");
 		}
-		if(MmumuOption == "MmumugammaRECO")
+		if(MmumuOption == "MmumugammaRECO")//FIXME
 		{
 			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_Run2012A_13Jul2012_v1_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_Run2012A_recover_06Aug2012_v1_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_Run2012B_13Jul2012_v4_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_Run2012C-24Aug2012-v1_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_Run2012C-EcalRecover_11Dec2012-v1_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_Run2012C_PromptReco_v2_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_Run2012D_PromptReco_v1_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
 
 
 		}
@@ -106,19 +102,18 @@ int main(int argc, char *argv[])
 		
 		if(MmumuOption == "MmumuRECO" || MmumuOption == "MmumuGEN")
 		{
-        		chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_DYToMuMu_Summer12_NewMuonID_NewSelection_v1_partALL.root");
-	        	//chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_TTJets_Summer12_S7_NewMuonID_NewSelection_v1_partALL.root");
-                	//chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_WJetsToLNu_Summer12_S10_NewMuonID_NewSelection_v1_partALL.root");
-        	}
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_muons_totouple_DYToMuMu_Summer12_S10_reg5_noSkim_v1_March_v2_reduced_partALL.root");
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_muons_totouple_TTJets_Summer12_S10_reg5_noSkim_v1_March_v2_reduced_partALL.root");
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_muons_totouples_WJetsToLNu_Summer12_S10_noSkim_v1_part1_March_v2_reduced_partALL.root");
+                        chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_muons_totouples_WJetsToLNu_Summer12_S10_noSkim_v1_part2_March_v2_reduced_partALL.root");
+                        chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_muons_totouples_WJetsToLNu_Summer12_S10_noSkim_v1_part3_March_v2_reduced_partALL.root");
+		}
 		if(MmumuOption == "MmumugammaRECO" || MmumuOption == "MmumugammaGEN")
                 {
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_1_injRe0_v7_partALL.root");
-			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_2_injRe0_v7_partALL.root");
-			//chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_1_injRe0_v6_partALL.root");
-			//chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_2_injRe0_v6_partALL.root");
-			//chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_TTJets_Summer12_S7_NewMuonID_NewSelection_3_injRe0_v6_partALL.root");
-			//chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_WJetsToLNu_Summer12_S10_NewMuonID_NewSelection_3_injRe0_v6_partALL.root");
-
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouple_DYToMuMu_Summer12_S10_reg5_1_thesis_v1f_recoEnergy_s10_partALL.root");
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouple_DYToMuMu_Summer12_S10_reg5_2_thesis_v1f_recoEnergy_s10_partALL.root");
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouple_TTJets_Summer12_S10_reg5_3_thesis_v1f_recoEnergy_s10_partALL.root");
+			chain->Add("/sps/cms/sgandurr/CMSSW_5_3_11_patch3_RECO_5_3_11_v1_hggpaperV5/src/ZmmgStudies/Selection/miniTree_totouples_WJetsToLNu_Summer12_S10_November2013_3_thesis_v1f_recoEnergy_s10_partALL.root");					
 		}
 	}
 	
@@ -126,6 +121,7 @@ int main(int argc, char *argv[])
         TGaxis::SetMaxDigits(3);
         setTDRStyle();
 	gStyle->SetPalette(1,0);
+	//gStyle->SetPalette(1);
 	TCanvas *c1 = new TCanvas("c1", "c1",0,0,600,600);
 
 	directoryName += Form("/%s/Binning_%dGeV/%s/%s/",dataType.c_str(),surfaceBinning,option.c_str(),MmumuOption.c_str());
@@ -134,8 +130,8 @@ int main(int argc, char *argv[])
 
 	TString cut = "isMM_nonFSR == 1 && MuonL_Pt < 200 && MuonS_Pt < 200";
 
-	int xMax = 200;
-	int yMax = 200;
+	int xMax = 100;
+	int yMax = 100;
 
 	int nbBins = xMax / surfaceBinning;
 
@@ -163,15 +159,18 @@ int main(int argc, char *argv[])
 	{
 		if(MmumuOption == "MmumuRECO" || MmumuOption == "MmumuGEN")
 		{
-			cut = "isMM_nonFSR == 1";
-			cut += " && ( hltnames == \"HLT_Mu17_TkMu8_v9\" || hltnames == \"HLT_Mu17_TkMu8_v10\" || hltnames == \"HLT_Mu17_TkMu8_v11\" || hltnames == \"HLT_Mu17_TkMu8_v12\" || hltnames == \"HLT_Mu17_TkMu8_v13\" || hltnames == \"HLT_Mu17_TkMu8_v14\" || hltnames == \"HLT_Mu17_TkMu8_v15\" || hltnames == \"HLT_Mu17_TkMu8_v16\" )";
-
+			cut = "(isMM_nonFSR == 1"; //FIXME == 1 ou == 2 !
+			//cut += " && ( hltnames == \"HLT_Mu17_TkMu8_v9\" || hltnames == \"HLT_Mu17_TkMu8_v10\" || hltnames == \"HLT_Mu17_TkMu8_v11\" || hltnames == \"HLT_Mu17_TkMu8_v12\" || hltnames == \"HLT_Mu17_TkMu8_v13\" || hltnames == \"HLT_Mu17_TkMu8_v14\" || hltnames == \"HLT_Mu17_TkMu8_v15\" || hltnames == \"HLT_Mu17_TkMu8_v16\" )";
+			//cut += " && ( hltnames == \"HLT_Mu17_Mu8_v1\" || hltnames == \"HLT_Mu17_Mu8_v2\" || hltnames == \"HLT_Mu17_Mu8_v3\" || hltnames == \"HLT_Mu17_Mu8_v4\" || hltnames == \"HLT_Mu17_Mu8_v5\" || hltnames == \"HLT_Mu17_Mu8_v6\" || hltnames == \"HLT_Mu17_Mu8_v7\" || hltnames == \"HLT_Mu17_Mu8_v8\" || hltnames == \"HLT_Mu17_Mu8_v9\" || hltnames == \"HLT_Mu17_Mu8_v10\" || hltnames == \"HLT_Mu17_Mu8_v11\" || hltnames == \"HLT_Mu17_Mu8_v12\" || hltnames == \"HLT_Mu17_Mu8_v13\" || hltnames == \"HLT_Mu17_Mu8_v14\" || hltnames == \"HLT_Mu17_Mu8_v15\" || hltnames == \"HLT_Mu17_Mu8_v16\" || hltnames == \"HLT_Mu17_Mu8_v17\" || hltnames == \"HLT_Mu17_Mu8_v18\" || hltnames == \"HLT_Mu17_Mu8_v19\" || hltnames == \"HLT_Mu17_Mu8_v20\" || hltnames == \"HLT_Mu17_Mu8_v21\" || hltnames == \"HLT_Mu17_Mu8_v22\" || hltnames == \"HLT_Mu17_Mu8_v23\"))*weight_pileUp*weight_Xsection";
+			cut += " && isGoodHLT == 1)*weight_pileUp*weight_Xsection";
 		}	
 		if(MmumuOption == "MmumugammaRECO" || MmumuOption == "MmumugammaGEN") 
                 {
-                	cut = "isJanLooseMMG == 1";
-                        cut += " && ( hltnames == \"HLT_Mu17_TkMu8_v9\" || hltnames == \"HLT_Mu17_TkMu8_v10\" || hltnames == \"HLT_Mu17_TkMu8_v11\" || hltnames == \"HLT_Mu17_TkMu8_v12\" || hltnames == \"HLT_Mu17_TkMu8_v13\" || hltnames == \"HLT_Mu17_TkMu8_v14\" || hltnames == \"HLT_Mu17_TkMu8_v15\" || hltnames == \"HLT_Mu17_TkMu8_v16\" )";
-                }	
+                	cut = "(isJanLooseMMG == 1";
+                        //cut += " && ( hltnames == \"HLT_Mu17_TkMu8_v9\" || hltnames == \"HLT_Mu17_TkMu8_v10\" || hltnames == \"HLT_Mu17_TkMu8_v11\" || hltnames == \"HLT_Mu17_TkMu8_v12\" || hltnames == \"HLT_Mu17_TkMu8_v13\" || hltnames == \"HLT_Mu17_TkMu8_v14\" || hltnames == \"HLT_Mu17_TkMu8_v15\" || hltnames == \"HLT_Mu17_TkMu8_v16\" )";
+                	//cut += " && ( hltnames == \"HLT_Mu17_Mu8_v1\" || hltnames == \"HLT_Mu17_Mu8_v2\" || hltnames == \"HLT_Mu17_Mu8_v3\" || hltnames == \"HLT_Mu17_Mu8_v4\" || hltnames == \"HLT_Mu17_Mu8_v5\" || hltnames == \"HLT_Mu17_Mu8_v6\" || hltnames == \"HLT_Mu17_Mu8_v7\" || hltnames == \"HLT_Mu17_Mu8_v8\" || hltnames == \"HLT_Mu17_Mu8_v9\" || hltnames == \"HLT_Mu17_Mu8_v10\" || hltnames == \"HLT_Mu17_Mu8_v11\" || hltnames == \"HLT_Mu17_Mu8_v12\" || hltnames == \"HLT_Mu17_Mu8_v13\" || hltnames == \"HLT_Mu17_Mu8_v14\" || hltnames == \"HLT_Mu17_Mu8_v15\" || hltnames == \"HLT_Mu17_Mu8_v16\" || hltnames == \"HLT_Mu17_Mu8_v17\" || hltnames == \"HLT_Mu17_Mu8_v18\" || hltnames == \"HLT_Mu17_Mu8_v19\" || hltnames == \"HLT_Mu17_Mu8_v20\" || hltnames == \"HLT_Mu17_Mu8_v21\" || hltnames == \"HLT_Mu17_Mu8_v22\" || hltnames == \"HLT_Mu17_Mu8_v23\"))*weight_pileUp*weight_Xsection";
+			cut += " && isGoodHLT_Mu17_Mu8 == 1)*weight_pileUp*weight_Xsection";
+		}	
 
 		reducedChain = (TChain *) chain->CopyTree(cut);
 		for(int i = 0; i < nbBins; i++)
@@ -180,11 +179,12 @@ int main(int argc, char *argv[])
                 	{
 				if(MmumuOption == "MmumuRECO" || MmumuOption == "MmumuGEN") 
 				{	
-					cut = Form("MuonL_Pt > %d && MuonL_Pt <= %d && MuonS_Pt > %d && MuonS_Pt <= %d",i * surfaceBinning,(i+1) * surfaceBinning,j * surfaceBinning,(j+1) * surfaceBinning);
+					cut = Form("(Mmumu > 70.0 && Mmumu < 110.0 && MuonL_Pt > %d && MuonL_Pt <= %d && MuonS_Pt > %d && MuonS_Pt <= %d)*weight_pileUp*weight_Xsection",i * surfaceBinning,(i+1) * surfaceBinning,j * surfaceBinning,(j+1) * surfaceBinning); //Mmumu or Mmumu_Muons_MC should be approximately similar
+					 
 				}
 				if(MmumuOption == "MmumugammaRECO" || MmumuOption == "MmumugammaGEN") 
                                 {
-                                        cut = Form("ptMuGammaL > %d && ptMuGammaL <= %d && ptMuGammaS > %d && ptMuGammaS <= %d",i * surfaceBinning,(i+1) * surfaceBinning,j * surfaceBinning,(j+1) * surfaceBinning);
+                                        cut = Form("(Mmumu > 70.0 && Mmumu < 110.0 && ptMuGammaL > %d && ptMuGammaL <= %d && ptMuGammaS > %d && ptMuGammaS <= %d)*weight_pileUp*weight_Xsection",i * surfaceBinning,(i+1) * surfaceBinning,j * surfaceBinning,(j+1) * surfaceBinning);
 				}
 			
 				//if(reducedChain->GetEntries(cut) != 0) nbFits++;
@@ -247,8 +247,8 @@ int main(int argc, char *argv[])
 	TH2D *h3 = NULL;
 	TH2D *h4 = NULL;
 
-	h1 = new TH2D("h1", "h1", nbBins, 0, 200, nbBins, 0, 200); //FIXME 100 ?
-	h2 = new TH2D("h2", "h2", nbBins, 0, 200, nbBins, 0, 200); //FIXME 100 ?
+	h1 = new TH2D("h1", "h1", nbBins, 0, 100, nbBins, 0, 200); //FIXME 100 ?
+	h2 = new TH2D("h2", "h2", nbBins, 0, 100, nbBins, 0, 100); //FIXME 100 ?
 
 	if(option == "plot2D_pro" || option == "plot3D_pro")
         {
@@ -283,16 +283,21 @@ int main(int argc, char *argv[])
 		}
 		if(MmumuOption == "MmumugammaGEN")
                 {
-                        cut = "Mmumugamma_MMG_MC * ( isJanLooseMMG )";
-                        chain->Draw("((sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2))>MuonF_Pt)?sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2)):MuonF_Pt):((sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2))<MuonF_Pt)?sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2)):MuonF_Pt) >>h1", cut, "LEGO2");
-                        h3 = (TH2D*)gDirectory->Get("h1");
+                        //cut = "Mmumugamma_MMG_MC * ( isJanLooseMMG )";
+                        //chain->Draw("((sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2))>MuonF_Pt)?sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2)):MuonF_Pt):((sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2))<MuonF_Pt)?sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2)):MuonF_Pt) >>h1", cut, "LEGO2");
+                        //h3 = (TH2D*)gDirectory->Get("h1");
                         cut = "isJanLooseMMG";
                         chain->Draw("((sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2))>MuonF_Pt)?sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2)):MuonF_Pt):((sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2))<MuonF_Pt)?sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2)):MuonF_Pt) >>h2", cut, "LEGO2");
+		
+			cut = "(isJanLooseMMG";
+                        cut += " && isGoodHLT_Mu17_Mu8 == 1)*weight_pileUp*weight_Xsection";
+                        chain->Draw("((sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2))>MuonF_Pt)?sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2)):MuonF_Pt):((sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2))<MuonF_Pt)?sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2)):MuonF_Pt) >>h1",cut);
+			h3 = (TH2D*)gDirectory->Get("h1");                
 
-                }
+		}
 		
 		h4 = (TH2D*)gDirectory->Get("h2");
-		h3->Divide(h4);
+		//h3->Divide(h4); //FIXME !!
 		c1->Clear();
         	
 	}
@@ -304,14 +309,17 @@ int main(int argc, char *argv[])
         {
 		if(MmumuOption == "MmumuRECO" || MmumuOption == "MmumuGEN")
 		{
-			cut = "isMM_nonFSR == 1";
-                        cut += " && ( hltnames == \"HLT_Mu17_TkMu8_v9\" || hltnames == \"HLT_Mu17_TkMu8_v10\" || hltnames == \"HLT_Mu17_TkMu8_v11\" || hltnames == \"HLT_Mu17_TkMu8_v12\" || hltnames == \"HLT_Mu17_TkMu8_v13\" || hltnames == \"HLT_Mu17_TkMu8_v14\" || hltnames == \"HLT_Mu17_TkMu8_v15\" || hltnames == \"HLT_Mu17_TkMu8_v16\" )";
+			cut = "(isMM_nonFSR == 1"; //FIXME == 1 ou == 2;
+                        //cut += " && ( hltnames == \"HLT_Mu17_TkMu8_v9\" || hltnames == \"HLT_Mu17_TkMu8_v10\" || hltnames == \"HLT_Mu17_TkMu8_v11\" || hltnames == \"HLT_Mu17_TkMu8_v12\" || hltnames == \"HLT_Mu17_TkMu8_v13\" || hltnames == \"HLT_Mu17_TkMu8_v14\" || hltnames == \"HLT_Mu17_TkMu8_v15\" || hltnames == \"HLT_Mu17_TkMu8_v16\" )";
+			//cut += " && ( hltnames == \"HLT_Mu17_Mu8_v1\" || hltnames == \"HLT_Mu17_Mu8_v2\" || hltnames == \"HLT_Mu17_Mu8_v3\" || hltnames == \"HLT_Mu17_Mu8_v4\" || hltnames == \"HLT_Mu17_Mu8_v5\" || hltnames == \"HLT_Mu17_Mu8_v6\" || hltnames == \"HLT_Mu17_Mu8_v7\" || hltnames == \"HLT_Mu17_Mu8_v8\" || hltnames == \"HLT_Mu17_Mu8_v9\" || hltnames == \"HLT_Mu17_Mu8_v10\" || hltnames == \"HLT_Mu17_Mu8_v11\" || hltnames == \"HLT_Mu17_Mu8_v12\" || hltnames == \"HLT_Mu17_Mu8_v13\" || hltnames == \"HLT_Mu17_Mu8_v14\" || hltnames == \"HLT_Mu17_Mu8_v15\" || hltnames == \"HLT_Mu17_Mu8_v16\" || hltnames == \"HLT_Mu17_Mu8_v17\" || hltnames == \"HLT_Mu17_Mu8_v18\" || hltnames == \"HLT_Mu17_Mu8_v19\" || hltnames == \"HLT_Mu17_Mu8_v20\" || hltnames == \"HLT_Mu17_Mu8_v21\" || hltnames == \"HLT_Mu17_Mu8_v22\" || hltnames == \"HLT_Mu17_Mu8_v23\")";
+			cut += " && isGoodHLT == 1)*weight_pileUp*weight_Xsection";
 			chain->Draw("MuonL_Pt:MuonS_Pt>>h1",cut);
 
 		}
 		if(MmumuOption == "MmumugammaGEN")
                 {
-			cut = "isJanLooseMMG";
+			cut = "(isJanLooseMMG";
+			cut += " && isGoodHLT_Mu17_Mu8 == 1)*weight_pileUp*weight_Xsection";
 			chain->Draw("((sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2))>MuonF_Pt)?sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2)):MuonF_Pt):((sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2))<MuonF_Pt)?sqrt(pow(MuonN_Px + Photon_Px,2) + pow(MuonN_Py + Photon_Py,2)):MuonF_Pt) >>h1",cut);
 		}
 		
@@ -371,7 +379,14 @@ int main(int argc, char *argv[])
 	h3->GetYaxis()->SetTitle(yAxisTitle.c_str());
 	h3->GetXaxis()->SetTitle(xAxisTitle.c_str());
 	h3->GetZaxis()->SetTitle(zAxisTitle.c_str());
-	h3->GetZaxis()->SetRangeUser(86,93);
+	h3->GetYaxis()->SetTitleOffset(1.55);
+	h3->GetXaxis()->SetTitleOffset(1.40);
+	if(option == "plot2D_fit") 
+	{
+		h3->GetXaxis()->SetRangeUser(0,100);
+		h3->GetYaxis()->SetRangeUser(0,100);
+		h3->GetZaxis()->SetRangeUser(86,93);
+	}
 
 	TPaletteAxis *palette = NULL;
 	if(option == "plot2D_pro" || option == "plot2D_fit")
@@ -379,9 +394,15 @@ int main(int argc, char *argv[])
 		//c1->Update(); 
                 //TPaletteAxis palette(96,0,100,100,h3);
 		palette = (TPaletteAxis*)h3->GetListOfFunctions()->FindObject("palette");
+		palette->SetX1NDC(0.92);
+		palette->SetX2NDC(0.95);
+		palette->SetLabelSize(0.025);
+		palette->SetLabelOffset(0.007);
+		palette->SetTitleOffset(0.007);
+		//palette->SetY2NDC(0.7);
 		//palette = new TPaletteAxis(96,0,100,100,h3);
-		palette->SetTitleSize(0.02);
-		/*palette->SetX1NDC(90);
+		/*palette->SetTitleSize(0.02);
+		palette->SetX1NDC(90);
 		palette->SetX2NDC(100);
 		palette->SetY1NDC(10);
 		palette->SetY2NDC(100);

@@ -16,13 +16,14 @@ int main(int argc, char *argv[])
 
         }    
 
-        string directoryName = "Results_v8_surface";
-        string dataType = "MC"; //data, MC, both, bothPlusTrue
-        string fitVariable = "mmg_s";
+        string directoryName = "Results_2012_thesis_v1_surface";
+        string dataType = "bothPlusTrue"; //data, MC, both, bothPlusTrue
+        string fitVariable = "mmg_s_MZ_Surface";
 	string cutVariable = "Photon_Et";
-	string binFileName = "LimitesAllPtOneBin.txt";
+	string binFileName = "LimitesAllPtFiveBin.txt";
 	string fitFunction = "voigtian";
 	string injectedResolution = "0";
+	string analysisVersion = "2012";
 
 	if( argc > 1 ) directoryName = argv[1];
 	if( argc > 2 ) dataType = argv[2];
@@ -31,13 +32,19 @@ int main(int argc, char *argv[])
 	if( argc > 5 ) binFileName = argv[5];
 	if( argc > 6 ) fitFunction = argv[6];
 	if( argc > 7 ) injectedResolution = argv[7];
+	if( argc > 8 ) analysisVersion = argv[8];
 
+	double xMinLeg, xMaxLeg, yMinLeg, yMaxLeg, legTextSize;
+        xMinLeg = 0.67;
+        xMaxLeg = 0.91;
+        yMinLeg = 0.24;
+	yMaxLeg = 0.44;
 
 	double xMinCutVariable, xMaxCutVariable, xMin, xMax;
 	string cutVariableName = "";
 	if(cutVariable == "Photon_Et") 
         {	
-		cutVariableName = "E^{#gamma} (GeV)";
+		cutVariableName = "P_{T}^{#gamma} (GeV)";
                 xMinCutVariable = 0.0; 
                 xMaxCutVariable = 250.0;
 		xMin = 0;
@@ -45,8 +52,9 @@ int main(int argc, char *argv[])
 	}
 
 	string yTitle = "";
-	if(fitVariable == "mmg_s") yTitle = "s (%)";
-	if(fitVariable == "mmg_s_MZ_Surface") yTitle = "s_{Surface} (%)";
+	if(fitVariable == "mmg_s") yTitle = "#mu(E_{#gamma}) (%)"; //yTitle = "s (%)";
+	if(fitVariable == "mmg_s_MZ_Surface") yTitle = "#mu(E_{#gamma}) (%)";
+	if(fitVariable == "mmg_s_low") yTitle = "#mu(E_{#gamma}) (%)";
 
 	int nBins = rowsNumberInFile(binFileName.c_str()) - 1;
 	int nbRows = 0;
@@ -127,36 +135,63 @@ int main(int argc, char *argv[])
 			                        dataType = "data";
 			                        fitVariable2 = "mmg_s";
 						fitFunction = "voigtian";
+						directoryName = "Results_2012_thesis_v1_7bins";
 			                }
 			                if(h == 1 && fitVariable == "mmg_s")
 			                {
 			                        dataType = "MC";
 			                        fitVariable2 = "mmg_s";
 						fitFunction = "voigtian";
+						directoryName = "Results_2012_thesis_v1_7bins";
 			                }
 			                if(h == 2 && fitVariable == "mmg_s")
 			                {
 			                        dataType = "MC";
 			                        fitVariable2 = "mmg_s_true";
 						fitFunction = "cruijff";
+						directoryName = "Results_2012_thesis_v1_7bins";
 			                }
+					if(h == 0 && fitVariable == "mmg_s_low")
+                                        {
+                                                dataType = "data";
+                                                fitVariable2 = "mmg_s_low";
+                                                fitFunction = "voigtian";
+                                                directoryName = "Results_2012_thesis_v1_slow";
+                                        }
+                                        if(h == 1 && fitVariable == "mmg_s_low")
+                                        {
+                                                dataType = "MC";
+                                                fitVariable2 = "mmg_s_low";
+                                                fitFunction = "voigtian";
+                                                directoryName = "Results_2012_thesis_v1_slow";
+                                        }
+                                        if(h == 2 && fitVariable == "mmg_s_low")
+                                        {
+                                                dataType = "MC";
+                                                fitVariable2 = "mmg_s_true";
+                                                fitFunction = "cruijff";
+                                                directoryName = "Results_2012_thesis_v1_7bins";
+                                        }
 			                if(h == 0 && fitVariable == "mmg_s_MZ_Surface")
 			                {
 			                        dataType = "data";
 			                        fitVariable2 = "mmg_s_MZ_Surface";
 						fitFunction = "voigtian";
+						directoryName = "Results_2012_thesis_v1_surface";
 			                }
 			                if(h == 1 && fitVariable == "mmg_s_MZ_Surface")
 			                {
 			                        dataType = "MC";
 			                        fitVariable2 = "mmg_s_MZ_Surface";
 						fitFunction = "voigtian";
+						directoryName = "Results_2012_thesis_v1_surface";
 			                }
 			                if(h == 2 && fitVariable == "mmg_s_MZ_Surface")
 			                {
 			                        dataType = "MC";
 			                        fitVariable2 = "mmg_s_true";
 						fitFunction = "cruijff";
+						directoryName = "Results_2012_thesis_v1_7bins";
 			                }
 				
 
@@ -165,7 +200,7 @@ int main(int argc, char *argv[])
 					{
 		
 						fileName = Form("%s/InjectedResolution_%sPercent/%s/Selected_Fits/Bin_%d/%s_%s_%sR9_%s/fitsInformationsRaw.txt",directoryName.c_str(),injectedResolution.c_str(),dataType.c_str(),k,fitVariable2.c_str(),eta.c_str(),r9.c_str(),fitFunction.c_str());
-				
+						cout << endl << "fileName = " <<fileName << endl;				
 						nbRows = rowsNumberInFile(fileName.c_str());
 		
 						ifstream fitParametersFile(fileName.c_str());
@@ -229,10 +264,14 @@ int main(int argc, char *argv[])
 	
 			
 				}
-					
+				
+				if(fitVariable == "mmg_s_low") directoryName = "Results_2012_thesis_v1_slow";
+				else if(fitVariable == "mmg_s_MZ_Surface") directoryName = "Results_2012_thesis_v1_surface";	
+				else directoryName = "Results_2012_thesis_v1_7bins";
 				directoryNameSave = Form("%s/InjectedResolution_%sPercent/CombinedGraphs/%s_%sR9/",directoryName.c_str(),injectedResolution.c_str(),eta.c_str(),r9.c_str());			
 				system(Form("mkdir -p %s",directoryNameSave.c_str()));
 				//Continue the code from here 
+				cout << endl << "coucou" << endl;
 
                                 mg2 = new TMultiGraph();
 				mg3 = new TMultiGraph();
@@ -240,11 +279,15 @@ int main(int argc, char *argv[])
 				mcGraph = new TGraphAsymmErrors(nBins,x_mc,y_mc,xl_mc,xr_mc,yl_mc,yr_mc);
 				trueGraph = new TGraphAsymmErrors(nBins,x_true,y_true,xl_true,xr_true,yl_true,yr_true);
 				
-				dataGraph->SetMarkerColor(kViolet-3);
-				mcGraph->SetMarkerColor(kAzure+7);
+				if(fitVariable == "mmg_s_MZ_Surface") dataGraph->SetMarkerColor(kPink-3);
+				else dataGraph->SetMarkerColor(kRed);
+				if(fitVariable == "mmg_s_MZ_Surface") mcGraph->SetMarkerColor(kGreen-3);
+				else mcGraph->SetMarkerColor(kAzure+7);
 				trueGraph->SetMarkerColor(kBlue);
-				dataGraph->SetLineColor(kViolet-3);
-                                mcGraph->SetLineColor(kAzure+7);
+				if(fitVariable == "mmg_s_MZ_Surface") dataGraph->SetLineColor(kPink-3);
+				else dataGraph->SetLineColor(kRed);
+                                if(fitVariable == "mmg_s_MZ_Surface") mcGraph->SetLineColor(kGreen-3);
+				else mcGraph->SetLineColor(kAzure+7);
                                 trueGraph->SetLineColor(kBlue);
 				dataGraph->SetMarkerStyle(20);
 				dataGraph->SetMarkerSize(0.6);
@@ -255,13 +298,22 @@ int main(int argc, char *argv[])
 				dataGraph->SetName("dataGraph");
 				mcGraph->SetName("mcGraph");
 				trueGraph->SetName("trueGraph");
-
+				
+				TLatex latexLabel;
+        			latexLabel.SetTextFont(42);
+        			latexLabel.SetTextSize(0.028);
+        			latexLabel.SetNDC();
+				cout << endl << "coucou5" << endl;
 
 				dataGraph->Draw("AP");			
 				dataGraph->GetXaxis()->SetTitle(cutVariableName.c_str());
 				dataGraph->GetYaxis()->SetTitle(yTitle.c_str());
+				dataGraph->GetYaxis()->SetTitleOffset(1.55);
+				dataGraph->GetXaxis()->SetTitleOffset(1.40);
 				fileNameSave = Form("data");
 				dataGraph->GetXaxis()->SetLimits(xMin,xMax);
+				if(analysisVersion == "2011") latexLabel.DrawLatex(0.25, 0.96, "CMS Private 2011                 #sqrt{s} = 7 TeV                  L = 5.1 fb^{-1}");
+				if(analysisVersion == "2012") latexLabel.DrawLatex(0.25, 0.96, "CMS Private 2012                #sqrt{s} = 8 TeV                 L = 19.75 fb^{-1}");
 				plotsRecording(directoryNameSave, fileNameSave, c1);
 				
 				c1->Clear();
@@ -269,8 +321,12 @@ int main(int argc, char *argv[])
 				mcGraph->Draw("AP");
                                 mcGraph->GetXaxis()->SetTitle(cutVariableName.c_str());
                                 mcGraph->GetYaxis()->SetTitle(yTitle.c_str());
+				mcGraph->GetYaxis()->SetTitleOffset(1.55);
+                                mcGraph->GetXaxis()->SetTitleOffset(1.40);
                                 fileNameSave = Form("MC");
 				mcGraph->GetXaxis()->SetLimits(xMin,xMax);
+				if(analysisVersion == "2011") latexLabel.DrawLatex(0.25, 0.96, "CMS Private 2011                 #sqrt{s} = 7 TeV                  L = 5.1 fb^{-1}");
+                                if(analysisVersion == "2012") latexLabel.DrawLatex(0.25, 0.96, "CMS Private 2012                #sqrt{s} = 8 TeV                 L = 19.75 fb^{-1}");
                                 plotsRecording(directoryNameSave, fileNameSave, c1);
 				
 				c1->Clear();
@@ -278,8 +334,12 @@ int main(int argc, char *argv[])
                                 trueGraph->Draw("AP");
                                 trueGraph->GetXaxis()->SetTitle(cutVariableName.c_str());
                                 trueGraph->GetYaxis()->SetTitle(yTitle.c_str());
+				trueGraph->GetYaxis()->SetTitleOffset(1.55);
+                                trueGraph->GetXaxis()->SetTitleOffset(1.40);
                                 fileNameSave = Form("true");
 				trueGraph->GetXaxis()->SetLimits(xMin,xMax);
+				if(analysisVersion == "2011") latexLabel.DrawLatex(0.25, 0.96, "CMS Private 2011                 #sqrt{s} = 7 TeV                  L = 5.1 fb^{-1}");
+                                if(analysisVersion == "2012") latexLabel.DrawLatex(0.25, 0.96, "CMS Private 2012                #sqrt{s} = 8 TeV                 L = 19.75 fb^{-1}");
                                 plotsRecording(directoryNameSave, fileNameSave, c1);
 				
 				c1->Clear();
@@ -289,6 +349,8 @@ int main(int argc, char *argv[])
 				mg2->Draw("AP");
 				mg2->GetXaxis()->SetTitle(cutVariableName.c_str());
                                 mg2->GetYaxis()->SetTitle(yTitle.c_str());	
+				mg2->GetYaxis()->SetTitleOffset(1.55);
+				mg2->GetXaxis()->SetTitleOffset(1.40);
 				fileNameSave = Form("dataMC");
 				mg2->GetXaxis()->SetLimits(xMin,xMax);
         			leg2 = new TLegend(0.6,0.7,0.9,0.9,"","brNDC");                        
@@ -298,6 +360,8 @@ int main(int argc, char *argv[])
 				leg2->AddEntry(dataGraph->GetName(),"data scale","lep");
 				leg2->AddEntry(mcGraph->GetName(),"MC scale","lep");
 				leg2->Draw();
+				if(analysisVersion == "2011") latexLabel.DrawLatex(0.25, 0.96, "CMS Private 2011                 #sqrt{s} = 7 TeV                  L = 5.1 fb^{-1}");
+                                if(analysisVersion == "2012") latexLabel.DrawLatex(0.25, 0.96, "CMS Private 2012                #sqrt{s} = 8 TeV                 L = 19.75 fb^{-1}");
 				plotsRecording(directoryNameSave, fileNameSave, c1);	
 					
 				c1->Clear();
@@ -308,8 +372,39 @@ int main(int argc, char *argv[])
                                 mg3->Draw("AP");
 				mg3->GetXaxis()->SetTitle(cutVariableName.c_str());
                                 mg3->GetYaxis()->SetTitle(yTitle.c_str());
+				mg3->GetYaxis()->SetTitleOffset(1.55);
+                                mg3->GetXaxis()->SetTitleOffset(1.40);
 				fileNameSave = Form("dataMCtrue");
 				mg3->GetXaxis()->SetLimits(xMin,xMax);
+
+					
+				TLegend leg(xMinLeg,yMinLeg,xMaxLeg,yMaxLeg,"","brNDC");
+				leg.SetTextFont(42);
+				leg.SetTextSize(legTextSize);
+        			leg.SetFillColor(kWhite);
+        			leg.SetLineColor(kWhite);
+        			leg.SetShadowColor(kWhite);
+				leg.SetTextSize(0.035);
+				if(fitVariable == "mmg_s_MZ_Surface")
+				{
+        				leg.AddEntry(dataGraph->GetName(),"s_{Surface, data}","lep");
+					leg.AddEntry(mcGraph->GetName(),"s_{Surface, MC}","lep");
+				}
+				else if(fitVariable == "mmg_s_low")
+				{
+                                        leg.AddEntry(dataGraph->GetName(),"s_{low, data}","lep");
+                                        leg.AddEntry(mcGraph->GetName(),"s_{low, MC}","lep");
+                                }
+				else 
+				{
+					leg.AddEntry(dataGraph->GetName(),"s^{RECO}_{data}","lep");
+					leg.AddEntry(mcGraph->GetName(),"s^{RECO}_{MC}","lep");
+				}
+				leg.AddEntry(trueGraph->GetName(),"s^{TRUE}","lep");
+        			leg.Draw();	
+
+				if(analysisVersion == "2011") latexLabel.DrawLatex(0.25, 0.96, "CMS Private 2011                 #sqrt{s} = 7 TeV                  L = 5.1 fb^{-1}");
+                                if(analysisVersion == "2012") latexLabel.DrawLatex(0.25, 0.96, "CMS Private 2012                #sqrt{s} = 8 TeV                 L = 19.75 fb^{-1}");
                                 plotsRecording(directoryNameSave, fileNameSave, c1);
 
                                 c1->Clear();

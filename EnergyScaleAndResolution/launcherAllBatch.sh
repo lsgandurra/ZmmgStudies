@@ -14,7 +14,7 @@ do
 			do
 
 				echo "dataType = ${dataType}, fitVariable = ${fitVariable}, fitPercentage = ${fitPercentage}" 	
-				qsub batchJob.sh input Results_v6_RecoEnergy ${dataType} ${fitVariable} Photon_Et LimitesAllPtOneBin.txt ${fitPercentage} ${injectedResolution}
+				qsub batchJob.sh input Results_22Jan_v1 ${dataType} ${fitVariable} Photon_Et LimitesAllPtOneBin.txt ${fitPercentage} ${injectedResolution} -l os=sl6
 			done 
 		done
         done

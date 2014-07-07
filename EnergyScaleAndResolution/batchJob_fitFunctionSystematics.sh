@@ -33,7 +33,7 @@ echo "LOAD CORRECT ENVIRONMENT VARIABLES FROM SPS"
 ###export HOMEDIR=/afs/in2p3.fr/home/o/obondu
 ###source ${HOMEDIR}/428v2.sh
 export HOMEDIR=/afs/in2p3.fr/home/s/sgandurr
-source ${HOMEDIR}/537_RECO_5_3_3_v4.sh
+source ${HOMEDIR}/5311p3_RECO_5_3_11_v1.sh
 SPSDIR=`pwd`
 WORKDIR=${TMPDIR}
 
@@ -56,23 +56,23 @@ echo ""
 # COPY HEADER FILES TO WORKER
 echo "COPY HEADER FILES TO WORKER"
 #mkdir ${TMPDIR}/interface
-#cp ${SPSDIR}/UserCode/IpnTreeProducer/interface/*h ${TMPDIR}/interface/
+#cp ${SPSDIR}/Toto/IpnTreeProducer/interface/*h ${TMPDIR}/interface/
 if [[ ! -e ${TMPDIR}/interface ]]
 then
   mkdir ${TMPDIR}/interface
-        cp ${SPSDIR}/UserCode/IpnTreeProducer/interface/*h ${TMPDIR}/interface/
+        cp ${SPSDIR}/Toto/IpnTreeProducer/interface/*h ${TMPDIR}/interface/
 fi
 
 echo "USER=${USER}"
 
 # COPY IpnTree LIB FILE TO WORKER
 #mkdir ${TMPDIR}/lib
-#cp ${SPSDIR}/UserCode/IpnTreeProducer/src/libToto.so ${TMPDIR}/lib/
+#cp ${SPSDIR}/Toto/IpnTreeProducer/src/libToto.so ${TMPDIR}/lib/
 echo "COPY IpnTree LIB FILE TO WORKER"
 if [[ ! -e ${TMPDIR}/lib ]]
 then
         mkdir ${TMPDIR}/lib
-        cp ${SPSDIR}/UserCode/IpnTreeProducer/src/libToto.so ${TMPDIR}/lib/
+        cp ${SPSDIR}/Toto/IpnTreeProducer/src/libToto.so ${TMPDIR}/lib/
 fi
 
 echo "USER=${USER}"
@@ -88,7 +88,7 @@ echo "USER=${USER}"
 
 # COPY EXECUTABLE TO WORKER
 echo "COPY EXECUTABLE TO WORKER"
-cp ${SPSDIR}/Energy_scale_extraction/fitFunctionSystematics.exe ${TMPDIR}/
+cp ${SPSDIR}/ZmmgStudies/EnergyScaleAndResolution/fitFunctionSystematics.exe ${TMPDIR}/
 cp /afs/in2p3.fr/home/s/sgandurr/loadRoot.sh ${TMPDIR}/ 
 
 
@@ -106,9 +106,9 @@ echo "USER=${USER}"
 echo "EXECUTE JOB"
 cd ${TMPDIR}/
 
-echo "arguments : ${1}, ${2}, ${3}, ${4}, ${5}, ${6}." 
+echo "arguments : ${1}, ${2}, ${3}, ${4}, ${5}, ${6}, ${7}." 
 
-./fitFunctionSystematics.exe ${1} ${2} ${3} ${4} ${5} ${6} >> sortie_${2}_${3}_${4}_${5}_${6}.out 2> sortie_${2}_${3}_${4}_${5}_${6}.err
+./fitFunctionSystematics.exe ${1} ${2} ${3} ${4} ${5} ${6} ${7} >> sortie_${2}_${3}_${4}_${5}_${6}_${7}.out 2> sortie_${2}_${3}_${4}_${5}_${6}_${7}.err
 
 echo "pwd; ls -als"
 pwd; ls -als
@@ -116,9 +116,9 @@ echo ""
 
 # GET BACK OUTPUT FILES TO SPS
 echo "GET BACK OUTPUT FILES TO SPS AND REMOVE THEM FROM DISTANT DIR"
-mkdir -p ${SPSDIR}/Energy_scale_extraction/logFiles/
-mv ${TMPDIR}/sortie_${2}_${3}_${4}_${5}_${6}.err ${SPSDIR}/Energy_scale_extraction/logFiles/
-mv ${TMPDIR}/sortie_${2}_${3}_${4}_${5}_${6}.out ${SPSDIR}/Energy_scale_extraction/logFiles/
+mkdir -p ${SPSDIR}/ZmmgStudies/EnergyScaleAndResolution/logFiles/
+mv ${TMPDIR}/sortie_${2}_${3}_${4}_${5}_${6}_${7}.err ${SPSDIR}/ZmmgStudies/EnergyScaleAndResolution/logFiles/
+mv ${TMPDIR}/sortie_${2}_${3}_${4}_${5}_${6}_${7}.out ${SPSDIR}/ZmmgStudies/EnergyScaleAndResolution/logFiles/
 rm ${TMPDIR}/fitFunctionSystematics.exe
 rm ${TMPDIR}/setTDRStyle.C
 

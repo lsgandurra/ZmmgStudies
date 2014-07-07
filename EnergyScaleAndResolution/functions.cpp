@@ -62,7 +62,7 @@ void plotsRecording(string directoryName, string fileName, TCanvas * c1)
 	//mkdir(directoryName.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 	system(Form("mkdir -p %s", directoryName.c_str()));
 	//if(iteration != 10000) fileName += Form("%d",iteration);
-        //c1->Print(Form("%s%s.root",directoryName.c_str(),fileName.c_str()));
+        c1->Print(Form("%s%s.root",directoryName.c_str(),fileName.c_str()));
         c1->Print(Form("%s%s.C",directoryName.c_str(),fileName.c_str()));
         c1->Print(Form("%s%s.pdf",directoryName.c_str(),fileName.c_str()));
         //c1->Print(Form("%s%s.ps",directoryName.c_str(),fileName.c_str()));
@@ -153,9 +153,12 @@ Double_t effSigma(TH1 * hist)
 void rangeEstimator(double percentage, TChain * chain, TString cut, double &minRange, double &maxRange, string variableName, float variable, vector <double> &fitParameters)
 {
 
-        TChain * reducedChain = (TChain *) chain->CopyTree(cut);
+	cout << endl << "coucou 3 in 1" << endl;
 
-        reducedChain->SetBranchAddress(variableName.c_str(),&variable);
+        //TChain * reducedChain = (TChain *) chain->CopyTree(cut);
+
+        TChain * reducedChain = chain;
+	reducedChain->SetBranchAddress(variableName.c_str(),&variable);
 
         vector <float> variableVector;
 
@@ -166,6 +169,7 @@ void rangeEstimator(double percentage, TChain * chain, TString cut, double &minR
                 variableVector.push_back(variable);
 
         }
+	cout << endl << "coucou 3 in 2" << endl;
 
         sort(variableVector.begin(), variableVector.end());
         size_t interval_entries = TMath::Ceil(percentage * variableVector.size());
@@ -186,11 +190,13 @@ void rangeEstimator(double percentage, TChain * chain, TString cut, double &minR
         }
         minRange = *lower;
         maxRange = *upper;
+	cout << endl << "coucou 3 in 3" << endl;
+	//reducedChain->Clear();
 }
 
 
 // --- chiSquare estimation between an histogram and a fit function --- //
-Double_t chiSquare(RooPlot* plot, char* pdfname, char* histname, vector <double> &fitParameters) //int* fewBins 
+Double_t chiSquare(RooPlot* plot, char* pdfname, char* histname, vector <double> &fitParameters, int nbPar) //int* fewBins 
 {
   // Calculate the chi^2/NDOF of this curve with respect to the histogram
   // 'hist' accounting nFitParam floating parameters in case the curve
@@ -248,12 +254,14 @@ Double_t chiSquare(RooPlot* plot, char* pdfname, char* histname, vector <double>
     if (xl < xstart || xstop < xh) continue ;
 
     //if(y != 0 && y < 35.0)
-    if(y == 0)
+    //if(y == 0)
+    if(y < 5.0)
     {
     	cout<<endl<<"Too few entries : "<<y<<" in the bin : "<<i<<"  >> Need to reduce the binning for the p-value calculation!"<<endl;
 	//*fewBins = 1;
-	break;
-	
+	//break;
+	continue;	
+    
     }
     //else *fewBins = 0;
 
@@ -292,7 +300,9 @@ Double_t chiSquare(RooPlot* plot, char* pdfname, char* histname, vector <double>
     }
   }
 
-  int nFitParam = fitParameters.size() / 2;
+  //int nFitParam = fitParameters.size() / 2; //FIXME !!
+  //int nFitParam = fitParameters[2];
+  int nFitParam = nbPar;
   fitParameters.push_back(chisq / (nbin - nFitParam));
   fitParameters.push_back(nbin - nFitParam);
   fitParameters.push_back(TMath::Prob(chisq, nbin - nFitParam));

@@ -33,7 +33,7 @@ echo "LOAD CORRECT ENVIRONMENT VARIABLES FROM SPS"
 ###export HOMEDIR=/afs/in2p3.fr/home/o/obondu
 ###source ${HOMEDIR}/428v2.sh
 export HOMEDIR=/afs/in2p3.fr/home/s/sgandurr
-source ${HOMEDIR}/537_RECO_5_3_3_v4.sh
+source ${HOMEDIR}/5311p3_RECO_5_3_11_v1.sh
 SPSDIR=`pwd`
 WORKDIR=${TMPDIR}
 
@@ -56,23 +56,23 @@ echo ""
 # COPY HEADER FILES TO WORKER
 echo "COPY HEADER FILES TO WORKER"
 #mkdir ${TMPDIR}/interface
-#cp ${SPSDIR}/UserCode/IpnTreeProducer/interface/*h ${TMPDIR}/interface/
+#cp ${SPSDIR}/Toto/IpnTreeProducer/interface/*h ${TMPDIR}/interface/
 if [[ ! -e ${TMPDIR}/interface ]]
 then
   mkdir ${TMPDIR}/interface
-        cp ${SPSDIR}/UserCode/IpnTreeProducer/interface/*h ${TMPDIR}/interface/
+        cp ${SPSDIR}/Toto/IpnTreeProducer/interface/*h ${TMPDIR}/interface/
 fi
 
 echo "USER=${USER}"
 
 # COPY IpnTree LIB FILE TO WORKER
 #mkdir ${TMPDIR}/lib
-#cp ${SPSDIR}/UserCode/IpnTreeProducer/src/libToto.so ${TMPDIR}/lib/
+#cp ${SPSDIR}/Toto/IpnTreeProducer/src/libToto.so ${TMPDIR}/lib/
 echo "COPY IpnTree LIB FILE TO WORKER"
 if [[ ! -e ${TMPDIR}/lib ]]
 then
         mkdir ${TMPDIR}/lib
-        cp ${SPSDIR}/UserCode/IpnTreeProducer/src/libToto.so ${TMPDIR}/lib/
+        cp ${SPSDIR}/Toto/IpnTreeProducer/src/libToto.so ${TMPDIR}/lib/
 fi
 
 echo "USER=${USER}"
@@ -88,11 +88,16 @@ echo "USER=${USER}"
 
 # COPY EXECUTABLE TO WORKER
 echo "COPY EXECUTABLE TO WORKER"
-cp ${SPSDIR}/Energy_scale_extraction/SFits.exe ${TMPDIR}/
-cp ${SPSDIR}/Energy_scale_extraction/*.txt ${TMPDIR}/
+cp ${SPSDIR}/ZmmgStudies/EnergyScaleAndResolution/SFits.exe ${TMPDIR}/
+cp ${SPSDIR}/ZmmgStudies/EnergyScaleAndResolution/*.txt ${TMPDIR}/
 cp /afs/in2p3.fr/home/s/sgandurr/loadRoot.sh ${TMPDIR}/ 
 ##cp /sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree*v6*partALL.root ${TMPDIR}/
-cp /sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_*v6_RecoEnergy_partALL.root ${TMPDIR}/
+##cp ${SPSDIR}/ZmmgStudies/Selection/miniTree_*thesis_v1*.root ${TMPDIR}/
+##cp ${SPSDIR}/ZmmgStudies/Selection/miniTree_*thesis_v3_noR9rescaling*.root ${TMPDIR}/
+##cp ${SPSDIR}/ZmmgStudies/Selection/miniTree_*thesis_v4_r9_2*.root ${TMPDIR}/
+##cp ${SPSDIR}/ZmmgStudies/Selection/miniTree*thesis_v1f*partALL.root ${TMPDIR}/
+##cp ${SPSDIR}/ZmmgStudies/Selection/miniTree*thesis_v1f_recoEnergy*partALL.root ${TMPDIR}/
+cp ${SPSDIR}/ZmmgStudies/Selection/miniTree*thesis_v4f*partALL.root ${TMPDIR}/
 
 echo "LOAD GOOD ROOT VERSION"
 source loadRoot.sh
@@ -115,8 +120,19 @@ do
 	do
 		for fitFunction in 'voigtian' 'cruijff'
 		do
+			if [ "$4" = "mmg_s" ] && [ "$fitFunction" = "cruijff" ]
+                	then
+                        	continue
+                	fi
+		
+			if [ "$4" = "mmg_s_true" ] && [ "$fitFunction" = "voigtian" ]
+                        then
+                                continue
+                        fi	
+			
+
 			echo "${eta}, ${r9} r9, ${fitFunction} :" 
-			./SFits.exe ${1} ${2} ${3} ${4} ${5} ${6} ${eta} ${r9} ${fitFunction} ${7} ${8} >> sortie_${1}_${2}_${3}_${4}_${5}_${6}_${eta}_${r9}_${fitFunction}_${7}_${8}.out 2> sortie_${1}_${2}_${3}_${4}_${5}_${6}_${eta}_${r9}_${fitFunction}_${7}_${8}.err
+			./SFits.exe ${1} ${2} ${3} ${4} ${5} ${6} ${eta} ${r9} ${fitFunction} ${7} ${8} 0 0 ${9}>> sortie_${1}_${2}_${3}_${4}_${5}_${6}_${eta}_${r9}_${fitFunction}_${7}_${8}_${9}.out 2> sortie_${1}_${2}_${3}_${4}_${5}_${6}_${eta}_${r9}_${fitFunction}_${7}_${8}_${9}.err
 		done
 	done
 done
@@ -132,18 +148,18 @@ echo ""
 
 # GET BACK OUTPUT FILES TO SPS
 echo "GET BACK OUTPUT FILES TO SPS AND REMOVE THEM FROM DISTANT DIR"
-mkdir -p ${SPSDIR}/Energy_scale_extraction/logFiles/
-mv ${TMPDIR}/sortie_${1}_${2}_${3}_${4}_${5}_${6}_*_*_*_${7}_${8}.err ${SPSDIR}/Energy_scale_extraction/logFiles/
-mv ${TMPDIR}/sortie_${1}_${2}_${3}_${4}_${5}_${6}_*_*_*_${7}_${8}.out ${SPSDIR}/Energy_scale_extraction/logFiles/
-cp -r ${TMPDIR}/${2}/ ${SPSDIR}/Energy_scale_extraction/
+mkdir -p ${SPSDIR}/ZmmgStudies/EnergyScaleAndResolution/logFiles/
+mv ${TMPDIR}/sortie_${1}_${2}_${3}_${4}_${5}_${6}_*_*_*_${7}_${8}_${9}.err ${SPSDIR}/ZmmgStudies/EnergyScaleAndResolution/logFiles/
+mv ${TMPDIR}/sortie_${1}_${2}_${3}_${4}_${5}_${6}_*_*_*_${7}_${8}_${9}.out ${SPSDIR}/ZmmgStudies/EnergyScaleAndResolution/logFiles/
+cp -r ${TMPDIR}/${2}/ ${SPSDIR}/ZmmgStudies/EnergyScaleAndResolution/
 rm -rf ${2}/
 rm ${TMPDIR}/SFits.exe
 rm ${TMPDIR}/setTDRStyle.C
 rm ${TMPDIR}/*.txt
 rm ${TMPDIR}/*.root
 
-#"cd ${SPSDIR}/UserCode/IpnTreeProducer/OlivierMiniTrees/"
-#cd ${SPSDIR}/UserCode/IpnTreeProducer/OlivierMiniTrees/
+#"cd ${SPSDIR}/Toto/IpnTreeProducer/OlivierMiniTrees/"
+#cd ${SPSDIR}/Toto/IpnTreeProducer/OlivierMiniTrees/
 #echo "pwd; ls -als"
 #pwd; ls -als
 #echo ""

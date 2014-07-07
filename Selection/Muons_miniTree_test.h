@@ -54,7 +54,8 @@
 
 // personal headers
 #include "corrections.h"
-#include "rochcor2012v2.h"
+#include "rochcor2012jan22.h"
+#include "rochcor_wasym_v4.h" //for 2011 rochester
 
 
 using namespace std;
@@ -191,6 +192,24 @@ double weight_DYToMuMu(int nGenVertices, string lumi_set, string pu_set)
 
                 }
         }
+	else if((lumi_set == "2011_12Oct" || lumi_set == "2011_12OctA" || lumi_set == "2011_12OctB") && pu_set == "PU_S13" )
+        {    
+                double weight[60] = {81.5317, 1.62708, 0.674014, 0.670997, 0.807825, 0.86574, 0.862879, 0.890153, 0.924229, 0.955178, 0.958611, 0.929811, 0.961503, 1.10093, 1.41415, 2.03485, 3.2699, 5.86764, 11.6118, 24.4147, 50.8572, 96.4857, 163.573, 270.464, 489.039, 1041.58, 2689.11, 8427.28, 32537.3, 175854, 1.98273e+06, 5.65917e+07, 2.68932e+09, 1.65497e+11, 1.48517e+14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+                return weight[nGenVertices];
+
+
+        }    
+        else if(lumi_set == "2012A_22Jan" || lumi_set == "2012B_22Jan" || lumi_set == "2012C_22Jan" || lumi_set == "2012D_22Jan" || lumi_set == "2012_22Jan")
+        {
+                if(pu_set == "PU_S10")
+                {
+                        double weight[60] = {0.251143, 0.487939, 7.56602, 0.334605, 0.280751, 0.683616, 0.514374, 0.50768, 0.694737, 1.01474, 1.42229, 1.744, 1.75157, 1.54985, 1.31661, 1.14395, 1.05289, 1.02339, 1.04066, 1.08531, 1.12713, 1.1538, 1.16966, 1.17415, 1.15862, 1.11583, 1.0455, 0.953212, 0.845617, 0.729769, 0.612689, 0.500501, 0.397323, 0.306245, 0.229119, 0.166768, 0.11949, 0.0861673, 0.0645934, 0.0522769, 0.0468274, 0.0463411, 0.0495044, 0.0555298, 0.0641617, 0.0753613, 0.0893686, 0.106678, 0.127912, 0.153831, 0.185456, 0.22386, 0.27058, 0.327406, 0.396136, 0.479362, 0.580001, 0.701775, 0.84896, 2.16113}; //minBias = 69400 mb true data + MC officials (data rereco 22Jan) 23March
+                        return weight[nGenVertices];
+
+
+                }
+        }
+
 
         double weight[60] = {0, 10.4923, 24.4296, 37.9208, 31.8, 40.0539, 28.9985, 6.42726, 3.29256, 2.72439, 2.74116, 2.76669, 2.64701, 2.37805, 2.0256, 1.67002, 1.4141, 1.2635, 1.19499, 1.175, 1.16815, 1.15999, 1.12558, 1.06777, 1.00448, 0.933594, 0.861446, 0.801237, 0.739057, 0.683081, 0.626923, 0.578676, 0.533231, 0.489387, 0.449333, 0.413669, 0.379853, 0.347238, 0.31829, 0.290759, 0.266329, 0.243079, 0.221235, 0.203534, 0.185281, 0.16678, 0.156065, 0.137128, 0.128382, 0.118529, 0.106961, 0.0966754, 0.0900311, 0.0779896, 0.0726763, 0.0621801, 0.0612443, 0.0643741, 0.0467334, 0.047643};//minBias = 69400 mb        
 
@@ -211,6 +230,24 @@ double weight_TTJets(int nGenVertices, string lumi_set, string pu_set)
                 return weight[nGenVertices];
 
         }
+	else if((lumi_set == "2011_12Oct" || lumi_set == "2011_12OctA" || lumi_set == "2011_12OctB") && pu_set == "PU_S13" )
+        {    
+                double weight[60] = {81.5317, 1.62708, 0.674014, 0.670997, 0.807825, 0.86574, 0.862879, 0.890153, 0.924229, 0.955178, 0.958611, 0.929811, 0.961503, 1.10093, 1.41415, 2.03485, 3.2699, 5.86764, 11.6118, 24.4147, 50.8572, 96.4857, 163.573, 270.464, 489.039, 1041.58, 2689.11, 8427.28, 32537.3, 175854, 1.98273e+06, 5.65917e+07, 2.68932e+09, 1.65497e+11, 1.48517e+14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+                return weight[nGenVertices];
+
+
+        }    
+        else if(lumi_set == "2012A_22Jan" || lumi_set == "2012B_22Jan" || lumi_set == "2012C_22Jan" || lumi_set == "2012D_22Jan" || lumi_set == "2012_22Jan")
+        {
+                if(pu_set == "PU_S10")
+                {
+                        double weight[60] = {0.251143, 0.487939, 7.56602, 0.334605, 0.280751, 0.683616, 0.514374, 0.50768, 0.694737, 1.01474, 1.42229, 1.744, 1.75157, 1.54985, 1.31661, 1.14395, 1.05289, 1.02339, 1.04066, 1.08531, 1.12713, 1.1538, 1.16966, 1.17415, 1.15862, 1.11583, 1.0455, 0.953212, 0.845617, 0.729769, 0.612689, 0.500501, 0.397323, 0.306245, 0.229119, 0.166768, 0.11949, 0.0861673, 0.0645934, 0.0522769, 0.0468274, 0.0463411, 0.0495044, 0.0555298, 0.0641617, 0.0753613, 0.0893686, 0.106678, 0.127912, 0.153831, 0.185456, 0.22386, 0.27058, 0.327406, 0.396136, 0.479362, 0.580001, 0.701775, 0.84896, 2.16113}; //minBias = 69400 mb true data + MC officials (data rereco 22Jan) 23March
+                        return weight[nGenVertices];
+
+
+                }
+        }
+
 
         double weight[60] = {0, 0.323701, 0, 9.35923, 16.8744, 4.13585, 7.21989, 9.76902, 11.9687, 11.3925, 13.9582, 11.3853, 11.3239, 7.78842, 6.62434, 5.79726, 4.69908, 3.55859, 2.6404, 2.11875, 1.69048, 1.43388, 1.22031, 1.08963, 0.992514, 0.922732, 0.794686, 0.711696, 0.612313, 0.560809, 0.471973, 0.40871, 0.358024, 0.31271, 0.267614, 0.232174, 0.209486, 0.1874, 0.172988, 0.157301, 0.14804, 0.134552, 0.129954, 0.125054, 0.128653, 0.130938, 0.149274, 0.165733, 0.184317, 0.310683, 0.263024, 0.558884, 0.605857, 0.457497, 0, 0, 0, 0, 0, 0}; //minBias = 69400 mb
         return weight[nGenVertices];
@@ -229,6 +266,23 @@ double weight_WJetsToLNu(int nGenVertices, string lumi_set, string pu_set)
                 return weight[nGenVertices];
 
         }
+	else if((lumi_set == "2011_12Oct" || lumi_set == "2011_12OctA" || lumi_set == "2011_12OctB") && pu_set == "PU_S13" )
+        {
+                double weight[60] = {81.5317, 1.62708, 0.674014, 0.670997, 0.807825, 0.86574, 0.862879, 0.890153, 0.924229, 0.955178, 0.958611, 0.929811, 0.961503, 1.10093, 1.41415, 2.03485, 3.2699, 5.86764, 11.6118, 24.4147, 50.8572, 96.4857, 163.573, 270.464, 489.039, 1041.58, 2689.11, 8427.28, 32537.3, 175854, 1.98273e+06, 5.65917e+07, 2.68932e+09, 1.65497e+11, 1.48517e+14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+                return weight[nGenVertices];
+
+
+        }
+        else if(lumi_set == "2012A_22Jan" || lumi_set == "2012B_22Jan" || lumi_set == "2012C_22Jan" || lumi_set == "2012D_22Jan" || lumi_set == "2012_22Jan")
+        {
+                if(pu_set == "PU_S10")
+                {
+			double weight[60] = {0.251143, 0.487939, 7.56602, 0.334605, 0.280751, 0.683616, 0.514374, 0.50768, 0.694737, 1.01474, 1.42229, 1.744, 1.75157, 1.54985, 1.31661, 1.14395, 1.05289, 1.02339, 1.04066, 1.08531, 1.12713, 1.1538, 1.16966, 1.17415, 1.15862, 1.11583, 1.0455, 0.953212, 0.845617, 0.729769, 0.612689, 0.500501, 0.397323, 0.306245, 0.229119, 0.166768, 0.11949, 0.0861673, 0.0645934, 0.0522769, 0.0468274, 0.0463411, 0.0495044, 0.0555298, 0.0641617, 0.0753613, 0.0893686, 0.106678, 0.127912, 0.153831, 0.185456, 0.22386, 0.27058, 0.327406, 0.396136, 0.479362, 0.580001, 0.701775, 0.84896, 2.16113}; //minBias = 69400 mb true data + MC officials (data rereco 22Jan) 23March
+                        return weight[nGenVertices];
+
+
+                }
+	}
 
         double weight[60] = {0, 0, 0, 0, 0, 0, 0, 0, 1.6478, 1.81253, 1.79692, 1.40752, 2.5692, 1.89001, 1.39015, 1.09703, 0.969595, 1.04985, 1.14386, 0.930022, 0.91867, 1.15763, 0.993279, 1.31673, 1.13406, 0.881241, 0.914166, 0.827539, 0.802942, 0.669971, 0.980831, 0.475241, 0.604143, 0.772618, 0.903048, 0.802019, 0.545218, 0.624473, 0.549896, 0.339962, 0.518853, 0.325879, 0.291156, 1.07095, 0.389309, 0.279784, 0.397604, 0, 0.194203, 0, 0.0908993, 0.0612415, 0.0204273, 0, 0, 0, 0, 0, 0, 0.0018708}; //minBias = 69400 mb
         return weight[nGenVertices];
@@ -435,15 +489,15 @@ double photonManualCorrectionFactor(TRootPhoton *myphoton, string correctionSet,
 		cout << "superClusters->GetEntries()= " << superClusters->GetEntries() << endl;
 		cout << "clusters->GetEntries()= " << clusters->GetEntries() << endl;
 	}
-	else if( correctionSet == "MITregression" )
+	else if( correctionSet == "MITregression5" )
 	{
-		//if( verbositybis > 1) cout << "myphoton->joshEnergyRegression() = " << myphoton->joshEnergyRegression() << endl;
-		//return myphoton->joshEnergyRegression() / (double)(myphoton->Energy());
+		//if( verbositybis > 1) cout << "myphoton->joshEnergyRegressionV5() = " << myphoton->joshEnergyRegressionV5() << endl;
+		//return myphoton->joshEnergyRegressionV5() / (double)(myphoton->Energy());
 	
 		///// NEW VARIABLE IN TOTO FOR PHOTON REGRESSION /////
 
-		if( verbositybis > 1) cout << "myphoton->joshEnergyRegression() = " << myphoton->joshEnergyRegression() << endl;
-		return myphoton->joshEnergyRegression() / (double)(myphoton->Energy());
+		if( verbositybis > 1) cout << "myphoton->joshEnergyRegressionV5() = " << myphoton->joshEnergyRegressionV5() << endl;
+		return myphoton->joshEnergyRegressionV5() / (double)(myphoton->Energy());
 
 	}
 	 else {
@@ -629,7 +683,8 @@ int main(int argc, char *argv[]);
   extern Int_t nVertices;
   extern Int_t nGenVertices;
   extern Float_t weight_pileUp, weight_Xsection;
-  extern Int_t isMM, isMM_nonFSR;
+  extern Float_t weight_hlt_scaleFactors, weight_tightMuId_scaleFactors, weight_pu_hlt;
+  extern Int_t isMM, isMM_nonFSR, isGoodHLT;
 
   extern Float_t rho;
   extern Float_t pu_TrueNumInteractions;
@@ -690,6 +745,12 @@ int main(int argc, char *argv[]);
   extern Float_t Mmumu_Muons_MC;
 
 
+  // --------------------
+  // Resolution variables
+  // --------------------
+
+  extern Float_t cosThetaMuMubar, MuonM_P, MuonP_P, sqrtMpPp, sqrtMpPpCos;
+
 // *****************************************************************************************************
 // ******************* SIDRA muon corrections
 // *****************************************************************************************************
@@ -746,6 +807,91 @@ double applyMuScleFit(double _pt, double charge, double eta, double phi)
 int FillMM(TRootMuon* mymuon1, TRootMuon* mymuon2, TLorentzVector* correctedMuon1, TLorentzVector* correctedMuon2, bool doMC, bool doR9Rescaling, TClonesArray* mcParticles)
 {
 
+	// ----- HLT scale Factors 2012 ----- // 
+	// see slide 51 https://indico.cern.ch/event/289302/material/slides/0?contribId=2
+	 if(doMC > 0) 
+        {
+                weight_hlt_scaleFactors = 1.0; 
+                if((mymuon1->Pt() > 10 && mymuon1->Pt() < 20 && mymuon2->Pt() > 20) || (mymuon2->Pt() > 10 && mymuon2->Pt() < 20 && mymuon1->Pt() > 20))
+                {
+                        if(fabs(mymuon1->Eta()) > 0.0 && fabs(mymuon1->Eta()) < 1.2 && fabs(mymuon2->Eta()) > 0.0 && fabs(mymuon2->Eta()) < 1.2) weight_hlt_scaleFactors = 0.979;
+                        if(fabs(mymuon1->Eta()) > 1.2 && fabs(mymuon1->Eta()) < 2.4 && fabs(mymuon2->Eta()) > 1.2 && fabs(mymuon2->Eta()) < 2.4) weight_hlt_scaleFactors = 0.979;       
+
+                        if(mymuon2->Pt() > mymuon1->Pt())
+                        {
+                                if(fabs(mymuon1->Eta()) > 1.2 && fabs(mymuon1->Eta()) < 2.4 && fabs(mymuon2->Eta()) > 0.0 && fabs(mymuon2->Eta()) < 1.2) weight_hlt_scaleFactors = 0.992;
+                                if(fabs(mymuon1->Eta()) > 0.0 && fabs(mymuon1->Eta()) < 1.2 && fabs(mymuon2->Eta()) > 1.2 && fabs(mymuon2->Eta()) < 2.4) weight_hlt_scaleFactors = 0.980;
+                        }
+                        else
+                        {     
+                                if(fabs(mymuon2->Eta()) > 1.2 && fabs(mymuon2->Eta()) < 2.4 && fabs(mymuon1->Eta()) > 0.0 && fabs(mymuon1->Eta()) < 1.2) weight_hlt_scaleFactors = 0.992;
+                                if(fabs(mymuon2->Eta()) > 0.0 && fabs(mymuon2->Eta()) < 1.2 && fabs(mymuon1->Eta()) > 1.2 && fabs(mymuon1->Eta()) < 2.4) weight_hlt_scaleFactors = 0.980;       
+                        }
+
+                }
+
+		if(mymuon1->Pt() > 20 && mymuon2->Pt() > 20)
+                {
+                        if(abs(mymuon1->Eta()) > 0.0 && abs(mymuon1->Eta()) < 0.9 && abs(mymuon2->Eta()) > 0.0 && abs(mymuon2->Eta()) < 0.9) weight_hlt_scaleFactors = 0.987;
+                        if(abs(mymuon1->Eta()) > 0.0 && abs(mymuon1->Eta()) < 0.9 && abs(mymuon2->Eta()) > 0.9 && abs(mymuon2->Eta()) < 1.2) weight_hlt_scaleFactors = 0.987;
+                        if(abs(mymuon1->Eta()) > 0.0 && abs(mymuon1->Eta()) < 0.9 && abs(mymuon2->Eta()) > 1.2 && abs(mymuon2->Eta()) < 2.1) weight_hlt_scaleFactors = 1.007;
+                        if(abs(mymuon1->Eta()) > 0.0 && abs(mymuon1->Eta()) < 0.9 && abs(mymuon2->Eta()) > 2.1 && abs(mymuon2->Eta()) < 2.4) weight_hlt_scaleFactors = 1.023;
+                        if(abs(mymuon1->Eta()) > 0.9 && abs(mymuon1->Eta()) < 1.2 && abs(mymuon2->Eta()) > 0.0 && abs(mymuon2->Eta()) < 0.9) weight_hlt_scaleFactors = 0.987;
+                        if(abs(mymuon1->Eta()) > 0.9 && abs(mymuon1->Eta()) < 1.2 && abs(mymuon2->Eta()) > 0.9 && abs(mymuon2->Eta()) < 1.2) weight_hlt_scaleFactors = 0.997;
+                        if(abs(mymuon1->Eta()) > 0.9 && abs(mymuon1->Eta()) < 1.2 && abs(mymuon2->Eta()) > 1.2 && abs(mymuon2->Eta()) < 2.1) weight_hlt_scaleFactors = 1.008;
+                        if(abs(mymuon1->Eta()) > 0.9 && abs(mymuon1->Eta()) < 1.2 && abs(mymuon2->Eta()) > 2.1 && abs(mymuon2->Eta()) < 2.4) weight_hlt_scaleFactors = 1.007;
+                        if(abs(mymuon1->Eta()) > 1.2 && abs(mymuon1->Eta()) < 2.1 && abs(mymuon2->Eta()) > 0.0 && abs(mymuon2->Eta()) < 0.9) weight_hlt_scaleFactors = 1.007;
+                        if(abs(mymuon1->Eta()) > 1.2 && abs(mymuon1->Eta()) < 2.1 && abs(mymuon2->Eta()) > 0.9 && abs(mymuon2->Eta()) < 1.2) weight_hlt_scaleFactors = 1.008;
+                        if(abs(mymuon1->Eta()) > 1.2 && abs(mymuon1->Eta()) < 2.1 && abs(mymuon2->Eta()) > 1.2 && abs(mymuon2->Eta()) < 2.1) weight_hlt_scaleFactors = 1.014;
+                        if(abs(mymuon1->Eta()) > 1.2 && abs(mymuon1->Eta()) < 2.1 && abs(mymuon2->Eta()) > 2.1 && abs(mymuon2->Eta()) < 2.4) weight_hlt_scaleFactors = 1.010;
+                        if(abs(mymuon1->Eta()) > 2.1 && abs(mymuon1->Eta()) < 2.4 && abs(mymuon2->Eta()) > 0.0 && abs(mymuon2->Eta()) < 0.9) weight_hlt_scaleFactors = 1.023;
+                        if(abs(mymuon1->Eta()) > 2.1 && abs(mymuon1->Eta()) < 2.4 && abs(mymuon2->Eta()) > 0.9 && abs(mymuon2->Eta()) < 1.2) weight_hlt_scaleFactors = 1.007;
+                        if(abs(mymuon1->Eta()) > 2.1 && abs(mymuon1->Eta()) < 2.4 && abs(mymuon2->Eta()) > 1.2 && abs(mymuon2->Eta()) < 2.1) weight_hlt_scaleFactors = 1.010;
+                        if(abs(mymuon1->Eta()) > 2.1 && abs(mymuon1->Eta()) < 2.4 && abs(mymuon2->Eta()) > 2.1 && abs(mymuon2->Eta()) < 2.4) weight_hlt_scaleFactors = 1.036;
+
+                }
+	}
+        if(doMC == 0)
+        {
+                weight_hlt_scaleFactors = 1.0;
+        }
+
+
+        // ----- Tight Mu ID scale factors 2012, 22Jan rereco ----- //
+        // see https://twiki.cern.ch/twiki/bin/view/CMS/MuonReferenceEffs#2012_data
+        // and see https://indico.cern.ch/getFile.py/access?contribId=1&resId=2&materialId=slides&confId=257630
+
+	if(doMC > 0)
+        {
+                weight_tightMuId_scaleFactors = 1.0;
+                if(mymuon1->Pt() > 20)
+                {
+                        if(abs(mymuon1->Eta()) > 0 && abs(mymuon1->Eta()) < 0.9) weight_tightMuId_scaleFactors = 0.9925;
+                        if(abs(mymuon1->Eta()) > 0.9 && abs(mymuon1->Eta()) < 1.2) weight_tightMuId_scaleFactors = 0.9928;
+                        if(abs(mymuon1->Eta()) > 1.2 && abs(mymuon1->Eta()) < 2.1) weight_tightMuId_scaleFactors = 0.9960;
+                        if(abs(mymuon1->Eta()) > 2.1 && abs(mymuon1->Eta()) < 2.4) weight_tightMuId_scaleFactors = 0.9952;
+                }
+
+                if(mymuon2->Pt() > 20)
+                {
+                        if(abs(mymuon1->Eta()) > 0 && abs(mymuon1->Eta()) < 0.9) weight_tightMuId_scaleFactors *= 0.9925;
+                        if(abs(mymuon1->Eta()) > 0.9 && abs(mymuon1->Eta()) < 1.2) weight_tightMuId_scaleFactors *= 0.9928;
+                        if(abs(mymuon1->Eta()) > 1.2 && abs(mymuon1->Eta()) < 2.1) weight_tightMuId_scaleFactors *= 0.9960;
+                        if(abs(mymuon1->Eta()) > 2.1 && abs(mymuon1->Eta()) < 2.4) weight_tightMuId_scaleFactors *= 0.9952;
+                }
+
+                // Need to add the scale factors for Pt < 20 when they will be available
+	}
+	
+	if(doMC == 0)
+        {
+                weight_tightMuId_scaleFactors = 1.0;
+        }
+
+
+        weight_pu_hlt = weight_pileUp * weight_hlt_scaleFactors;
+
+
       // Fill muons stuff
       TRootMuon *leadingMuon;
       TRootMuon *subleadingMuon;
@@ -763,7 +909,7 @@ int FillMM(TRootMuon* mymuon1, TRootMuon* mymuon2, TLorentzVector* correctedMuon
         correctedsubleadingMuon = correctedMuon1;
       }
       MuonL_Pt = correctedleadingMuon->Pt();
-      cerr<<endl<<" in FILLMMG : correctedleadingMuon->Pt() = "<<correctedleadingMuon->Pt()<<endl;
+      //cerr<<endl<<" in FILLMMG : correctedleadingMuon->Pt() = "<<correctedleadingMuon->Pt()<<endl;
       MuonL_Eta = leadingMuon->Eta();
       MuonL_Phi = leadingMuon->Phi();
       MuonL_E = correctedleadingMuon->Energy();
@@ -877,6 +1023,19 @@ int FillMM(TRootMuon* mymuon1, TRootMuon* mymuon2, TLorentzVector* correctedMuon
     MuonP_isoR05_nJets = plusMuon->isoR05_nJets();
     MuonP_isoR05_nTracks = plusMuon->isoR05_nTracks();
     MuonP_isoR05_sumPt = plusMuon->isoR05_sumPt();
+
+
+    // Resolution Variables 
+
+    MuonP_P = sqrt( correctedplusMuon->Px() * correctedplusMuon->Px() + correctedplusMuon->Py() * correctedplusMuon->Py() + correctedplusMuon->Pz() * correctedplusMuon->Pz() );
+
+    MuonM_P = sqrt( correctedminusMuon->Px() * correctedminusMuon->Px() + correctedminusMuon->Py() * correctedminusMuon->Py() + correctedminusMuon->Pz() * correctedminusMuon->Pz() );
+
+    sqrtMpPp = sqrt( MuonP_P * MuonP_P + MuonM_P * MuonM_P);
+
+    cosThetaMuMubar = (correctedminusMuon->Px() * correctedplusMuon->Px() + correctedminusMuon->Py() * correctedplusMuon->Py() + correctedminusMuon->Pz() * correctedplusMuon->Pz() ) / ( MuonP_P * MuonM_P );
+
+    sqrtMpPpCos = sqrtMpPp * (1.0 - cosThetaMuMubar);
 
     if( doMC )
     { 

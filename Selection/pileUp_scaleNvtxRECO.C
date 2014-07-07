@@ -68,7 +68,7 @@ int main(int argc, char *argv[])
 	TH1D* data_histo = (TH1D*)data_file->Get("pileup");
 	double data_integral = data_histo->Integral();
 	cout << "data_integral= " << data_integral << endl;
-	TH1D* data_pdf = new TH1D("data_pdf", "data_pdf", 60, 0, 60);
+	TH1D* data_pdf = new TH1D("data_pdf", "data_pdf", 35, 0, 35);
 	data_pdf->Add(data_histo);
 	data_pdf->Scale((double)(1.0)/(double)(data_integral) );
 	cout << data_pdf->GetBinContent(0) << "\t" << data_pdf->GetBinContent(1) << endl;
@@ -92,13 +92,52 @@ int main(int argc, char *argv[])
 	{
 		MC_file = new TFile(MC.c_str());
 		MC_tree = (TTree*) MC_file->Get("miniTree");
-		MC_tree->Draw("nVertices>>MC_histo_temp(60, 0, 60)");
+		MC_tree->Draw("nVertices>>MC_histo_temp(35, 0, 35)");
 		MC_histo = (TH1D*)gDirectory->Get("MC_histo_temp");
 	}
 
 	if(MCOfficials == "true")
         {
-		MC_histo = new TH1D("MC_histo","MC_histo",60, 0, 60);
+		MC_histo = new TH1D("MC_histo","MC_histo",35, 0, 35);
+		Double_t Summer2011_S13[35] = {
+		               1.30976e-05,
+                               0.000148266,
+                               0.00226073,
+                               0.030543,
+                               0.0868303,
+                               0.120295,
+                               0.124687,
+                               0.110419,
+                               0.0945742,
+                               0.0837875,
+                               0.0774277,
+                               0.0740595,
+                               0.0676844,
+                               0.0551203,
+                               0.0378357,
+                               0.0210203,
+                               0.00918262,
+                               0.00309786,
+                               0.000808509,
+                               0.000168568,
+                               3.02344e-05,
+                               5.16455e-06,
+                               8.83185e-07,
+                               1.43975e-07,
+                               2.07228e-08,
+                               2.51393e-09,
+                               2.52072e-10,
+                               2.07328e-11,
+                               1.39369e-12,
+                               7.63843e-14,
+                               3.4069e-15,
+                               1.23492e-16,
+                               3.63059e-18,
+                               8.53277e-20,
+                               1.33668e-22};
+
+		
+
 		Double_t Summer2012_S10[60] = {
                          2.560E-06,
                          5.239E-06,
@@ -225,30 +264,187 @@ int main(int argc, char *argv[])
 			    2.047E-08
 			   };
 
-			for (int i = 1; i <= 60; i++) 
+
+			Double_t Summer2012_RD1_AB[60] = {
+			    5.62384e-12,
+			    5.37563e-11,
+			    3.24138e-08,
+			    2.27084e-05,
+			    3.38197e-05,
+			    0.000334948,
+			    0.00228691,
+			    0.00603839,
+			    0.0123791,
+			    0.020876,
+			    0.0302324,
+			    0.0401893,
+			    0.0486242,
+			    0.0545462,
+			    0.0591351,
+			    0.0624621,
+			    0.0628103,
+			    0.0609193,
+			    0.058327,
+			    0.0558273,
+			    0.0540694,
+			    0.053264,
+			    0.0529594,
+			    0.0523153,
+			    0.050163,
+			    0.0456089,
+			    0.0386456,
+			    0.0300892,
+			    0.021204,
+			    0.0133216,
+			    0.00737675,
+			    0.00357903,
+			    0.00152009,
+			    0.000566906,
+			    0.000186918,
+			    5.5118e-05,
+			    1.47867e-05,
+			    3.6868e-06,
+			    8.71796e-07,
+			    1.97817e-07,
+			    4.30634e-08	
+			};
+
+			Double_t Summer2012_RD1_C[60] = {
+	                1.64489e-08,
+	                1.39807e-07,
+	                1.101e-06,
+	                7.51692e-06,
+	                4.23423e-05,
+	                0.000191918,
+	                0.000692231,
+	                0.0019829,
+	                0.00458417,
+	                0.00963676,
+	                0.0230679,
+	                0.0500937,
+	                0.0733726,
+	                0.0815892,
+	                0.0828382,
+	                0.0810634,
+	                0.075564,
+	                0.0687302,
+	                0.0631491,
+	                0.0583158,
+	                0.0540233,
+	                0.0502324,
+	                0.0465909,
+	                0.0426951,
+	                0.0379946,
+	                0.031998,
+	                0.0247511,
+	                0.0171058,
+	                0.010353,
+	                0.00542871,
+	                0.00246064,
+	                0.000968498,
+	                0.000334249,
+	                0.000102514,
+	                2.84199e-05,
+	                7.29052e-06,
+	                1.79136e-06,
+	                4.4065e-07,
+	                1.12483e-07,
+	                2.99082e-08,
+	                8.06412e-09	
+			};
+
+			Double_t Summer2012_RD1_D[60] = {
+	                2.54656e-11,
+	                6.70051e-11,
+	                2.74201e-06,
+	                6.9111e-06,
+	                5.00919e-06,
+	                6.24538e-05,
+	                0.000338679,
+	                0.000892795,
+	                0.00237358,
+	                0.00686023,
+	                0.0144954,
+	                0.026012,
+	                0.0360377,
+	                0.0420151,
+	                0.0457901,
+	                0.0482319,
+	                0.0503176,
+	                0.052569,
+	                0.0546253,
+	                0.0561205,
+	                0.0568903,
+	                0.0570889,
+	                0.0566598,
+	                0.0553747,
+	                0.0531916,
+	                0.0501454,
+	                0.0463101,
+	                0.0417466,
+	                0.0364842,
+	                0.0306443,
+	                0.0245417,
+	                0.0186276,
+	                0.0133446,
+	                0.00900314,
+	                0.00571947,
+	                0.00342706,
+	                0.00194292,
+	                0.00104671,
+	                0.000538823,
+	                0.000266973,
+	                0.000128572,
+	                6.09778e-05,
+	                2.89549e-05,
+	                1.40233e-05,
+	                7.04619e-06,
+	                3.71289e-06,
+	                2.055e-06,
+	                1.18713e-06,
+	                7.08603e-07,
+	                4.32721e-07,
+	                2.6817e-07,
+	                1.67619e-07,
+	                1.05157e-07,
+	                6.59446e-08,
+	                4.11915e-08,
+	                2.55494e-08	
+                        };
+
+
+			for (int i = 1; i <= 35; i++) 
 			{
+				
     				//MC_histo->SetBinContent(i,Summer2012_S10[i-1]); 
-  				MC_histo->SetBinContent(i,Summer2012_S7[i-1]);
+  				//MC_histo->SetBinContent(i,Summer2012_S7[i-1]);
+				//MC_histo->SetBinContent(i,Summer2012_RD1_AB[i-1]);
+				//MC_histo->SetBinContent(i,Summer2012_RD1_A[i-1]);
+				//MC_histo->SetBinContent(i,Summer2012_RD1_B[i-1]);
+				//MC_histo->SetBinContent(i,Summer2012_RD1_C[i-1]);
+				//MC_histo->SetBinContent(i,Summer2012_RD1_D[i-1]);
+				MC_histo->SetBinContent(i,Summer2011_S13[i-1]);
 			}	
 
 	}
 
 	double MC_integral = MC_histo->Integral();
 	cout << "MC_integral= " << MC_integral << endl;
-	TH1D* MC_pdf = new TH1D("MC_pdf", "MC_pdf", 60, 0, 60);
+	TH1D* MC_pdf = new TH1D("MC_pdf", "MC_pdf", 35, 0, 35);
 	MC_pdf->Add(MC_histo);
 	MC_pdf->Scale((double)(1.0)/(double)(MC_integral) );
-	TH1D* MC_weights = new TH1D("MC_weights", "MC_weights", 60, 0, 60);
+	TH1D* MC_weights = new TH1D("MC_weights", "MC_weights", 35, 0, 35);
 	MC_weights->Divide(data_pdf, MC_pdf);
 
-	TH1D* MC_reweighted = new TH1D("MC_reweighted", "MC_reweighted", 60, 0, 60);
+	TH1D* MC_reweighted = new TH1D("MC_reweighted", "MC_reweighted", 35, 0, 35);
 	MC_reweighted->Add(MC_histo);
 	MC_reweighted->Multiply(MC_weights);
 	double MC_reweighted_integral = MC_reweighted->Integral();
 	MC_reweighted->Scale((double)(1.0)/(double)(MC_reweighted_integral));
 
 	cout << "MC" << endl;
-	for(int i=0; i < MC_weights->GetNbinsX(); i++){ cout << MC_weights->GetBinContent(i) << ", ";  }
+	for(int i=1; i <= MC_weights->GetNbinsX(); i++)
+	{ cout << MC_weights->GetBinContent(i) << ", ";  }
 	cout << endl;	
 
 	TFile* weights_file = new TFile(Form("%s",output.c_str()), "recreate");

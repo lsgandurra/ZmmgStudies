@@ -7,7 +7,7 @@
 #$ -l sps=1
 #$ -l dcache=1
 ###$ -l hpss=1
-#$ -N Selection_NewMuID_
+#$ -N Selection_November2013_
 ### Merge the stdout et stderr in a single file
 #$ -j y
 ### fichiers .e et .o copied to current working directory
@@ -25,15 +25,14 @@ then
 fi
 
 ijob=`echo "${SGE_TASK_ID} - 1" | bc -ql`
+##ijob=85
 
 echo "USER=${USER}"
 
 # LOAD CORRECT ENVIRONMENT VARIABLES FROM SPS
 echo "LOAD CORRECT ENVIRONMENT VARIABLES FROM SPS"
-###export HOMEDIR=/afs/in2p3.fr/home/o/obondu
-###source ${HOMEDIR}/428v2.sh
 export HOMEDIR=/afs/in2p3.fr/home/s/sgandurr
-source ${HOMEDIR}/537_RECO_5_3_3_v4.sh
+source ${HOMEDIR}/5311p3_RECO_5_3_11_v1.sh
 SPSDIR=`pwd`
 WORKDIR=${TMPDIR}
 
@@ -54,24 +53,20 @@ echo ""
 
 # COPY HEADER FILES TO WORKER
 echo "COPY HEADER FILES TO WORKER"
-#mkdir ${TMPDIR}/interface
-#cp ${SPSDIR}/UserCode/IpnTreeProducer/interface/*h ${TMPDIR}/interface/
 if [[ ! -e ${TMPDIR}/interface ]]
 then
   mkdir ${TMPDIR}/interface
-	cp ${SPSDIR}/UserCode/IpnTreeProducer/interface/*h ${TMPDIR}/interface/
+	cp ${SPSDIR}/Toto/IpnTreeProducer/interface/*h ${TMPDIR}/interface/
 fi
 
 echo "USER=${USER}"
 
 # COPY IpnTree LIB FILE TO WORKER
-#mkdir ${TMPDIR}/lib
-#cp ${SPSDIR}/UserCode/IpnTreeProducer/src/libToto.so ${TMPDIR}/lib/
 echo "COPY IpnTree LIB FILE TO WORKER"
 if [[ ! -e ${TMPDIR}/lib ]]
 then
 	mkdir ${TMPDIR}/lib
-	cp ${SPSDIR}/UserCode/IpnTreeProducer/src/libToto.so ${TMPDIR}/lib/
+	cp ${SPSDIR}/Toto/IpnTreeProducer/src/libToto.so ${TMPDIR}/lib/
 fi
 
 echo "USER=${USER}"
@@ -86,15 +81,12 @@ echo "USER=${USER}"
 
 # COPY EXECUTABLE TO WORKER
 echo "COPY EXECUTABLE TO WORKER"
-###cp ${SPSDIR}/Selection_July2013/Selection_miniTree.exe ${TMPDIR}/
-cp ${SPSDIR}/Selection_July2013/Selection_miniTree.exe ${TMPDIR}/
-cp ${SPSDIR}/Selection_July2013/*.C ${TMPDIR}/
-cp ${SPSDIR}/Selection_July2013/*.h ${TMPDIR}/
-cp ${SPSDIR}/Selection_July2013/*.txt ${TMPDIR}/
-cp ${SPSDIR}/Selection_July2013/*.dat ${TMPDIR}/
-##cp -r /sps/cms/obondu/CMSSW_4_2_8__RECO_4_2_8_v2/src/Zmumugamma/TotoSamples/DYToMuMu_M-20_CT10_TuneZ2_7TeV-powheg-pythia_PU_S6_v2/ ${TMPDIR}/
-##cp /sps/cms/sgandurr/CMSSW_5_3_6/src/UserCode/IpnTreeProducer/ListZmumugamma/listFiles_* ${TMPDIR}/
-cp /sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/listFiles_* ${TMPDIR}/
+cp ${SPSDIR}/ZmmgStudies/Selection/Selection_miniTree.exe ${TMPDIR}/
+cp ${SPSDIR}/ZmmgStudies/Selection/*.C ${TMPDIR}/
+cp ${SPSDIR}/ZmmgStudies/Selection/*.h ${TMPDIR}/
+cp ${SPSDIR}/ZmmgStudies/Selection/*.txt ${TMPDIR}/
+cp ${SPSDIR}/ZmmgStudies/Selection/*.dat ${TMPDIR}/
+cp ${SPSDIR}/ZmmgStudies/Selection/listFiles_* ${TMPDIR}/
 
 echo "pwd; ls -als"
 pwd; ls -als
@@ -105,10 +97,7 @@ echo "USER=${USER}"
 # EXECUTE JOB
 echo "EXECUTE JOB"
 cd ${TMPDIR}/
-###./Selection_miniTree.exe ${1} ${2} ${3} ${4} ${5} ${6} 2> ${2}.err | tee ${2}.out
-##./Selection_miniTree.exe ${1} ${2} 20 ${ijob} ${3} 2> ${2}_part${ijob}.err | tee ${2}_part${ijob}.out
-##./Selection_miniTree.exe ${1} ${2} 100 ${ijob} ${3} 2011 PU_S6 ${4} ${5} ${6} ${7} 2> ${2}_part${ijob}.err | tee ${2}_part${ijob}.out
-./Selection_miniTree.exe ${1} ${2} 20 ${ijob} ${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10} ${11} ${12} ${13} 2> ${2}_part${ijob}.err | tee ${2}_part${ijob}.out
+./Selection_miniTree.exe ${1} ${2} 20 ${ijob} ${3} ${4} ${5} ${6} ${7} ${8} ${9} ${10} ${11} ${12} ${13} ${14} 2> ${2}_part${ijob}.err | tee ${2}_part${ijob}.out
 
 
 #LOOK IF EVERYTHING IS OK
@@ -116,7 +105,7 @@ if [ ! -e "miniTree_${ijob}.done" ]
 then
         echo "${ijob}.done doesn't exist"
         touch ${2}_${ijob}.fail   
-	mv ${2}_${ijob}.fail ${SPSDIR}/Selection_July2013/ 
+	mv ${2}_${ijob}.fail ${SPSDIR}/ZmmgStudies/Selection/ 
 fi
 
 echo "pwd; ls -als"
@@ -125,18 +114,21 @@ echo ""
 
 # GET BACK OUTPUT FILES TO SPS
 echo "GET BACK OUTPUT FILES TO SPS AND REMOVE THEM FROM DISTANT DIR"
-mv ${TMPDIR}/miniTree_*root ${SPSDIR}/Selection_July2013/
-mv ${TMPDIR}/${2}_part${ijob}.out ${SPSDIR}/Selection_July2013/
-mv ${TMPDIR}/${2}_part${ijob}.err ${SPSDIR}/Selection_July2013/
+mv ${TMPDIR}/miniTree_*root ${SPSDIR}/ZmmgStudies/Selection/
+##mv ${TMPDIR}/miniFriend2_*root ${SPSDIR}/ZmmgStudies/Selection/
+##mv ${TMPDIR}/miniFriend3_*root ${SPSDIR}/ZmmgStudies/Selection/
+##mv ${TMPDIR}/miniFriend4_*root ${SPSDIR}/ZmmgStudies/Selection/
+mv ${TMPDIR}/${2}_part${ijob}.out ${SPSDIR}/ZmmgStudies/Selection/
+mv ${TMPDIR}/${2}_part${ijob}.err ${SPSDIR}/ZmmgStudies/Selection/
+rm ${TMPDIR}/miniFriend*root
 rm ${TMPDIR}/Selection_miniTree.exe
 rm ${TMPDIR}/*.C
 rm ${TMPDIR}/*.h
 rm ${TMPDIR}/*.txt
-##rm -rf ${TMPDIR}/DYToMuMu_M-20_CT10_TuneZ2_7TeV-powheg-pythia_PU_S6_v2/
 rm ${TMPDIR}/listFiles_* 
 
-#"cd ${SPSDIR}/Selection_July2013/"
-#cd ${SPSDIR}/Selection_July2013/
+#"cd ${SPSDIR}/ZmmgStudies/Selection/"
+#cd ${SPSDIR}/ZmmgStudies/Selection/
 #echo "pwd; ls -als"
 #pwd; ls -als
 #echo ""

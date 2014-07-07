@@ -16,10 +16,10 @@ int main(int argc, char *argv[])
         }    
 
         string directoryName = "Results_v8_surface";
-        string dataType = "MC";
-        string fitVariable = "mmg_s_MZ_Surface";
+        string dataType = "data";
+        string fitVariable = "mmg_s";
 	string cutVariable = "Photon_Et";
-	string binFileName = "LimitesAllPt.txt";
+	string binFileName = "LimitesAllPtFiveBin.txt";
         int lowFitRange = 60;
 	int highFitRange = 100;
 	string injectedResolution = "0";

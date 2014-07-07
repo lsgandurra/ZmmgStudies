@@ -112,7 +112,7 @@ void rangeEstimator(double percentage, TChain * chain, TString cut, double &minR
 //void symetricRangeEstimator3(TChain * chain, double centralValue, double * MinRange, double * MaxRange, double Entries, double percentage, TString temp);
 
 
-Double_t chiSquare(RooPlot* plot, char* pdfname, char* histname, vector <double> &fitParameters);
+Double_t chiSquare(RooPlot* plot, char* pdfname, char* histname, vector <double> &fitParameters, int nbPar);
 RooHist* residHist(RooPlot* plot, char *histname, char* curvename, bool normalize, string recordingDirectory, int iteration);
 RooHist* pullHist(RooPlot* plot_, char* histname, char* pdfname, string dossierSauvegardePull, int iteration);
 

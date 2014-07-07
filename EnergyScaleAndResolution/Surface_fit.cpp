@@ -87,32 +87,19 @@ int main(int argc, char *argv[])
 	if(dataType == "data")
         {
                 if(MmumuOption == "MmumuRECO")
-                {/*
-                        chain->Add("miniTree_muons_Run2012A_13Jul2012_v1_NewMuonID_NewSelection_v1_partALL.root");
-                        chain->Add("miniTree_muons_Run2012A_recover_06Aug2012_v1_NewMuonID_NewSelection_v1_partALL.root");
-                        chain->Add("miniTree_muons_Run2012B_13Jul2012_v4_NewMuonID_NewSelection_v1_partALL.root");
-                        chain->Add("miniTree_muons_Run2012C-24Aug2012-v1_NewMuonID_NewSelection_v1_partALL.root");
-                        chain->Add("miniTree_muons_Run2012C-EcalRecover_11Dec2012-v1_NewMuonID_NewSelection_v1_partALL.root");
-                        chain->Add("miniTree_muons_Run2012C_PromptReco_v2_NewMuonID_NewSelection_v1_partALL.root");
-                        chain->Add("miniTree_muons_Run2012D_PromptReco_v1_NewMuonID_NewSelection_v1_partALL.root");
-         	*/	chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_Run2012A_13Jul2012_v1_NewMuonID_NewSelection_v1_partALL.root");
-                        chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_Run2012A_recover_06Aug2012_v1_NewMuonID_NewSelection_v1_partALL.root");
-                        chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_Run2012B_13Jul2012_v4_NewMuonID_NewSelection_v1_partALL.root");
-                        chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_Run2012C-24Aug2012-v1_NewMuonID_NewSelection_v1_partALL.root");
-                        chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_Run2012C-EcalRecover_11Dec2012-v1_NewMuonID_NewSelection_v1_partALL.root");
-                        chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_Run2012C_PromptReco_v2_NewMuonID_NewSelection_v1_partALL.root");
-                        chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_Run2012D_PromptReco_v1_NewMuonID_NewSelection_v1_partALL.root");
-
-
-	        }
-                if(MmumuOption == "MmumugammaRECO")
                 {
-                        chain->Add("miniTree_Run2012A_13Jul2012_v1_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-                        chain->Add("miniTree_Run2012A_recover_06Aug2012_v1_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-                        chain->Add("miniTree_Run2012B_13Jul2012_v4_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-                        chain->Add("miniTree_Run2012C-24Aug2012-v1_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-                        chain->Add("miniTree_Run2012C-EcalRecover_11Dec2012-v1_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
-                        chain->Add("miniTree_Run2012C_PromptReco_v2_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
+			chain->Add("miniTree_muons_totouples_Run2012A_22Jan2013_v1_noSkim_v1_March_v2_reduced_partALL.root");
+			chain->Add("miniTree_muons_totouples_parked_Run2012B_22Jan2013_v1_noSkim_v1_part1_March_v2_reduced_partALL.root");
+			chain->Add("miniTree_muons_totouples_parked_Run2012B_22Jan2013_v1_noSkim_v1_part2_March_v2_reduced_partALL.root");
+			chain->Add("miniTree_muons_totouples_parked_Run2012C_22Jan2013_v1_noSkim_v1_part1_March_v2_reduced_partALL.root");
+			chain->Add("miniTree_muons_totouples_parked_Run2012C_22Jan2013_v1_noSkim_v1_part2_March_v2_reduced_partALL.root");
+			chain->Add("miniTree_muons_totouples_parked_Run2012C_22Jan2013_v1_noSkim_v1_part3_March_v2_reduced_partALL.root");
+			chain->Add("miniTree_muons_totouples_parked_Run2012D_22Jan2013_v1_noSkim_v1_part1_March_v2_reduced_partALL.root");
+			chain->Add("miniTree_muons_totouples_parked_Run2012D_22Jan2013_v1_noSkim_v1_part2_March_v2_reduced_partALL.root");
+			chain->Add("miniTree_muons_totouples_parked_Run2012D_22Jan2013_v1_noSkim_v1_part3_March_v2_reduced_partALL.root");
+	        }
+                if(MmumuOption == "MmumugammaRECO") //FIXME
+                {
                         chain->Add("miniTree_Run2012D_PromptReco_v1_NewMuonID_NewSelection_0_injRe0_v6_partALL.root");
 
 
@@ -123,26 +110,25 @@ int main(int argc, char *argv[])
 
                 if(MmumuOption == "MmumuRECO" || MmumuOption == "MmumuGEN")
                 {
-                        chain->Add("miniTree_muons_DYToMuMu_Summer12_NewMuonID_NewSelection_v1_partALL.root");
-                        //chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_muons_TTJets_Summer12_S7_NewMuonID_NewSelection_v1_partALL.root");
-                        //chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_muons_WJetsToLNu_Summer12_S10_NewMuonID_NewSelection_v1_partALL.root");
-                	//chain->Add("/sps/cms/sgandurr/CMSSW_5_3_7_RECO_5_3_3_v4/src/Selection_July2013/miniTree_muons_DYToMuMu_Summer12_NewMuonID_NewSelection_v1_partALL.root");
+			chain->Add("miniTree_muons_totouple_DYToMuMu_Summer12_S10_reg5_noSkim_v1_March_v2_reduced_partALL.root");
+			chain->Add("miniTree_muons_totouple_TTJets_Summer12_S10_reg5_noSkim_v1_March_v2_reduced_partALL.root");					   chain->Add("miniTree_muons_totouples_WJetsToLNu_Summer12_S10_noSkim_v1_part1_March_v2_reduced_partALL.root");
+			chain->Add("miniTree_muons_totouples_WJetsToLNu_Summer12_S10_noSkim_v1_part2_March_v2_reduced_partALL.root");
+			chain->Add("miniTree_muons_totouples_WJetsToLNu_Summer12_S10_noSkim_v1_part3_March_v2_reduced_partALL.root");	
 		}
-                if(MmumuOption == "MmumugammaRECO" || MmumuOption == "MmumugammaGEN")
-                {
-			chain->Add("miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_1_injRe0_v7_partALL.root");
-                        chain->Add("miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_2_injRe0_v7_partALL.root");
-                        //chain->Add("miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_1_injRe0_v6_partALL.root");
-                        //chain->Add("miniTree_DYToMuMu_Summer12_NewMuonID_NewSelection_2_injRe0_v6_partALL.root");
-                        //chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_TTJets_Summer12_S7_NewMuonID_NewSelection_3_injRe0_v6_partALL.root");
-                        //chain->Add("/sps/cms/sgandurr/CMSSW_5_3_6_RECO_5_3_3_v4/src/cvs_developpment/Selection_NewMuID/miniTree_WJetsToLNu_Summer12_S10_NewMuonID_NewSelection_3_injRe0_v6_partALL.root");
 
+		if(MmumuOption == "MmumugammaRECO" || MmumuOption == "MmumugammaGEN")
+                {
+                        chain->Add("miniTree_totouple_DYToMuMu_Summer12_S10_reg5_1_thesis_v1f_recoEnergy_s10_partALL.root");
+                        chain->Add("miniTree_totouple_DYToMuMu_Summer12_S10_reg5_2_thesis_v1f_recoEnergy_s10_partALL.root");
+                        chain->Add("miniTree_totouple_TTJets_Summer12_S10_reg5_3_thesis_v1f_recoEnergy_s10_partALL.root");
+                        chain->Add("miniTree_totouples_WJetsToLNu_Summer12_S10_November2013_3_thesis_v1f_recoEnergy_s10_partALL.root");        
                 }
+
         }
 
 	string fileName = ""; 
 
-	TString cut = "isMM_nonFSR == 1 && MuonL_Pt < 200 && MuonS_Pt < 200";
+	TString cut = "isMM_nonFSR == 1 && MuonL_Pt < 200 && MuonS_Pt < 200"; //FIXME == 1 ou == 2 !
 
 	string fitVariable = "Mmumu";
 	string fitVariableName = "M_{#mu#mu}";
@@ -237,15 +223,19 @@ int main(int argc, char *argv[])
 					inTheLoop = 1;
 					if(MmumuOption == "MmumuRECO" || MmumuOption == "MmumuGEN") 
 		                        {
-						cut = "isMM_nonFSR == 1";
-						cut += " && ( hltnames == \"HLT_Mu17_TkMu8_v9\" || hltnames == \"HLT_Mu17_TkMu8_v10\" || hltnames == \"HLT_Mu17_TkMu8_v11\" || hltnames == \"HLT_Mu17_TkMu8_v12\" || hltnames == \"HLT_Mu17_TkMu8_v13\" || hltnames == \"HLT_Mu17_TkMu8_v14\" || hltnames == \"HLT_Mu17_TkMu8_v15\" || hltnames == \"HLT_Mu17_TkMu8_v16\" )";	
-		                                cut += Form(" && MuonL_Pt > %d && MuonL_Pt <= %d && MuonS_Pt > %d && MuonS_Pt <= %d",i * surfaceBinning,(i+1) * surfaceBinning,j * surfaceBinning,(j+1) * surfaceBinning);
+						cut = "(isMM_nonFSR == 1"; //FIXME !
+						//cut += " && ( hltnames == \"HLT_Mu17_TkMu8_v9\" || hltnames == \"HLT_Mu17_TkMu8_v10\" || hltnames == \"HLT_Mu17_TkMu8_v11\" || hltnames == \"HLT_Mu17_TkMu8_v12\" || hltnames == \"HLT_Mu17_TkMu8_v13\" || hltnames == \"HLT_Mu17_TkMu8_v14\" || hltnames == \"HLT_Mu17_TkMu8_v15\" || hltnames == \"HLT_Mu17_TkMu8_v16\" )";	
+		                                //cut += " && ( hltnames == \"HLT_Mu17_Mu8_v1\" || hltnames == \"HLT_Mu17_Mu8_v2\" || hltnames == \"HLT_Mu17_Mu8_v3\" || hltnames == \"HLT_Mu17_Mu8_v4\" || hltnames == \"HLT_Mu17_Mu8_v5\" || hltnames == \"HLT_Mu17_Mu8_v6\" || hltnames == \"HLT_Mu17_Mu8_v7\" || hltnames == \"HLT_Mu17_Mu8_v8\" || hltnames == \"HLT_Mu17_Mu8_v9\" || hltnames == \"HLT_Mu17_Mu8_v10\" || hltnames == \"HLT_Mu17_Mu8_v11\" || hltnames == \"HLT_Mu17_Mu8_v12\" || hltnames == \"HLT_Mu17_Mu8_v13\" || hltnames == \"HLT_Mu17_Mu8_v14\" || hltnames == \"HLT_Mu17_Mu8_v15\" || hltnames == \"HLT_Mu17_Mu8_v16\" || hltnames == \"HLT_Mu17_Mu8_v17\" || hltnames == \"HLT_Mu17_Mu8_v18\" || hltnames == \"HLT_Mu17_Mu8_v19\" || hltnames == \"HLT_Mu17_Mu8_v20\" || hltnames == \"HLT_Mu17_Mu8_v21\" || hltnames == \"HLT_Mu17_Mu8_v22\" || hltnames == \"HLT_Mu17_Mu8_v23\")";
+						cut += " && isGoodHLT == 1)*weight_pileUp*weight_Xsection";
+						cut += Form(" && MuonL_Pt > %d && MuonL_Pt <= %d && MuonS_Pt > %d && MuonS_Pt <= %d",i * surfaceBinning,(i+1) * surfaceBinning,j * surfaceBinning,(j+1) * surfaceBinning);
 		                        }
 		                        if(MmumuOption == "MmumugammaRECO" || MmumuOption == "MmumugammaGEN")
 		                        {
-						cut = "isJanLooseMMG == 1";
-						cut += " && ( hltnames == \"HLT_Mu17_TkMu8_v9\" || hltnames == \"HLT_Mu17_TkMu8_v10\" || hltnames == \"HLT_Mu17_TkMu8_v11\" || hltnames == \"HLT_Mu17_TkMu8_v12\" || hltnames == \"HLT_Mu17_TkMu8_v13\" || hltnames == \"HLT_Mu17_TkMu8_v14\" || hltnames == \"HLT_Mu17_TkMu8_v15\" || hltnames == \"HLT_Mu17_TkMu8_v16\" )";
-		                                cut += Form(" && ptMuGammaL > %d && ptMuGammaL <= %d && ptMuGammaS > %d && ptMuGammaS <= %d",i * surfaceBinning,(i+1) * surfaceBinning,j * surfaceBinning,(j+1) * surfaceBinning);
+						cut = "(isJanLooseMMG == 1";
+						//cut += " && ( hltnames == \"HLT_Mu17_TkMu8_v9\" || hltnames == \"HLT_Mu17_TkMu8_v10\" || hltnames == \"HLT_Mu17_TkMu8_v11\" || hltnames == \"HLT_Mu17_TkMu8_v12\" || hltnames == \"HLT_Mu17_TkMu8_v13\" || hltnames == \"HLT_Mu17_TkMu8_v14\" || hltnames == \"HLT_Mu17_TkMu8_v15\" || hltnames == \"HLT_Mu17_TkMu8_v16\" )";
+						//cut += " && ( hltnames == \"HLT_Mu17_Mu8_v1\" || hltnames == \"HLT_Mu17_Mu8_v2\" || hltnames == \"HLT_Mu17_Mu8_v3\" || hltnames == \"HLT_Mu17_Mu8_v4\" || hltnames == \"HLT_Mu17_Mu8_v5\" || hltnames == \"HLT_Mu17_Mu8_v6\" || hltnames == \"HLT_Mu17_Mu8_v7\" || hltnames == \"HLT_Mu17_Mu8_v8\" || hltnames == \"HLT_Mu17_Mu8_v9\" || hltnames == \"HLT_Mu17_Mu8_v10\" || hltnames == \"HLT_Mu17_Mu8_v11\" || hltnames == \"HLT_Mu17_Mu8_v12\" || hltnames == \"HLT_Mu17_Mu8_v13\" || hltnames == \"HLT_Mu17_Mu8_v14\" || hltnames == \"HLT_Mu17_Mu8_v15\" || hltnames == \"HLT_Mu17_Mu8_v16\" || hltnames == \"HLT_Mu17_Mu8_v17\" || hltnames == \"HLT_Mu17_Mu8_v18\" || hltnames == \"HLT_Mu17_Mu8_v19\" || hltnames == \"HLT_Mu17_Mu8_v20\" || hltnames == \"HLT_Mu17_Mu8_v21\" || hltnames == \"HLT_Mu17_Mu8_v22\" || hltnames == \"HLT_Mu17_Mu8_v23\")";
+		                                cut += " && isGoodHLT_Mu17_Mu8 == 1";
+						cut += Form(" && ptMuGammaL > %d && ptMuGammaL <= %d && ptMuGammaS > %d && ptMuGammaS <= %d)*weight_pileUp*weight_Xsection",i * surfaceBinning,(i+1) * surfaceBinning,j * surfaceBinning,(j+1) * surfaceBinning);
 					}
 		
 					cout<<endl<<"cut = "<<cut;
@@ -253,13 +243,14 @@ int main(int argc, char *argv[])
 					rangeMax = 96.0; //FIXME
 					reducedChain = (TChain *) chain->CopyTree(cut);
 					//if(chain->GetEntries(cut) != 0) 
-					if(reducedChain->GetEntries() > 10) //FIXME select the lowest number of entries 
+					if(reducedChain->GetEntries("Mmumu > 70.0 && Mmumu < 110.0") > 10) //FIXME select the lowest number of entries 
 					{
 						cout<<endl<<"reducedChain->GetEntries() = "<<reducedChain->GetEntries()<<endl;
 						iterDo = 0;
 						histo = new TH1D("histo","histo", 80, 70.0, 110.0);
 						reducedChain->Draw(Form("%s>>histo",fitVariable.c_str()));
 						xMaxHisto = histo->GetXaxis()->GetBinCenter(histo->GetMaximumBin());
+						if(xMaxHisto > 100) xMaxHisto = 91.188;
 						cout<<endl<<"xMaxHisto = "<<xMaxHisto<<endl;
 						do{
 							fitPercentageF = fitPercentage / 100.0;
@@ -280,16 +271,18 @@ int main(int argc, char *argv[])
 							}
 							cout<<"rangeMin = "<<rangeMin<<", rangeMax = "<<rangeMax<<endl;
 							RooRealVar variable(fitVariable.c_str(), fitVariableName.c_str(), rangeMin, rangeMax);	
+							RooRealVar weight_pileUp("weight_pileUp", "weight_pileUp", 0.0, 100);
+							RooRealVar weight_Xsection("weight_Xsection", "weight_Xsection", 0.0, 100);
 							//RooRealVar MuonL_Pt("MuonL_Pt","MuonL_Pt",0,200,"");
 							//RooRealVar MuonS_Pt("MuonS_Pt","MuonS_Pt",0,200,"");	
 							//RooRealVar isMM_nonFSR("isMM_nonFSR","isMM_nonFSR",0.0,1.0,"");			
 			
-							RooArgSet ntplVars(variable);
-							dataset = new RooDataSet("dataset", "dataset", reducedChain, ntplVars, "", "");
+							RooArgSet ntplVars(variable,weight_pileUp,weight_Xsection);
+							dataset = new RooDataSet("dataset", "dataset", reducedChain, ntplVars, "", "weight_Xsection * weight_pileUp");
 							// --- Second RooDataSet (only for cosmetic considerations) --- //
 							RooRealVar variable2(fitVariable.c_str(), fitVariableName.c_str(), xMinFitVariable, xMaxFitVariable);
-							RooArgSet ntplVars2(variable2);
-							dataset2 = new RooDataSet("dataset2", "dataset2", reducedChain, ntplVars2, "", "");	
+							RooArgSet ntplVars2(variable2,weight_pileUp,weight_Xsection);
+							dataset2 = new RooDataSet("dataset2", "dataset2", reducedChain, ntplVars2, "", "weight_Xsection * weight_pileUp");	
 			
 							RooPlot * fitFrame; 
 			                		fitFrame = variable.frame(xMinFitVariable,xMaxFitVariable);
@@ -301,7 +294,7 @@ int main(int argc, char *argv[])
 							if(fitFunction == "voigtian") voigtian_surface(dataset, dataset2, variable, fitFrame, b, rangeMin, rangeMax, xMaxHisto, fitParameters);
 							cout<<endl<<"coucou apres voigtian"<<endl;
 							// --- Compute the chi2 and the associated p-value and save informations in fitParameters --- //
-							chiSquare(fitFrame,(char *)"mycurve",(char *)"myhist",fitParameters);
+							chiSquare(fitFrame,(char *)"mycurve",(char *)"myhist",fitParameters, 3);
 							cout<<endl<<"coucou avant chi2"<<endl;
 			
 							// --- Draw a nice plot --- //
@@ -359,7 +352,7 @@ int main(int argc, char *argv[])
 							//if(rangeMin == 89.0 && rangeMax == 92.0) break;
 							if(rangeMin == (xMaxHisto - 1.5) && rangeMax == (xMaxHisto + 1.5)) break;	
 	
-						}while(pValue < 0.1 || meanError > (mean / 2.0));
+						}while(pValue < 0.01 || meanError > (mean / 2.0));
 		
 						//fileName = Form("fit_L_%d_%d_S_%d_%d",i * surfaceBinning,(i+1) * surfaceBinning,j * surfaceBinning,(j+1) * surfaceBinning);
 						//plotsRecording(directoryName, fileName, c1);

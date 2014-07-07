@@ -154,7 +154,7 @@ int main(int argc, char *argv[])
 			
 			//if(i == 100 || i == 89 || i = 79 || i = 69) min_error[j] = average_mean_error;
 
-			if(pvalue_tab[ (i-lowFitRange) * nbFits + j ] > 0.001)
+			if(pvalue_tab[ (i-lowFitRange) * nbFits + j ] > 0.01)
 			{
 				if(i >= 90 && mean_errorTab[ (i-lowFitRange) * nbFits + j ] < min_error[j] && mean_errorTab[ (i-lowFitRange) * nbFits + j ] > (median_mean_error[j] * 0.1))
 				{
@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
 		{
 			for(int i = highFitRange; i >= lowFitRange; i--)
 	        	{
-				if(pvalue_tab[ (i-lowFitRange) * nbFits + j ] > 0.0001)
+				if(pvalue_tab[ (i-lowFitRange) * nbFits + j ] > 0.001)
 		                {
 			               	if(i >= 90 && mean_errorTab[ (i-lowFitRange) * nbFits + j ] < min_error[j] && mean_errorTab[ (i-lowFitRange) * nbFits + j ] > (median_mean_error[j] * 0.1)) 
 		                        {

@@ -4,11 +4,11 @@
 ##rm -rf Results_v6_autoClosureTest/data/Selected_Fits/
 
 ##directory=Results_v6_Zee_Regressionb
-directory=Results_v6_RecoEnergy
+directory=Results_22Jan_v1
 for injectedResolution in '0' ##'0.5' '1' '1.5' '2' '2.5' '3' '3.5' '4' 
 do
 	##directory=Results_v6_Zee_Regressionb/InjectedResolution_${injectedResolution}Percent
-	directory=Results_v6_RecoEnergy/InjectedResolution_${injectedResolution}Percent
+	directory=Results_22Jan_v1/InjectedResolution_${injectedResolution}Percent
 	echo "${directory}"
 	##rm -rf ${directory}/MC/Selected_Fits/
 	##rm -rf ${directory}/data/Selected_Fits/
@@ -17,7 +17,7 @@ do
 	
 	for dataType in 'data' 'MC' 
 	do
-		for fitVariable in 'mmg_s_true' ##'mmg_s' ##'mmg_s_true'
+		for fitVariable in 'mmg_s' ##'mmg_s' ##'mmg_s_true'
 	        do
 			if [ "$dataType" = "data" ] && [ "$fitVariable" = "mmg_s_true" ]
 	                then
@@ -28,7 +28,7 @@ do
 			do
 	        		for r9 in 'low' 'high' 'all'
 	        		do
-	               			for fitFunction in 'voigtian' 'cruijff'
+	               			for fitFunction in 'voigtian' ##'cruijff'
 	               			do	
 						./PvaluesPlotter.exe ${directory} ${dataType} ${fitVariable} Photon_Et ${eta} ${r9} ${fitFunction} 60 70
 						./PvaluesPlotter.exe ${directory} ${dataType} ${fitVariable} Photon_Et ${eta} ${r9} ${fitFunction} 70 80

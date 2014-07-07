@@ -30,7 +30,7 @@ do
 					##directoryName=Data_MC_Comparison_with_weightPU_sigma69400_v4_withoutRunD
 	                		##directoryName=Data_MC_Comparison_with_weightPUAfterSelection_sigma69400_HLTcuts_v1
 					##directoryName=Data_MC_Comparison_with_weightPU_true_May2013_MCOfficials
-					directoryName=Data_MC_Comparison_v8
+					directoryName=Data_MC_Comparison_22Jan_v9_S10
 				fi	
 
 		
@@ -46,7 +46,7 @@ do
 				##	do
 						##./Data_MC_Var_Comparison.exe ${directoryName} ${eta} ${r9} ${xVariable} ${log} ${norm} ${cutVariable} ${cutVariableValue}	
 						echo "${directoryName} ${eta} ${r9} ${norm} ${cutVariable} ${cutVariableValue}" 
-						qsub batchJob_Data_MC_Comparison.sh ${directoryName} ${eta} ${r9} ${norm} ${cutVariable} ${cutVariableValue} -l os=sl5
+						qsub batchJob_Data_MC_Comparison.sh ${directoryName} ${eta} ${r9} ${norm} ${cutVariable} ${cutVariableValue} -l os=sl6
 				##	done
 				##done 
 			done
